@@ -12,18 +12,37 @@ header {
 
 .navbar { /* Make gradient around cursor using js */  
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: #111111;
     height: 5vh;
+}
+
+.logo {
+    padding-left: 1rem;
+}
+
+.links {
+    display: flex;
+    padding-right: 1rem;
+    gap: 1rem
 }
 
 /* Text Formatting */
 .navbar a {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     text-decoration: none;
-    color: #f4b860;
+    text-align: center;
+    color: #74B3CE;
+    /*color: #f4b860;*/
 }
 
 h1 {
     color: aqua;
     text-align: center;
+}
+
+/* Image Formatting */
+.logo img {
+    height: 2rem;
 }
