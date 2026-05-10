@@ -6,7 +6,7 @@ html, body, header, .navbar {
 }
 
 header { 
-    background-color: #111111;
+    background-color: #D6D6D6;
     height: 60vh;
 }
 
@@ -14,7 +14,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #111111;
+    background-color: #ADADAD;
     height: 5vh;
 }
 
@@ -33,12 +33,12 @@ header {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     text-decoration: none;
     text-align: center;
-    color: #74B3CE;
+    color: #8BCAE5;
     /*color: #f4b860;*/
 }
 
 h1 {
-    color: aqua;
+    color: #48ABD5;
     text-align: center;
 }
 
