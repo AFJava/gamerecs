@@ -8,41 +8,46 @@
     <title>GameRecs</title>
 </head>
 
-<header>
-    <div class = "navbar">
-        <div class = "logo">
-            <img src = "assets/Logo.png">
-        </div>
 
-        <div class = "links">
-            <a href = "/">Home</a>
-            <a href = "/login">Sign Up</a>
-            <a href = "/login">Login</a>
-        </div>
-    </div>
-</header>
 
 <body>
-    <div class = "login">
-        <h1>Log In</h1>
+    <header>
+        <div class = "navbar">
+            <div class = "logo">
+                <img src = "assets/Logo.png">
+            </div>
 
-        <form>
-            <label for = "email">Email:</label>
-            <input type = "text" id = "email"><br>
-            <label for = "pass">Password:</label>
-            <input type = "text" id = "pass">
-        </form>
+            <div class = "links">
+                <a href = "/">Home</a>
+                <a href = "/login">Sign Up</a>
+                <a href = "/login">Login</a>
+            </div>
+        </div>
+    </header>
 
-        <h1>Sign Up</h1>
+    <div class = "login_interface">
+        <div class = "login">
+            <h1 class = "login_header">Log In</h1>
 
-        <form>
-            <label for = "email">Email:</label>
-            <input type = "text" id = "email"><br>
-            <label for = "pass">Password:</label>
-            <input type = "text" id = "pass"><br>
-            <label for = "passRe">Retype Password:</label>
-            <input type = "text" id = "passRe">
-        </form>
+            <form>
+                <input type = "text" id = "email" placeholder = "Email"><br>
+                <input type = "text" id = "pass" placeholder = "Password">
+            </form>
+        </div>
+
+        <div class = "login_divider">
+            <p>or</p>
+        </div>
+
+        <div class = "signup">
+            <h1 class = "login_header">Sign Up</h1>
+
+            <form>
+                <input type = "text" id = "email" placeholder = "Email"><br>
+                <input type = "text" id = "pass" placeholder = "Password"><br>
+                <input type = "text" id = "passRe" placeholder = "Retype Password">
+            </form>
+        </div>
     </div>
 </body>
 </html>

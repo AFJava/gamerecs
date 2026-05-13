@@ -6,19 +6,19 @@ html, body {
 }
 
 header { 
-    background-color: #D6D6D6;
+    background-color: #4c4c47;
     height: 60vh;
 }
 
 body {
-    background-color: #111111;
+    background-color: #565f76;
 }
 
 .navbar { /* Make gradient around cursor using js */  
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #ADADAD;
+    background-color: #2d2d2a;
     height: 5vh;
 }
 
@@ -32,18 +32,60 @@ body {
     gap: 1rem
 }
 
+.login_interface {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #717c98;
+    height: 60vh;
+    border-radius: 1rem;
+    margin-left: 20vw;
+    margin-right: 20vw;
+    margin-top: -40vh;
+}
+
+.login {
+    height: 25vh;
+}
+
+.login_divider {
+    height: 10vh;
+}
+
+.signup {
+    height: 35vh;
+}
+
+.summary {
+    text-align: center;
+    font-size: medium;
+}
+
 /* Text Formatting */
-.navbar a {
+p, a, label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #b8b8b8;
+}
+
+.navbar a {
     text-decoration: none;
     text-align: center;
-    color: #8BCAE5;
+    color: #69BADD;
     /*color: #f4b860;*/
 }
 
 h1 {
-    color: #48ABD5;
+    color: #69BADD;
     text-align: center;
+}
+
+.login_header {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+label {
+    margin: 1rem;
 }
 
 /* Image Formatting */
