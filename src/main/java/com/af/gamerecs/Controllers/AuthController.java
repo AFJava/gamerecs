@@ -1,10 +1,12 @@
 package com.af.gamerecs.controllers;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
-public class MainController {
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -15,6 +17,3 @@ public class MainController {
         return "index";
     }
 }
-
-
-
