@@ -52,14 +52,23 @@ body {
     display: flex;
     align-items: center;
     margin-top: 0.8rem;
+    width: 100%;
 }
 
 .login_divider::before, .login_divider::after {
     flex: 1;
     content: '';
-    height: 1px;
+    height: 2px;
     background-color: #b8b8b8;
     margin: 0 10px;
+}
+
+.login_divider::before {
+    margin-right: 10px;
+}
+
+.login_divider::after {
+    margin-left: 10px;
 }
 
 .summary {
