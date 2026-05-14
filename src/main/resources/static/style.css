@@ -32,10 +32,14 @@ body {
     gap: 1rem
 }
 
-.login_interface {
+.login_interface, .login_interface form {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.login_interface {
+    justify-content: center;
     background-color: #717c98;
     height: 60vh;
     border-radius: 1rem;
@@ -44,16 +48,18 @@ body {
     margin-top: -40vh;
 }
 
-.login {
-    height: 25vh;
-}
-
 .login_divider {
-    height: 10vh;
+    display: flex;
+    align-items: center;
+    margin-top: 0.8rem;
 }
 
-.signup {
-    height: 35vh;
+.login_divider::before, .login_divider::after {
+    flex: 1;
+    content: '';
+    height: 1px;
+    background-color: #b8b8b8;
+    margin: 0 10px;
 }
 
 .summary {
@@ -62,8 +68,11 @@ body {
 }
 
 /* Text Formatting */
-p, a, label {
+p, a, h1 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+p, a {
     color: #b8b8b8;
 }
 
@@ -79,9 +88,10 @@ h1 {
     text-align: center;
 }
 
-.login_header {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+.login_interface h1 {
+    font-size: 4rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
 }
 
 label {
@@ -91,4 +101,18 @@ label {
 /* Image Formatting */
 .logo img {
     height: 2rem;
+}
+
+/* Other */
+input[type = "text"] {
+    height: 2rem;
+    border-radius: 0.5rem;
+    background-color: #565f76;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+button[type = "submit"] {
+    height: 2rem;
+    border-radius: 1rem;
+    background-color: #565f76;
 }
