@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "stylesheet" href = "/style.css">
+    <script src="/js/auth.js"></script>
     <title>GameRecs</title>
 </head>
 
@@ -30,9 +31,9 @@
             <h1>Log In</h1>
 
             <form>
-                <input type = "text" id = "email" placeholder = "Email"><br>
-                <input type = "text" id = "pass" placeholder = "Password"><br>
-                <button type = "submit">Log In</button>
+                <input type = "text" id = "emailAuth" placeholder = "Email"><br>
+                <input type = "text" id = "passwordAuth" placeholder = "Password"><br>
+                <button type = "submit" id = "login">Log In</button>
             </form>
         </div>
 
@@ -45,10 +46,12 @@
 
             <form>
                 <input type = "text" id = "email" placeholder = "Email"><br>
-                <input type = "text" id = "pass" placeholder = "Password"><br>
-                <input type = "text" id = "passRe" placeholder = "Retype Password"><br>
-                <button type = "submit">Create Account</button>
+                <input type = "text" id = "password" placeholder = "Password"><br>
+                <input type = "text" id = "passwordRe" placeholder = "Retype Password"><br>
+                <button type = "submit" id = "signup">Create Account</button>
             </form>
+
+            <p id = "signupmsg"></p>
         </div>
     </div>
 </body>
