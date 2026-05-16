@@ -1,33 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM loaded");
-
     const form = document.querySelector(".signup form");
 
-    console.log(form);
-
     form.addEventListener("submit", signup);
-
-    console.log("listener activated");
 });
 
 async function signup(e) {
-    console.log("signup called");
-
     e.preventDefault();
 
-    console.log("Default behavior prevented")
-
     const email = document.getElementById("email").value;
-
     const password = document.getElementById("password").value;
 
+    const csrfToken = document.querySelector('meta[name = "_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name = "_csrf_header"]').content;
+
     const response = await fetch(
-        "http://localhost:8080/auth/signup",
+        "/auth/signup",
         {
             method: "POST",
 
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                [csrfHeader]: csrfToken
             },
 
             body: JSON.stringify({

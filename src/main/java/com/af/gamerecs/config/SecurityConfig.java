@@ -20,7 +20,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login", "/css/**", "/js/**", "/auth/**", "/assets/**").permitAll()
                 .anyRequest().authenticated()
@@ -30,6 +29,7 @@ public class SecurityConfig {
                 .permitAll()
             )
             .logout(logout -> logout.permitAll());
-            return http.build();
+
+        return http.build();
     }
 }
