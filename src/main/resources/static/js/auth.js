@@ -1,17 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const signUpButton = document.getElementById("signup");
+    console.log("DOM loaded");
 
-    signUpButton.addEventListener("click", signup);
+    const form = document.querySelector(".signup form");
+
+    console.log(form);
+
+    form.addEventListener("submit", signup);
+
+    console.log("listener activated");
 });
 
-async function signup() {
+async function signup(e) {
     console.log("signup called");
 
-    event.preventDefault();
+    e.preventDefault();
 
-    const email = document.getElementById("email");
+    console.log("Default behavior prevented")
 
-    const password = document.getElementById("password");
+    const email = document.getElementById("email").value;
+
+    const password = document.getElementById("password").value;
 
     const response = await fetch(
         "http://localhost:8080/auth/signup",
@@ -32,5 +40,4 @@ async function signup() {
     const parseResponse = await response.text();
     
     document.getElementById("signupmsg").textContent = parseResponse;
-
 }
