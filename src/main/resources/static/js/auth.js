@@ -33,4 +33,8 @@ async function signup(e) {
     const parseResponse = await response.text();
     
     document.getElementById("signupmsg").textContent = parseResponse;
+    
+    if(response.ok) {
+        window.location.href = "/profile";
+    }
 }
