@@ -7,10 +7,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.repositories.UserRepository;
@@ -18,7 +19,7 @@ import com.af.gamerecs.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@RestController
+@Controller
 @RequestMapping("/auth")
 public class AuthController {
     private final UserRepository userRepository;
@@ -32,17 +33,24 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestBody HashMap<String, String> userInfo, HttpServletRequest httpRequest) {
+    public String signup(@RequestBody HashMap<String, String> userInfo, HttpServletRequest httpRequest, Model model) {
         User newUser = new User();
 
         String email = userInfo.get("email");
         newUser.setUsername(email);
 
         String password = userInfo.get("password");
+        String retype = userInfo.get("retype");
+        
+        if(!retype.equals(password)) {
+            model.addAttribute("signuperr", "Passwords do not match");
+            return "login";
+        }
+
         String passwordHash = passwordEncoder.encode(password);
         newUser.setPassword(passwordHash);
         
-        userRepository.save(newUser);
+        userRepository.save(newUser); //Spring automatically handles SQL INSERT instruction
 
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
@@ -59,6 +67,7 @@ public class AuthController {
             securityContext
         );*/
 
-        return "User Created";
+        //Configure URL later
+        return "redirect:/profile";
     }
 }

@@ -33,8 +33,8 @@
             <h1>Log In</h1>
 
             <form>
-                <input type = "text" id = "emailAuth" placeholder = "Email"><br>
-                <input type = "text" id = "passwordAuth" placeholder = "Password"><br>
+                <input type = "text" id = "emailAuth" placeholder = "Email" name = "username"><br>
+                <input type = "text" id = "passwordAuth" placeholder = "Password" name = "password"><br>
                 <button type = "submit" id = "login">Log In</button>
             </form>
         </div>
@@ -49,11 +49,11 @@
             <form>
                 <input type = "text" id = "email" placeholder = "Email"><br>
                 <input type = "text" id = "password" placeholder = "Password"><br>
-                <input type = "text" id = "passwordRe" placeholder = "Retype Password"><br>
+                <input type = "text" id = "retype" placeholder = "Retype Password"><br>
                 <button type = "submit" id = "signup">Create Account</button>
             </form>
 
-            <p id = "signupmsg"></p>
+            <p id = "signuperr" th:if = "${signuperr}" th:text = "${signuperr}"></p>
         </div>
     </div>
 </body>
