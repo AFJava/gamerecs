@@ -7,12 +7,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.af.gamerecs.entities.Role;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.repositories.UserRepository;
 
@@ -50,22 +52,27 @@ public class AuthController {
         String passwordHash = passwordEncoder.encode(password);
         newUser.setPassword(passwordHash);
         
+        newUser.setRole(Role.USER);
+
         userRepository.save(newUser); //Spring automatically handles SQL INSERT instruction
 
+        //Compare username/password to the user info that was just saved in db
         Authentication authentication = authenticationManager.authenticate(
+            //Give username/password in Spring's expected format
             new UsernamePasswordAuthenticationToken(
                 email, password
             )
         );
 
+        //Stores auth info
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         HttpSession session = httpRequest.getSession(true);
-        /*
+        /**/
         session.setAttribute(
             HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-            securityContext
-        );*/
+            SecurityContextHolder.getContext()
+        );
 
         //Configure URL later
         return "redirect:/profile";

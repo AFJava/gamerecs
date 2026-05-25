@@ -1,10 +1,8 @@
 //Ensure that DOM Content loads before adding event listeners; otherwise event listeners may not function properly
 document.addEventListener("DOMContentLoaded", () => {
     const signupForm = document.querySelector(".signup form");
-    const loginForm = document.querySelector(".login form");
 
     signupForm.addEventListener("submit", signup);
-    loginForm.addEventListener("submit", login());
 
     //Note these are HTML elements for real-time feedback
     const passwordInput = document.getElementById("password");
@@ -12,18 +10,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const signupErr = document.getElementById("signuperr");
 
     //Currently does not show
-    password.addEventListener("input", checkPasswords);
-});
-
-function checkPasswords() {
-    if(retypeInput.value === "") {
-        signupErr.textContent = "";
-    } else if(passwordInput.value !== retypeInput.value) {
-        signupErr.textContent = "Passwords do not match";
-    } else {
-        signupErr.textContent = "";
+    passwordInput.addEventListener("input", checkPasswords);
+    retypeInput.addEventListener("input", checkPasswords);
+    
+    function checkPasswords() {
+        if(retypeInput.value === "") {
+            signupErr.textContent = "";
+        } else if(passwordInput.value !== retypeInput.value) {
+            signupErr.textContent = "Passwords do not match";
+        } else {
+            signupErr.textContent = "";
+        }
     }
-}
+});
 
 async function signup(e) {
     e.preventDefault(); //Default behavior refreshes which cancels all operations below
@@ -54,10 +53,6 @@ async function signup(e) {
             })
         }
     )
-
-    const parseResponse = await response.text();
-    
-    document.getElementById("signupmsg").textContent = parseResponse;
     
     if(response.ok) {
         window.location.href = "/profile";
