@@ -1,15 +1,14 @@
 //Ensure that DOM Content loads before adding event listeners; otherwise event listeners may not function properly
 document.addEventListener("DOMContentLoaded", () => {
-    const signupForm = document.querySelector(".signup form");
+    //const signupForm = document.querySelector(".signup form");
 
-    signupForm.addEventListener("submit", signup);
+    //signupForm.addEventListener("submit", signup);
 
     //Note these are HTML elements for real-time feedback
     const passwordInput = document.getElementById("password");
     const retypeInput = document.getElementById("retype");
     const signupErr = document.getElementById("signuperr");
 
-    //Currently does not show
     passwordInput.addEventListener("input", checkPasswords);
     retypeInput.addEventListener("input", checkPasswords);
     
@@ -24,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+/*
 async function signup(e) {
     e.preventDefault(); //Default behavior refreshes which cancels all operations below
 
@@ -53,8 +53,4 @@ async function signup(e) {
             })
         }
     )
-    
-    if(response.ok) {
-        window.location.href = "/profile";
-    }
-}
+} */
