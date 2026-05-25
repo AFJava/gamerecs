@@ -113,7 +113,7 @@ label {
 }
 
 /* Other */
-input[type = "text"] {
+input[type = "text"], input[type = "password"] {
     height: 2rem;
     border-radius: 0.5rem;
     background-color: #565f76;

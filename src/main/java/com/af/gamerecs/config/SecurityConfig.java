@@ -30,11 +30,16 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**", "/profile").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/", "/login", "/css/**", "/js/**", "/auth/**", "/assets/**").permitAll()
+                .requestMatchers("/", "/login", "/css/**", "/js/**", "/auth/**", "/assets/**, /error").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login")
+                .usernameParameter("emailLogin")
+                .passwordParameter("passwordLogin")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/profile", true)
+                .failureUrl("/login")
                 .permitAll()
             )
             .logout(logout -> logout.permitAll());
