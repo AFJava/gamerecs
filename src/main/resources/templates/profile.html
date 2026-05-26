@@ -18,8 +18,9 @@
 
             <div class = "links">
                 <a href = "/">Home</a>
-                <a href = "/login">Sign Up</a>
-                <a href = "/login">Login</a>
+                <form th:action = "@{/logout}" method = "post">
+                    <button type = "submit">Logout</button>
+                </form>
             </div>
         </div>
     </header>

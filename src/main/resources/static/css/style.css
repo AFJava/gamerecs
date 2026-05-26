@@ -14,7 +14,7 @@ body {
     background-color: #565f76;
 }
 
-.navbar { /* Make gradient around cursor using js */  
+.navbar { 
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -85,7 +85,7 @@ p, a {
     color: #b8b8b8;
 }
 
-.navbar a {
+.navbar a, .navbar button {
     text-decoration: none;
     text-align: center;
     color: #69BADD;
