@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.af.gamerecs.entities.CustomUserDetailsService;
 import com.af.gamerecs.entities.Role;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.repositories.UserRepository;
@@ -27,16 +26,13 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final CustomUserDetailsService customUserDetailsService;
 
     public AuthController(UserRepository userRepository,
                         PasswordEncoder passwordEncoder,
-                        AuthenticationManager authenticationManager,
-                        CustomUserDetailsService customUserDetailsService) {
+                        AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.customUserDetailsService = customUserDetailsService;
     }
 
     @PostMapping("/signup")
@@ -71,10 +67,7 @@ public class AuthController {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password)
             );
-            System.out.println("AUTH OK: " + authentication.getAuthorities());
-
-            System.out.println("After auth");
-            /**/
+            
             //Stores auth info
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -85,10 +78,7 @@ public class AuthController {
                 SecurityContextHolder.getContext()
             );
 
-            System.out.println("After session");
-
-            //Configure URL later
-            return "redirect:/profile";
+            return "redirect:/users/" + newUser.getId() + "/profile";
         }
     }
 }

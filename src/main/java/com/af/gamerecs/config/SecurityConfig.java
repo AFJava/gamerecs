@@ -10,10 +10,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.af.gamerecs.entities.User;
+import com.af.gamerecs.repositories.UserRepository;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private final UserRepository userRepository;
+
+    public SecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -35,10 +44,17 @@ public class SecurityConfig {
             )
             .formLogin(form -> form
                 .loginPage("/login")
+                .successHandler((request, response, authentication) -> {
+                    String email = authentication.getName();
+
+                    User user = userRepository.findByEmail(email).orElseThrow();
+
+                    Long id = user.getId();
+                    response.sendRedirect("/users/" + id + "/profile");
+                })
                 .usernameParameter("emailLogin")
                 .passwordParameter("passwordLogin")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/profile", true)
                 .failureUrl("/login")
                 .permitAll()
             )
