@@ -31,8 +31,13 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    //Default empty constructor for Spring
     public User() {
 
+    }
+
+    public User(String email) {
+        this.email = email;
     }
 
     @Override

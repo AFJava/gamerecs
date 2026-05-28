@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 
 Logo.xcf
+client_secret_182221117369-bsg0j1gl0sj47uqmkikl6el4k4plptj1.apps.googleusercontent.com.json
 
 ### STS ###
 .apt_generated

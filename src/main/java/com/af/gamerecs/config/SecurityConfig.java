@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.af.gamerecs.entities.User;
@@ -45,9 +46,20 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")
                 .successHandler((request, response, authentication) -> {
-                    String email = authentication.getName();
+                    Object principal = authentication.getPrincipal();
+                    
+                    User user;
 
-                    User user = userRepository.findByEmail(email).orElseThrow();
+                    if(principal instanceof User localUser) {
+                        user = localUser;
+                    }
+                    else if(principal instanceof OAuth2User oauthUser) {
+                        String email = oauthUser.getAttribute("email");
+
+                        user = userRepository.findByEmail(email).orElseGet( () -> userRepository.save( new User(email) ) );
+                    } else {
+                        throw new IllegalStateException("Unknown principal type");
+                    }
 
                     Long id = user.getId();
                     response.sendRedirect("/users/" + id + "/profile");
@@ -57,6 +69,10 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .failureUrl("/login")
                 .permitAll()
+            )
+            .oauth2Login(oauth -> oauth
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true)
             )
             .logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
