@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -19,9 +21,11 @@ import com.af.gamerecs.repositories.UserRepository;
 @EnableWebSecurity
 public class SecurityConfig {
     private final UserRepository userRepository;
+    private final ClientRegistrationRepository clientRegistrationRepository;
 
-    public SecurityConfig(UserRepository userRepository) {
+    public SecurityConfig(UserRepository userRepository, ClientRegistrationRepository clientRegistrationRepository) {
         this.userRepository = userRepository;
+        this.clientRegistrationRepository = clientRegistrationRepository;
     }
 
     @Bean
@@ -36,6 +40,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        DefaultOAuth2AuthorizationRequestResolver resolver =
+            new DefaultOAuth2AuthorizationRequestResolver(
+                clientRegistrationRepository,
+                "/oauth2/authorization"
+            );
+
+        resolver.setAuthorizationRequestCustomizer(customizer ->
+            customizer.additionalParameters(params ->
+                params.put("prompt", "select_account")
+            )
+        );
+
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -53,11 +69,7 @@ public class SecurityConfig {
                     if(principal instanceof User localUser) {
                         user = localUser;
                     }
-                    else if(principal instanceof OAuth2User oauthUser) {
-                        String email = oauthUser.getAttribute("email");
-
-                        user = userRepository.findByEmail(email).orElseGet( () -> userRepository.save( new User(email) ) );
-                    } else {
+                    else {
                         throw new IllegalStateException("Unknown principal type");
                     }
 
@@ -72,7 +84,25 @@ public class SecurityConfig {
             )
             .oauth2Login(oauth -> oauth
                 .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .authorizationEndpoint(auth -> auth
+                    .authorizationRequestResolver(resolver)
+                )
+                .successHandler((request, response, authentication) -> {
+                    Object principal = authentication.getPrincipal();
+                    
+                    User user;
+
+                    if(principal instanceof OAuth2User oauthUser) {
+                        String email = oauthUser.getAttribute("email");
+
+                        user = userRepository.findByEmail(email).orElseGet( () -> userRepository.save( new User(email) ) );
+                    } else {
+                        throw new IllegalStateException("Unknown principal type");
+                    }
+
+                    Long id = user.getId();
+                    response.sendRedirect("/users/" + id + "/profile");
+                })
             )
             .logout(logout -> logout.logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
