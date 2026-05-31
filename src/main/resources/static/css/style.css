@@ -77,7 +77,7 @@ body {
 }
 
 /* Text Formatting */
-p, a, h1 {
+p, a, h1, .nav-item {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -85,11 +85,24 @@ p, a {
     color: #b8b8b8;
 }
 
-.navbar a, .navbar button {
+.nav-item {
+    font-size: 1rem;
     text-decoration: none;
     text-align: center;
     color: #69BADD;
-    /*color: #f4b860;*/
+}
+
+.navbar form {
+    display: inline;
+    margin: 0;
+}
+
+.navbar button[type = "submit"] {
+    height: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0px;
 }
 
 h1 {
