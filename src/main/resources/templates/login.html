@@ -19,9 +19,9 @@
             </div>
 
             <div class = "links">
-                <a href = "/" class = "nav-item">Home</a>
-                <a href = "/login" class = "nav-item">Sign Up</a>
-                <a href = "/login" class = "nav-item">Login</a>
+                <a href = "/" class = "nav_item">Home</a>
+                <a href = "/login" class = "nav_item">Sign Up</a>
+                <a href = "/login" class = "nav_item">Login</a>
             </div>
         </div>
     </header>
@@ -38,10 +38,6 @@
                 <input type = "password" id = "passwordLogin" placeholder = "Password" name = "passwordLogin"><br>
                 <button type = "submit" id = "login">Log In</button>
             </form>
-
-            <a th:href="@{/oauth2/authorization/google}">
-                Sign in with Google
-            </a>
         </div>
 
         <div class = "login_divider">
@@ -62,6 +58,18 @@
 
             <p id = "signuperr" th:text = "${signuperr}"></p>
         </div>
+
+        <div class = "login_divider">
+            <p>or</p>
+        </div>
+        
+        <div class = "oauth">
+            <a th:href="@{/oauth2/authorization/google}" class = "oauth_item google_oauth">
+                <img src = "assets/Google Logo.png" class = "oauth_logo">
+                <span>Sign in with Google</span>
+            </a>
+        </div>
+        
     </div>
 </body>
 </html>

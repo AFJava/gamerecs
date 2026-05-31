@@ -41,7 +41,7 @@ body {
 .login_interface {
     justify-content: center;
     background-color: #717c98;
-    height: 60vh;
+    height: 70vh;
     border-radius: 1rem;
     margin-left: 20vw;
     margin-right: 20vw;
@@ -71,13 +71,28 @@ body {
     margin-left: 10px;
 }
 
+.oauth_item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    border-radius: 5px;
+    gap: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.google_oauth {
+    background-color: white;
+    color: black;
+}
+
 .summary {
     text-align: center;
     font-size: medium;
 }
 
 /* Text Formatting */
-p, a, h1, .nav-item {
+p, a, h1, .nav_item {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -85,7 +100,7 @@ p, a {
     color: #b8b8b8;
 }
 
-.nav-item {
+.nav_item {
     font-size: 1rem;
     text-decoration: none;
     text-align: center;
@@ -111,7 +126,7 @@ h1 {
 }
 
 .login_interface h1 {
-    font-size: 4rem;
+    font-size: 3rem;
     margin-top: 0;
     margin-bottom: 1rem;
 }
@@ -123,6 +138,10 @@ label {
 /* Image Formatting */
 .logo img {
     height: 2rem;
+}
+
+.oauth_logo {
+    height: 1rem;
 }
 
 /* Other */
