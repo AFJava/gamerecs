@@ -91,6 +91,16 @@ body {
     font-size: medium;
 }
 
+.search {
+    display: flex;
+    align-items: center;
+    background-color: #2d2d2a;
+    margin: 5rem 20vw;
+    width: auto;
+    height: 3rem;
+    border-radius: 1.5rem;
+}
+
 /* Text Formatting */
 p, a, h1, .nav_item {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -144,6 +154,11 @@ label {
     height: 1rem;
 }
 
+.search_icon {
+    width: 2rem;
+    padding-right: 1rem;
+}
+
 /* Other */
 input[type = "text"], input[type = "password"] {
     height: 2rem;
@@ -156,4 +171,13 @@ button[type = "submit"] {
     height: 2rem;
     border-radius: 1rem;
     background-color: #565f76;
+}
+
+input[name = "search"] {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    height: 3rem;
+    padding-left: 1rem;
+    cursor: pointer;
 }
