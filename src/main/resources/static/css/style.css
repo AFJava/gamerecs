@@ -157,6 +157,7 @@ label {
 .search_icon {
     width: 2rem;
     padding-right: 1rem;
+    cursor: pointer;
 }
 
 /* Other */
@@ -176,8 +177,9 @@ button[type = "submit"] {
 input[name = "search"] {
     width: 100%;
     background-color: transparent;
+    font-size: 1rem;
+    color: white; /* placeholder color */
     border: none;
     height: 3rem;
     padding-left: 1rem;
-    cursor: pointer;
 }
