@@ -1,18 +1,42 @@
 const searchbar = document.querySelector(".search input");
+const resultsDiv = document.querySelector(".search_results")
 
-searchbar.addEventListener("input", search);
+let debounceTimeout;
+
+searchbar.addEventListener("input", () => {
+    //Only do an API search if user stops typing for 1 second
+    clearTimeout(debounceTimeout);
+
+    debounceTimeout = setTimeout(() => {
+        search();
+    }, 3000); //CURRENTLY SET TO 3 SECONDS FOR DEVELOPMENT
+});
 
 async function search() {
     const searchContent = searchbar.value;
+
+    //DO NOT search if under 3 alphanumeric characters are given
+    if(searchContent.trim().length < 3) {
+        return;
+    }
 
     //Response receives a RawgSearchResponse object containing a list of search content along with search metadata
     const response = await fetch(
         "/api/games/search?q=" + encodeURIComponent(searchContent),
     );
 
-
     const games = await response.json()
     console.log(games);
+
+    games.results.forEach(game => {
+        const gameDiv = document.createElement("div");
+        gameDiv.classList.add("search_item");
+
+        gameDiv.innerHTML = `<img src = ${game.backgroundImage}>
+            <p>${game.name}</p>`;
+        
+        resultsDiv.appendChild(gameDiv);
+    });
 }
 
 
