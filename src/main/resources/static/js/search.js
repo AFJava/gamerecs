@@ -38,5 +38,3 @@ async function search() {
         resultsDiv.appendChild(gameDiv);
     });
 }
-
-
