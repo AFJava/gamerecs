@@ -28,7 +28,7 @@
 
     <div class = "login_interface">
         <div class = "login">
-            <h1>Log In</h1>
+            <h1 class = "login_header">Log In</h1>
 
             <form method = "post" action = "/login">
                 <!--Spring automatically injects _csrf.parameterName and _csrf.token-->
@@ -45,7 +45,7 @@
         </div>
 
         <div class = "signup">
-            <h1>Sign Up</h1>
+            <h1 class = login_header>Sign Up</h1>
 
             <form method = "post" action = "/auth/signup">
                 <input type = "hidden" th:name = "${_csrf.parameterName}" th:value = "${_csrf.token}">

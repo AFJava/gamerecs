@@ -41,17 +41,16 @@ body {
 .login_interface {
     justify-content: center;
     background-color: #717c98;
-    height: 70vh;
+    height: auto;
     border-radius: 1rem;
-    margin-left: 20vw;
-    margin-right: 20vw;
-    margin-top: -40vh;
+    margin: -40vh auto;
+    max-width: 5in;
+    width: 40%;
 }
 
 .login_divider {
     display: flex;
     align-items: center;
-    margin-top: 0.8rem;
     width: 100%;
 }
 
@@ -74,6 +73,7 @@ body {
 .oauth_item {
     display: flex;
     align-items: center;
+    margin-bottom: 1em;
     padding: 0.5rem 2rem;
     border-radius: 5px;
     gap: 10px;
@@ -158,10 +158,14 @@ h1 {
     text-align: center;
 }
 
-.login_interface h1 {
+.login_header {
     font-size: 3rem;
     margin-top: 0;
     margin-bottom: 1rem;
+}
+
+p#signuperr:empty {
+    display: none;
 }
 
 label {
