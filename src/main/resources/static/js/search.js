@@ -20,20 +20,21 @@ async function search() {
         return;
     }
 
-    //Response receives a RawgSearchResponse object containing a list of search content along with search metadata
+    //Response receives a RawgSearchResponse object which converts to JSON containing a list of search content along with search metadata
     const response = await fetch(
         "/api/games/search?q=" + encodeURIComponent(searchContent),
     );
 
     const games = await response.json()
-    console.log(games);
+    //console.log(games); //DEBUG
 
     games.results.forEach(game => {
         const gameDiv = document.createElement("div");
         gameDiv.classList.add("search_item");
 
-        gameDiv.innerHTML = `<img src = ${game.backgroundImage}>
-            <p>${game.name}</p>`;
+        gameDiv.innerHTML = `<img src = ${game.background_image} class = "game_preview">
+            <p class = "game_name">${game.name}</p>
+            <a href = "/rate" class = "game_rate">Rate and add to profile</a>`;
         
         resultsDiv.appendChild(gameDiv);
     });

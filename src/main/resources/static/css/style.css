@@ -102,6 +102,10 @@ body {
 }
 
 /* Fix padding showing before search is made*/
+.search_results:empty {
+    display: none;
+}
+
 .search_results {
     display: flex;
     flex-direction: column;
@@ -115,6 +119,9 @@ body {
 }
 
 .search_item {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 30% 70%;
     width: -webkit-fill-available;
     border-radius: 5px;
     background-color: #717c98;
@@ -168,6 +175,10 @@ p#signuperr:empty {
     display: none;
 }
 
+.game_name, .game_rate {
+    text-align: right;
+}
+
 label {
     margin: 1rem;
 }
@@ -187,6 +198,13 @@ label {
     padding-right: 1rem;
     padding-top: 0.5rem;
     cursor: pointer;
+}
+
+.game_preview {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    max-width: 3in;
+    max-height: 3in;
 }
 
 /* Other */
