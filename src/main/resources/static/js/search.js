@@ -14,7 +14,7 @@ searchbar.addEventListener("input", () => {
 
 //Check whether a button was clicked within the search results div
 resultsDiv.addEventListener("click", (event) => {
-    if(event.target.classList.contains("rate_button")) {
+    if(event.target.classList.contains("game_rate")) {
         console.log("Button clicked");
 
         const rateButton = event.target;
@@ -28,6 +28,20 @@ resultsDiv.addEventListener("click", (event) => {
         rateInterface.classList.add("rate");
         rateInterface.innerHTML = `<p>Rate ${gameName} and add it to your profile:</p>`;
 
+        //Get gameDiv by gameId and append rating div
+        const gameDiv = event.target.closest(".search_item");
+
+        //Check if there is an existing rating interface
+        const current = document.querySelector(".rate");
+
+        //If not, append
+        if(!current) {
+            gameDiv.appendChild(rateInterface);
+        } //If so, check if the current interface is for the same game; replace if not
+        else if(current.dataset.gameId != String(gameId)) {
+            current.remove();
+            gameDiv.appendChild(rateInterface);
+        }
     }
 })
 
@@ -50,10 +64,11 @@ async function search() {
     games.results.forEach(game => {
         const gameDiv = document.createElement("div");
         gameDiv.classList.add("search_item");
+        gameDiv.dataset.gameId = `${game.id}`; //Same id used for button
 
         gameDiv.innerHTML = `<img src = ${game.background_image} class = "game_preview">
             <p class = "game_name">${game.name}</p>
-            <button class = "rate_button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`;
+            <button class = "game_rate" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`;
         
         resultsDiv.appendChild(gameDiv);
     });
