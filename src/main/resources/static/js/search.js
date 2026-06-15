@@ -60,7 +60,11 @@ async function rate(event) {
 }
 
 async function add(event) {
+    console.log("Submitted form");
+
     event.preventDefault();
+
+    console.log("Navigation halted");
 
     const rateInput = document.querySelector('input[name="rating"]');
     const rating = rateInput.value;
@@ -87,18 +91,27 @@ async function add(event) {
         }
     )
 
-    //Replace rating interface with confirmation message
-    const rateInterface = event.target.closest(".rating-interface");
+    console.log("POST sent");
+
+    //Replace rate button and rating interface with confirmation messages
+    const rateInterface = event.target.closest(".rate");
+    rateButton.remove();
     rateInterface.remove();
 
+    const gameAddedMsg = document.createElement("p");
+    gameAddedMsg.classList.add("game-added-msg");
+
+    gameAddedMsg.innerText = "This game has already been added to your profile."; //TODO: Make this message appear in place of button afterwards, if game is already in db
+
     const confirmation = document.createElement("div");
-    confirmation.classList.add(".confirmation");
+    confirmation.classList.add("confirmation");
 
     confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
 
-    //Append confirmation message to correct gameDiv
+    //Append confirmation messages to correct gameDiv
     const gameDiv = document.querySelector(`.search-item[data-game-id = "${gameId}"]`);
 
+    gameDiv.appendChild(gameAddedMsg);
     gameDiv.appendChild(confirmation);
 }
 
