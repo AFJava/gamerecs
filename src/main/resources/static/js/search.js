@@ -13,7 +13,9 @@ searchbar.addEventListener("input", () => {
 });
 
 //Check whether a button was clicked within the search results div
-resultsDiv.addEventListener("click", (event) => {
+resultsDiv.addEventListener("click", rate);
+
+async function rate(event) {
     if(event.target.classList.contains("rate-button")) {
         console.log("Button clicked");
 
@@ -27,6 +29,8 @@ resultsDiv.addEventListener("click", (event) => {
         console.log("div created");
 
         rateInterface.classList.add("rate");
+        rateInterface.dataset.gameId = gameId;
+
         rateInterface.innerHTML = `<p>Rate ${gameName} and add it to your profile:</p>
         <form method="post" class="rate-form">
             <span><input type="number" name="rating" min="1" max="10"> / 10</span>
@@ -47,8 +51,56 @@ resultsDiv.addEventListener("click", (event) => {
             current.remove();
             gameDiv.appendChild(rateInterface);
         }
+
+        //Add event listener to form to handle submission
+        const form = document.querySelector('.rate-form');
+
+        form.addEventListener("submit", add);
     }
-})
+}
+
+async function add(event) {
+    event.preventDefault();
+
+    const rateInput = document.querySelector('input[name="rating"]');
+    const rating = rateInput.value;
+
+    //Get metadata from rateButton data
+    const rateButton = document.querySelector(".rate-button");
+    const gameId = rateButton.dataset.gameId;
+    const gameName = rateButton.dataset.gameName;
+
+    const response = await fetch(
+        "/games/add",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                rawgId: gameId,
+                name: gameName,
+                rating: rating
+            })
+        }
+    )
+
+    //Replace rating interface with confirmation message
+    const rateInterface = event.target.closest(".rating-interface");
+    rateInterface.remove();
+
+    const confirmation = document.createElement("div");
+    confirmation.classList.add(".confirmation");
+
+    confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
+
+    //Append confirmation message to correct gameDiv
+    const gameDiv = document.querySelector(`.search-item[data-game-id = "${gameId}"]`);
+
+    gameDiv.appendChild(confirmation);
+}
 
 async function search() {
     const searchContent = searchbar.value;
@@ -76,7 +128,7 @@ async function search() {
 
         gameDiv.innerHTML = `<img src = ${game.background_image} class = "game-preview">
             <h2 class = "game-name">${game.name}</h2>
-            <button type="submit" class = "rate-button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`;
+            <button type="button" class="rate-button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`;
         
         resultsDiv.appendChild(gameDiv);
     });

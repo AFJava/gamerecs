@@ -12,6 +12,10 @@ public class UserGame {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
+    
+    private Long RawgId;
+
     
 
     public UserGame() {
