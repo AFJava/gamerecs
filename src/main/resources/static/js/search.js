@@ -69,10 +69,17 @@ async function add(event) {
     const rateInput = document.querySelector('input[name="rating"]');
     const rating = rateInput.value;
 
-    //Get metadata from rateButton data
+    //Get data for db fields
     const rateButton = document.querySelector(".rate-button");
     const gameId = rateButton.dataset.gameId;
     const gameName = rateButton.dataset.gameName;
+
+    const gamePreview = document.querySelector(".game-preview");
+    const previewSrc = gamePreview.src;
+
+    //Get CSRF
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
     const response = await fetch(
         "/games/add",
@@ -80,13 +87,15 @@ async function add(event) {
             method: "POST",
 
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                [csrfHeader]: csrfToken
             },
 
             body: JSON.stringify({
                 rawgId: gameId,
                 name: gameName,
-                rating: rating
+                rating: rating,
+                previewSrc: previewSrc
             })
         }
     )
