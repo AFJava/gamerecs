@@ -1,4 +1,4 @@
-package com.af.gamerecs.entities;
+package com.af.gamerecs.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
