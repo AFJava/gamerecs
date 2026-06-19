@@ -122,6 +122,16 @@ async function add(event) {
 
     gameDiv.appendChild(gameAddedMsg);
     gameDiv.appendChild(confirmation);
+
+    //Use JS to display newly added game without refresh (use Thymeleaf for games previously added)
+    const profileCard = document.createElement("div");
+    profileCard.classList.add("profile-card");
+    profileCard.innerHTML = `<img src = ${imageSrc} class = "game-preview">
+            <h2 class = "game-name">${gameName}</h2>
+            <p class="game-rating">Rating: ${rating} / 10</p>`;
+    
+    const profileGameDiv = document.querySelector(".added-games");
+    profileGameDiv.appendChild(profileCard);
 }
 
 async function search() {
