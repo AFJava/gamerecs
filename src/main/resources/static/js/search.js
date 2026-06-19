@@ -75,7 +75,7 @@ async function add(event) {
     const gameName = rateButton.dataset.gameName;
 
     const gamePreview = document.querySelector(".game-preview");
-    const previewSrc = gamePreview.src;
+    const imageSrc = gamePreview.src;
 
     //Get CSRF
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
@@ -95,7 +95,7 @@ async function add(event) {
                 rawgId: gameId,
                 name: gameName,
                 rating: rating,
-                previewSrc: previewSrc
+                imageSrc: imageSrc
             })
         }
     )
