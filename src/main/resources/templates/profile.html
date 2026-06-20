@@ -37,7 +37,13 @@
 
     <h1>My Games</h1>
 
-    <div class="added-games"></div>
+    <div class="added-games">
+        <div th:each="game : ${userGames}" class="profile-card">
+            <img class="game-preview" th:src="${game.imageSrc}">
+            <h2 class="game-name" th:text="${game.name}"></h2>
+            <p class="game-rating" th:text="|Rating: ${game.rating} / 10|"></p>
+        </div>
+    </div>
     <!--CREDIT RAWG API-->
 </body>
 
