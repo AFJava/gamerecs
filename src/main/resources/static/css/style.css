@@ -105,24 +105,32 @@ body {
     display: none;
 }
 
-.search-results, .added-games {
+.search-results {
+    position: relative;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 70%;
     max-width: 8in;
     overflow-y: auto;
     margin: 0 auto;
-    padding: 5px;
     border-radius: 10px;
     background-color: #717c98;
 }
 
-.search-item, .profile-card {
+.profile-card {
     display: grid;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto;
     grid-template-columns: 30% 70%;
     width: -webkit-fill-available;
+    border-radius: 5px;
+    background-color: hotpink;
+}
+
+.search-item {
+    display: grid;
+    grid-template-rows: 1in auto;
+    width: 100%;
     border-radius: 5px;
     background-color: #717c98;
 }
@@ -131,21 +139,23 @@ body {
     background-color: #565f76;
 }
 
+.search-summary {
+    grid-row: span 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
 .rate, .confirmation {
     display: flex;
     flex-direction: column;
     align-items: center;
-    grid-column: span 2;
     background-color: white;
 }
 
 .rate {
     padding-bottom: 10px;
-}
-
-.rate-button {
-    grid-row: span 1;
-    justify-self: center;
 }
 
 .rate-form {
@@ -154,6 +164,23 @@ body {
     align-items: center;
     justify-content: center;
     gap: 2rem;
+}
+
+.game-added-msg-container {
+    width: 2in;
+}
+
+.added-games {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    max-width: 10in;
+    overflow-y: auto;
+    margin: 0 auto;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #717c98;
 }
 
 /* Text Formatting */
@@ -203,7 +230,6 @@ p#signuperr:empty {
 
 .game-name {
     text-align: center;
-    grid-row: span 1;
 }
 
 .game-added-msg {
@@ -241,6 +267,15 @@ label {
     width: 100%;
 }
 
+.game-preview-search {
+    max-width: 2in;
+    max-height: 1in;
+    width: 16%;
+    aspect-ratio: 16 / 9;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
 /* Other */
 input[type="text"], input[type="password"] {
     height: 2rem;
@@ -249,7 +284,7 @@ input[type="text"], input[type="password"] {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-button[type="submit"] {
+button[type="submit"], button.rate-button {
     height: 2rem;
     border-radius: 1rem;
     background-color: #565f76;

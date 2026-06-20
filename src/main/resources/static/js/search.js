@@ -66,15 +66,17 @@ async function add(event) {
 
     console.log("Navigation halted");
 
+    //Get data for db fields, get rateInterface + rateButton for deletion
+    const rateInterface = event.target.closest(".rate");
+    const gameId = rateInterface.dataset.gameId;
+
     const rateInput = document.querySelector('input[name="rating"]');
     const rating = rateInput.value;
 
-    //Get data for db fields
-    const rateButton = document.querySelector(".rate-button");
-    const gameId = rateButton.dataset.gameId;
+    const rateButton = document.querySelector(`.rate-button[data-game-id = "${gameId}"]`);
     const gameName = rateButton.dataset.gameName;
 
-    const gamePreview = document.querySelector(".game-preview");
+    const gamePreview = document.querySelector(".game-preview-search");
     const imageSrc = gamePreview.src;
 
     //Get CSRF
@@ -103,14 +105,18 @@ async function add(event) {
     console.log("POST sent");
 
     //Replace rate button and rating interface with confirmation messages
-    const rateInterface = event.target.closest(".rate");
+    
     rateButton.remove();
     rateInterface.remove();
 
-    const gameAddedMsg = document.createElement("p");
-    gameAddedMsg.classList.add("game-added-msg");
+    const gameAddedMsgContainer = document.createElement("span");
+    gameAddedMsgContainer.classList.add("game-added-msg-container");
 
-    gameAddedMsg.innerText = "This game has already been added to your profile."; //TODO: Make this message appear in place of button afterwards, if game is already in db
+    gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>'; //TODO: Make this message appear in place of button afterwards, if game is already in db
+
+    //Append to search-summary in place of button
+    const searchSummary = document.querySelector(`.search-summary[data-game-id = "${gameId}"]`);
+    searchSummary.appendChild(gameAddedMsgContainer);
 
     const confirmation = document.createElement("div");
     confirmation.classList.add("confirmation");
@@ -120,7 +126,6 @@ async function add(event) {
     //Append confirmation messages to correct gameDiv
     const gameDiv = document.querySelector(`.search-item[data-game-id = "${gameId}"]`);
 
-    gameDiv.appendChild(gameAddedMsg);
     gameDiv.appendChild(confirmation);
 
     //Use JS to display newly added game without refresh (use Thymeleaf for games previously added)
@@ -158,10 +163,15 @@ async function search() {
         gameDiv.classList.add("search-item");
         gameDiv.dataset.gameId = `${game.id}`; //Same id used for button
 
-        gameDiv.innerHTML = `<img src = ${game.background_image} class = "game-preview">
+        const searchSummary = document.createElement("div");
+        searchSummary.classList.add("search-summary");
+        searchSummary.dataset.gameId = `${game.id}`;
+
+        searchSummary.innerHTML = `<img src = ${game.background_image} class = "game-preview-search">
             <h2 class = "game-name">${game.name}</h2>
             <button type="button" class="rate-button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`;
-        
+
+        gameDiv.appendChild(searchSummary);
         resultsDiv.appendChild(gameDiv);
     });
 }
