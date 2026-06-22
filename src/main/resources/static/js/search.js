@@ -167,9 +167,14 @@ async function search() {
         searchSummary.classList.add("search-summary");
         searchSummary.dataset.gameId = `${game.id}`;
 
+        //Select confirmation message or rate & add button depending on whether game has been added
+        const actionHTML = window.userGamesRawgIds.has(Number(game.id))
+            ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
+            : `<button type="button" class="rate-button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`
+        
         searchSummary.innerHTML = `<img src = ${game.background_image} class = "game-preview-search">
             <h2 class = "game-name">${game.name}</h2>
-            <button type="button" class="rate-button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`;
+            ${actionHTML}`;
 
         gameDiv.appendChild(searchSummary);
         resultsDiv.appendChild(gameDiv);

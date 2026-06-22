@@ -1,5 +1,6 @@
 package com.af.gamerecs.controllers;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -52,11 +53,18 @@ public class MainController {
             throw new IllegalStateException("Unsupported principal type: " + principal.getClass());
         }
 
+        //Add profile cards for each game added
         Long userId = user.getId();
-
         List<UserGame> userGames = userGameRepository.findByUserId(userId);
 
+        //Check if game has already been added by comparing RAWG id
+        HashSet<Long> userGamesRawgIds = new HashSet<>();
+        for(UserGame game : userGames) {
+            userGamesRawgIds.add(game.getRawgId());
+        }
+
         model.addAttribute("userGames", userGames);
+        model.addAttribute("userGamesRawgIds", userGamesRawgIds);
         
         return "profile";
     }
