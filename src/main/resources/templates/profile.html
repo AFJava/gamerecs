@@ -28,8 +28,15 @@
         <h1>My Profile</h1>
         
         <div class = "search">
-            <input type = "text" name = "search" class = "searchbar" placeholder = "Add and rate games you've played to your profile">
-            <img src = "/assets/Search Icon.png" class = "search-icon">
+            <div class="filter-container">
+                <input type="checkbox" name="filter-obscure" id="filter-obscure" checked>
+                <label for="filter-obscure" title="Exclude games added by &lt;100 players">Filter obscure results</label>
+            </div>
+            
+            <div class="searchbar">
+                <input type = "text" name = "search" class = "searchbar" placeholder = "Add and rate games you've played to your profile">
+                <img src = "/assets/Search Icon.png" class = "search-icon">
+            </div>
         </div>
         
         <div class="search-results"></div>

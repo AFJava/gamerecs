@@ -92,11 +92,27 @@ body {
 }
 
 .search {
-    display: flex;
-    background-color: #2d2d2a;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
     margin: 3rem auto auto;
     width: 70%;
     max-width: 8in;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: right;
+    padding-right: 1rem;
+    grid-row: span 1;
+    grid-column: 2 / 3;
+}
+
+.searchbar {
+    display: flex;
+    grid-row: span 1;
+    grid-column: span 2;
+    background-color: #2d2d2a;
     height: 3rem;
     border-radius: 1.5rem;
 }
@@ -246,10 +262,6 @@ p#signuperr:empty {
 
 .game-rating {
     text-align: center;
-}
-
-label {
-    margin: 1rem;
 }
 
 /* Image Formatting */
