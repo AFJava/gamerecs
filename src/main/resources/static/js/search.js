@@ -105,14 +105,13 @@ async function add(event) {
     console.log("POST sent");
 
     //Replace rate button and rating interface with confirmation messages
-    
     rateButton.remove();
     rateInterface.remove();
 
     const gameAddedMsgContainer = document.createElement("span");
     gameAddedMsgContainer.classList.add("game-added-msg-container");
 
-    gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>'; //TODO: Make this message appear in place of button afterwards, if game is already in db
+    gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>';
 
     //Append to search-summary in place of button
     const searchSummary = document.querySelector(`.search-summary[data-game-id = "${gameId}"]`);

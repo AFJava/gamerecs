@@ -124,7 +124,7 @@ body {
     grid-template-columns: 30% 70%;
     width: -webkit-fill-available;
     border-radius: 5px;
-    background-color: hotpink;
+    background-color: gray; /* placeholder color */
 }
 
 .search-item {
@@ -177,10 +177,18 @@ body {
     width: 70%;
     max-width: 10in;
     overflow-y: auto;
-    margin: 0 auto;
+    margin: 0 auto 2rem;
     padding: 5px;
     border-radius: 10px;
     background-color: #717c98;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    background-color: gray; /* placeholder color */
 }
 
 /* Text Formatting */
@@ -274,6 +282,10 @@ label {
     aspect-ratio: 16 / 9;
     border-radius: 5px;
     object-fit: cover;
+}
+
+.rawg-disclaimer {
+    text-align: center;
 }
 
 /* Other */
