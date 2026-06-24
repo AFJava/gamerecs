@@ -1,9 +1,13 @@
-const searchbar = document.querySelector(".search input");
+//console.log("JS loaded");
+
+const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results")
 
 let debounceTimeout;
 
 searchbar.addEventListener("input", () => {
+    //console.log("event triggered");
+
     //Only do an API search if user stops typing for 1 second
     clearTimeout(debounceTimeout);
 
@@ -139,20 +143,33 @@ async function add(event) {
 }
 
 async function search() {
+    console.log("search began");
+
     const searchContent = searchbar.value;
+    const filterObscureButton = document.getElementById("filter-obscure");
+    const filterObscureChecked = filterObscureButton.checked;
 
     //Clear search results
     resultsDiv.replaceChildren();
+
+    //console.log(searchContent);
 
     //DO NOT search if under 3 alphanumeric characters are given
     if(searchContent.trim().length < 3) {
         return;
     }
 
+    //Build URI depending on filter status
+    const searchURI = `/api/games/search?q=${encodeURIComponent(searchContent)}&filterObscure=${filterObscureChecked}`;
+
+    //console.log("URI built");
+
     //Response receives a RawgSearchResponse object which converts to JSON containing a list of search content along with search metadata
     const response = await fetch(
-        "/api/games/search?q=" + encodeURIComponent(searchContent),
+        searchURI,
     );
+
+    //console.log("request sent");
 
     const games = await response.json()
     console.log(games); //DEBUG

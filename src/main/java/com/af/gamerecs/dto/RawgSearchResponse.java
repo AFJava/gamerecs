@@ -7,5 +7,4 @@ public record RawgSearchResponse(Integer count,
                                  String next,
                                  String previous,
                                  List<RawgGameDto> results) {
-
 }

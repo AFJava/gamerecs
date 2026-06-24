@@ -9,6 +9,9 @@ public record RawgGameDto(Integer id,
                           String name,
                           @JsonProperty("background_image") String backgroundImage,
                           Double rating,
-                          String released) {
+                          String released,
+                          Integer added,
+                          Integer ratings_count,
+                          Integer metacritic) {
 
 }

@@ -108,7 +108,7 @@ body {
     grid-column: 2 / 3;
 }
 
-.searchbar {
+.searchbar-container {
     display: flex;
     grid-row: span 1;
     grid-column: span 2;
