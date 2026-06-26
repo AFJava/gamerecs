@@ -2,8 +2,16 @@
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results")
+const filterObscureButton = document.getElementById("filter-obscure");
 
 let debounceTimeout;
+let debounceTime = 300; //in ms (CURRENTLY SET TO 3 SECONDS FOR DEVELOPMENT)
+
+filterObscureButton.addEventListener("change", () => {
+    clearTimeout(debounceTimeout);
+
+    search();
+})
 
 searchbar.addEventListener("input", () => {
     //console.log("event triggered");
@@ -13,7 +21,7 @@ searchbar.addEventListener("input", () => {
 
     debounceTimeout = setTimeout(() => {
         search();
-    }, 3000); //CURRENTLY SET TO 3 SECONDS FOR DEVELOPMENT
+    }, debounceTime); 
 });
 
 //Check whether a button was clicked within the search results div
@@ -146,7 +154,6 @@ async function search() {
     console.log("search began");
 
     const searchContent = searchbar.value;
-    const filterObscureButton = document.getElementById("filter-obscure");
     const filterObscureChecked = filterObscureButton.checked;
 
     //Clear search results
