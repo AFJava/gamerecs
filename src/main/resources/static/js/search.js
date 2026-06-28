@@ -1,5 +1,8 @@
 //console.log("JS loaded");
 
+//TODO: Move searchbar back on z-axis when clicking away, then re-prioritize when clicking back on searchbar
+//Also remove search results instantly when empty
+
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results")
 const filterObscureButton = document.getElementById("filter-obscure");

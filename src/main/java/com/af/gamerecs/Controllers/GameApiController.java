@@ -24,23 +24,57 @@ public class GameApiController {
     @GetMapping("/search")
     public RawgSearchResponse searchGames(@RequestParam String q, @RequestParam boolean filterObscure) {
         RawgSearchResponse response = rawgService.searchGames(q);
+        List<RawgGameDto> games = response.results();
 
         if(filterObscure) {
-            List<RawgGameDto> games = response.results();
-
-            //For now, keep all games that have been added on RAWG over 100 times
-            List<RawgGameDto> filteredGames = games.stream()
-                .filter(g -> g.added() >= 100)
+            //Filter out games that do not have an official metacritic rating or have been added <100 times on RAWG (unless exact name match)
+            games = games.stream()
+                .filter(g -> g.name().equalsIgnoreCase(q)
+                    || g.metacritic() != null
+                    || (g.added() != null && g.added() >= 100)
+                )
                 .toList();
-
-            response = new RawgSearchResponse(
-                response.count(),
-                response.next(),
-                response.previous(),
-                filteredGames
-            );
         }
+
+        //Limit to 5 results in either case
+        games = games.stream()
+            .sorted((a, b) ->
+                Integer.compare(
+                    scoreSearchResult(b, q),
+                    scoreSearchResult(a, q)
+                )
+            )
+            .limit(5)
+            .toList();
+
+        response = new RawgSearchResponse(
+            response.count(),
+            response.next(),
+            response.previous(),
+            games
+        );
         
         return response;
+    }
+
+    /* Show high scoring results first; only name matching, for now */
+    private int scoreSearchResult(RawgGameDto game, String query) {
+        int score = 0;
+        String name = game.name().toLowerCase();
+        String q = query.toLowerCase();
+
+        if(name.equals(q)) {
+            score += 1000;
+        }
+        else if(name.startsWith(q)) {
+            score += 800;
+        }
+        else if(name.contains(q)) {
+            score += 600;
+        }
+
+        //Add popularity filters (redundant?)
+
+        return score;
     }
 }
