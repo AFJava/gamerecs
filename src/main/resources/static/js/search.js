@@ -30,6 +30,17 @@ searchbar.addEventListener("input", () => {
 //Check whether a button was clicked within the search results div
 resultsDiv.addEventListener("click", rate);
 
+//If user clicked off search results, remove from display; if clicked on, re-enable display
+document.addEventListener("click", (event) => {
+    //Avoid changing active status when clicking on filter button (reruns search anyways) or empty top-left grid cell
+    if( !(resultsDiv.contains(event.target) || searchbar.contains(event.target)) ) {
+        resultsDiv.classList.remove("active");
+    } 
+    else if(searchbar.contains(event.target)) {
+        resultsDiv.classList.add("active");
+    }
+});
+
 async function rate(event) {
     if(event.target.classList.contains("rate-button")) {
         console.log("Button clicked");
@@ -161,6 +172,7 @@ async function search() {
 
     //Clear search results
     resultsDiv.replaceChildren();
+    resultsDiv.classList.add("active");
 
     //console.log(searchContent);
 

@@ -104,13 +104,16 @@ main {
     font-size: medium;
 }
 
+.search-container {
+    margin: 3rem auto auto;
+    width: 70%;
+    max-width: 8in;
+}
+
 .search {
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto;
-    margin: 3rem auto auto;
-    width: 70%;
-    max-width: 8in;
 }
 
 .filter-container {
@@ -130,17 +133,15 @@ main {
     border-radius: 1.5rem;
 }
 
-.search-results:empty, .added-games:empty {
+.search-results {
     display: none;
 }
 
-.search-results {
+.search-results.active {
     position: relative;
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    width: 70%;
-    max-width: 8in;
     overflow-y: auto;
     margin: 0 auto;
     border-radius: 10px;
