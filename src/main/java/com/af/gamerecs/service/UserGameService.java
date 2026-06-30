@@ -1,5 +1,8 @@
 package com.af.gamerecs.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.af.gamerecs.entities.User;
@@ -24,5 +27,19 @@ public class UserGameService {
         
         UserGame userGame = new UserGame(user, rawgId, rating, name, imageSrc);
         userGameRepository.save(userGame);
+    }
+
+    public List<UserGame> getUserGames(Long userId) {
+        return userGameRepository.findByUserId(userId);
+    }
+
+    public List<Long> getRawgIds(List<UserGame> userGames) {
+        List<Long> rawgIds = new ArrayList<>();
+        
+        for(UserGame userGame : userGames) {
+            rawgIds.add(userGame.getRawgId());
+        }
+
+        return rawgIds;
     }
 }
