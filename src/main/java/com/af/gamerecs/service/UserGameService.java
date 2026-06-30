@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserGame;
+import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.repositories.UserGameRepository;
 
 @Service
@@ -17,15 +18,15 @@ public class UserGameService {
         this.userGameRepository = userGameRepository;
     }
 
-    public void saveToProfile(User user, Long rawgId, float rating, String name, String imageSrc) throws IllegalArgumentException {
+    public void saveToProfile(User user, Game game, Integer rating) throws IllegalArgumentException {
         Long userId = user.getId();
         
         //Do not save if game has already been added (has same userId and rawgId)
-        if(userGameRepository.existsByUserIdAndRawgId(userId, rawgId)) {
+        if(userGameRepository.existsByUserIdAndGame_RawgId(userId, game.getRawgId())) {
             throw new IllegalArgumentException("Game Already Saved");
         }
         
-        UserGame userGame = new UserGame(user, rawgId, rating, name, imageSrc);
+        UserGame userGame = new UserGame(user, game, rating);
         userGameRepository.save(userGame);
     }
 
@@ -37,7 +38,7 @@ public class UserGameService {
         List<Long> rawgIds = new ArrayList<>();
         
         for(UserGame userGame : userGames) {
-            rawgIds.add(userGame.getRawgId());
+            rawgIds.add(userGame.getGame().getRawgId());
         }
 
         return rawgIds;
