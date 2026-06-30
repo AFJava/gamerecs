@@ -1,5 +1,4 @@
 package com.af.gamerecs.entities;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,25 +20,19 @@ public class UserGame {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     
-    @Column(name = "rawg_id", nullable = false)
-    private Long rawgId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "game_id", nullable = false)
+    private Game game;
 
-    private String name;
-
-    private String imageSrc;
-
-    private float rating;
-
+    private int rating;
 
     public UserGame() {
 
     }
 
-    public UserGame(User user, Long rawgId, float rating, String name, String imageSrc) {
+    public UserGame(User user, Game game, int rating) {
         this.user = user;
-        this.rawgId = rawgId;
-        this.name = name;
-        this.imageSrc = imageSrc;
+        this.game = game;
         this.rating = rating;
     }
 
@@ -51,16 +44,8 @@ public class UserGame {
         return user;
     }
 
-    public Long getRawgId() {
-        return rawgId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getImageSrc() {
-        return imageSrc;
+    public Game getGame() {
+        return game;
     }
 
     public float getRating() {
