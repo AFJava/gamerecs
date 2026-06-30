@@ -17,9 +17,18 @@ public class GameService {
     }
 
     public Game gameFromDto(RawgGameDto game) {
+        return new Game(game.id(),
+                        game.name(),
+                        game.backgroundImage(),
+                        game.released(),
+                        game.metacritic());
+    }
+
+    /*
+    public Game gameFromDto(RawgGameDto game) {
         return new Game(game.rawgId(),
                         game.name(),
-                        game.imageSrc(),
+                        game.backgroundImage(),
                         game.genres(),
                         game.tags(),
                         game.developers(),
@@ -28,6 +37,7 @@ public class GameService {
                         game.released(),
                         game.metacritic());
     }
+    */
 
     public Optional<Game> getGame(Integer rawgId) {
         return gameRepository.findByRawgId(rawgId);

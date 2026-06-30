@@ -46,7 +46,7 @@ public class MainController {
         List<UserGame> userGames = userGameService.getUserGames(userId);
 
         //Check if game has already been added by comparing RAWG id
-        HashSet<Long> userGamesRawgIds = new HashSet<>(userGameService.getRawgIds(userGames));
+        HashSet<Integer> userGamesRawgIds = new HashSet<>(userGameService.getRawgIds(userGames));
 
         model.addAttribute("userGames", userGames);
         model.addAttribute("userGamesRawgIds", userGamesRawgIds);

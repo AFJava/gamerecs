@@ -50,10 +50,10 @@
         <div class="added-games">
             <p class="no-games-msg" th:if="${userGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
 
-            <div th:each="game : ${userGames}" class="profile-card">
-                <img class="game-preview" th:src="${game.imageSrc}">
-                <h2 class="game-name" th:text="${game.name}"></h2>
-                <p class="game-rating" th:text="|Rating: ${game.rating} / 10|"></p>
+            <div th:each="userGame : ${userGames}" class="profile-card">
+                <img class="game-preview" th:src="${userGame.game.imageSrc}">
+                <h2 class="game-name" th:text="${userGame.game.name}"></h2>
+                <p class="game-rating" th:text="|Rating: ${userGame.rating} / 10|"></p>
             </div>
         </div>
 

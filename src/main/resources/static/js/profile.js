@@ -7,7 +7,7 @@ async function rate(event) {
 
         const rateButton = event.target;
         const gameName = rateButton.dataset.gameName;
-        const gameId = rateButton.dataset.gameId;
+        const rawgId = rateButton.dataset.rawgId;
 
         //Build interface div
         const rateInterface = document.createElement("div");
@@ -15,7 +15,7 @@ async function rate(event) {
         console.log("div created");
 
         rateInterface.classList.add("rate");
-        rateInterface.dataset.gameId = gameId;
+        rateInterface.dataset.rawgId = rawgId;
 
         rateInterface.innerHTML = `<p>Rate ${gameName} and add it to your profile:</p>
         <form method="post" class="rate-form">
@@ -23,7 +23,7 @@ async function rate(event) {
             <button type = "submit">Submit rating and add to profile</button>
         </form>`;
 
-        //Get gameDiv by gameId and append rating div
+        //Get gameDiv by rawgId and append rating div
         const gameDiv = event.target.closest(".search-item");
 
         //Check if there is an existing rating interface
@@ -33,7 +33,7 @@ async function rate(event) {
         if(!current) {
             gameDiv.appendChild(rateInterface);
         } //If so, check if the current interface is for the same game; replace if not
-        else if(current.dataset.gameId != String(gameId)) {
+        else if(current.dataset.rawgId != String(rawgId)) {
             current.remove();
             gameDiv.appendChild(rateInterface);
         }
@@ -54,20 +54,21 @@ async function add(event) {
 
     //Get data for db fields, get rateInterface + rateButton for deletion
     const rateInterface = event.target.closest(".rate");
-    const gameId = rateInterface.dataset.gameId;
+    const rawgId = rateInterface.dataset.rawgId;
+
+    console.log(rawgId);
 
     const rateInput = document.querySelector('input[name="rating"]');
     const rating = rateInput.value;
 
-    const rateButton = document.querySelector(`.rate-button[data-game-id = "${gameId}"]`);
-    const gameName = rateButton.dataset.gameName;
-
-    const gamePreview = document.querySelector(".game-preview-search");
-    const imageSrc = gamePreview.src;
+    //Get game data from map
+    const game = resultsMap.get(Number(rawgId));
 
     //Get CSRF
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+    console.log(game);
 
     const response = await fetch(
         "/games/add",
@@ -80,10 +81,9 @@ async function add(event) {
             },
 
             body: JSON.stringify({
-                rawgId: gameId,
-                name: gameName,
+                rawgId: rawgId,
                 rating: rating,
-                imageSrc: imageSrc
+                game: game
             })
         }
     )
@@ -91,6 +91,7 @@ async function add(event) {
     console.log("POST sent");
 
     //Replace rate button and rating interface with confirmation messages
+    const rateButton = document.querySelector(`.rate-button[data-rawg-id = "${rawgId}"]`);
     rateButton.remove();
     rateInterface.remove();
 
@@ -100,7 +101,7 @@ async function add(event) {
     gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>';
 
     //Append to search-summary in place of button
-    const searchSummary = document.querySelector(`.search-summary[data-game-id = "${gameId}"]`);
+    const searchSummary = document.querySelector(`.search-summary[data-rawg-id = "${rawgId}"]`);
     searchSummary.appendChild(gameAddedMsgContainer);
 
     const confirmation = document.createElement("div");
@@ -109,7 +110,7 @@ async function add(event) {
     confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
 
     //Append confirmation messages to correct gameDiv
-    const gameDiv = document.querySelector(`.search-item[data-game-id = "${gameId}"]`);
+    const gameDiv = document.querySelector(`.search-item[data-rawg-id = "${rawgId}"]`);
 
     gameDiv.appendChild(confirmation);
 

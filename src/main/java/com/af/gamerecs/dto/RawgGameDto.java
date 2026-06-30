@@ -8,15 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /* Class used to parse JSON data of individual games from RAWG API */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record RawgGameDto(Integer rawgId, 
+public record RawgGameDto(@JsonProperty("rawgId") Integer id, 
                           String name,
-                          @JsonProperty("background_image") String imageSrc,
+                          @JsonProperty("background_image") String backgroundImage,
                           Integer rating,
-                          List<String> genres,
-                          List<String> tags, 
-                          List<String> developers,
-                          List<String> publishers,
-                          List<String> platforms,
                           LocalDate released,
                           Integer metacritic,
                           Integer added,

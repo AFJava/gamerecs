@@ -1,14 +1,12 @@
 //console.log("JS loaded");
 
-//TODO: Move searchbar back on z-axis when clicking away, then re-prioritize when clicking back on searchbar
-//Also remove search results instantly when empty
-
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
+const resultsMap = new Map(); //Maps rawgId to game data from RawgGameDto
 
 let debounceTimeout;
-let debounceTime = 300; //in ms (CURRENTLY SET TO 3 SECONDS FOR DEVELOPMENT)
+let debounceTime = 1000; //in ms
 
 filterObscureButton.addEventListener("change", () => {
     clearTimeout(debounceTimeout);
@@ -40,6 +38,8 @@ document.addEventListener("click", (event) => {
 
 async function search() {
     console.log("search began");
+
+    resultsMap.clear();
 
     const searchContent = searchbar.value;
     const filterObscureChecked = filterObscureButton.checked;
@@ -73,16 +73,18 @@ async function search() {
     games.results.forEach(game => {
         const gameDiv = document.createElement("div");
         gameDiv.classList.add("search-item");
-        gameDiv.dataset.gameId = `${game.id}`; //Same id used for button
+        gameDiv.dataset.rawgId = `${game.rawgId}`; //Same id used for button
+        resultsMap.set(Number(game.rawgId), game)
+        console.log(gameDiv.dataset.rawgId);
 
         const searchSummary = document.createElement("div");
         searchSummary.classList.add("search-summary");
-        searchSummary.dataset.gameId = `${game.id}`;
+        searchSummary.dataset.rawgId = `${game.rawgId}`;
 
         //Select confirmation message or rate & add button depending on whether game has been added
-        const actionHTML = window.userGamesRawgIds.has(Number(game.id))
+        const actionHTML = window.userGamesRawgIds.has(Number(game.rawgId))
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
-            : `<button type="button" class="rate-button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`
+            : `<button type="button" class="rate-button" data-rawg-id = "${game.rawgId}" data-game-name = "${game.name}">Rate and add to profile</button>`
         
         searchSummary.innerHTML = `<img src = ${game.background_image} class = "game-preview-search">
             <h2 class = "game-name">${game.name}</h2>

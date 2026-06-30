@@ -49,9 +49,29 @@ public class Game {
 
     }
 
-    public Game(Integer rawgId, String name, String imageSrc, List<String> genres,
-                List<String> tags, List<String> developers, List<String> publishers,
-                List<String> platforms, LocalDate released, Integer metacritic) {
+    public Game(Integer rawgId,
+                String name,
+                String imageSrc,
+                LocalDate released,
+                Integer metacritic) {
+        this.rawgId = rawgId;
+        this.name = name;
+        this.imageSrc = imageSrc;
+        this.released = released;
+        this.metacritic = metacritic;
+    }
+
+    /* 
+    public Game(Integer rawgId,
+                String name,
+                String imageSrc,
+                List<String> genres,
+                List<String> tags,
+                List<String> developers,
+                List<String> publishers,
+                List<String> platforms,
+                LocalDate released,
+                Integer metacritic) {
         this.rawgId = rawgId;
         this.name = name;
         this.imageSrc = imageSrc;
@@ -62,7 +82,7 @@ public class Game {
         this.platforms = platforms;
         this.released = released;
         this.metacritic = metacritic;
-    }
+    }*/
 
     public Integer getRawgId() {
         return rawgId;
