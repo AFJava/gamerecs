@@ -6,6 +6,7 @@
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
+const resultsMap = new Map();
 
 let debounceTimeout;
 let debounceTime = 300; //in ms (CURRENTLY SET TO 3 SECONDS FOR DEVELOPMENT)
@@ -40,6 +41,8 @@ document.addEventListener("click", (event) => {
 
 async function search() {
     console.log("search began");
+
+    resultsMap.clear();
 
     const searchContent = searchbar.value;
     const filterObscureChecked = filterObscureButton.checked;
@@ -78,6 +81,7 @@ async function search() {
         const searchSummary = document.createElement("div");
         searchSummary.classList.add("search-summary");
         searchSummary.dataset.gameId = `${game.id}`;
+        resultsMap.set(Number(game.id), game);
 
         //Select confirmation message or rate & add button depending on whether game has been added
         const actionHTML = window.userGamesRawgIds.has(Number(game.id))

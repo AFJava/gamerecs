@@ -59,11 +59,7 @@ async function add(event) {
     const rateInput = document.querySelector('input[name="rating"]');
     const rating = rateInput.value;
 
-    const rateButton = document.querySelector(`.rate-button[data-game-id = "${gameId}"]`);
-    const gameName = rateButton.dataset.gameName;
-
-    const gamePreview = document.querySelector(".game-preview-search");
-    const imageSrc = gamePreview.src;
+    const game = resultsMap.get(Number(gameId));
 
     //Get CSRF
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
@@ -81,9 +77,8 @@ async function add(event) {
 
             body: JSON.stringify({
                 rawgId: gameId,
-                name: gameName,
                 rating: rating,
-                imageSrc: imageSrc
+                game: game
             })
         }
     )
@@ -91,6 +86,7 @@ async function add(event) {
     console.log("POST sent");
 
     //Replace rate button and rating interface with confirmation messages
+    const rateButton = document.querySelector(`.rate-button[data-game-id = "${gameId}"]`);
     rateButton.remove();
     rateInterface.remove();
 
@@ -106,7 +102,11 @@ async function add(event) {
     const confirmation = document.createElement("div");
     confirmation.classList.add("confirmation");
 
+    const gameName = rateButton.dataset.gameName;
     confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
+
+    const gamePreview = document.querySelector(".game-preview-search");
+    const imageSrc = gamePreview.src;
 
     //Append confirmation messages to correct gameDiv
     const gameDiv = document.querySelector(`.search-item[data-game-id = "${gameId}"]`);
