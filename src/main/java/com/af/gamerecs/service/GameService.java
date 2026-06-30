@@ -1,10 +1,12 @@
 package com.af.gamerecs.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
+import com.af.gamerecs.dto.RawgGameDto;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.repositories.GameRepository;
-import com.af.gamerecs.dto.RawgGameDto;
 
 @Service
 public class GameService {
@@ -25,5 +27,9 @@ public class GameService {
                         game.platforms(),
                         game.released(),
                         game.metacritic());
+    }
+
+    public Optional<Game> getGame(Integer rawgId) {
+        return gameRepository.findByRawgId(rawgId);
     }
 }

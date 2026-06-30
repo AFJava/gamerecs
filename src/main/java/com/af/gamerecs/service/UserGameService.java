@@ -22,7 +22,7 @@ public class UserGameService {
         Long userId = user.getId();
         
         //Do not save if game has already been added (has same userId and rawgId)
-        if(userGameRepository.existsByUserIdAndRawgId(userId, game.getRawgId())) {
+        if(userGameRepository.existsByUserIdAndGame_RawgId(userId, game.getRawgId())) {
             throw new IllegalArgumentException("Game Already Saved");
         }
         
@@ -34,11 +34,11 @@ public class UserGameService {
         return userGameRepository.findByUserId(userId);
     }
 
-    public List<Long> getRawgIds(List<UserGame> userGames) {
-        List<Long> rawgIds = new ArrayList<>();
+    public List<Integer> getRawgIds(List<UserGame> userGames) {
+        List<Integer> rawgIds = new ArrayList<>();
         
         for(UserGame userGame : userGames) {
-            rawgIds.add(userGame.getRawgId());
+            rawgIds.add(userGame.getGame().getRawgId());
         }
 
         return rawgIds;
