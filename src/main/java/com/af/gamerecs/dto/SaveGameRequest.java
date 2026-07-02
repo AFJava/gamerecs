@@ -1,7 +1,7 @@
 package com.af.gamerecs.dto;
 
-public record SaveGameRequest(Long rawgId,
+public record SaveGameRequest(Long igdbId,
                               Integer rating,
-                              RawgGameDto game) {
+                              IgdbGameDto game) {
 
 }

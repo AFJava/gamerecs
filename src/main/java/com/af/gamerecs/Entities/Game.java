@@ -1,7 +1,7 @@
 package com.af.gamerecs.entities;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -20,35 +20,40 @@ public class Game {
     private Long id;
 
     @Column(unique = true)
-    private Long rawgId;
+    private Long igdbId;
 
     private String name;
 
-    private String imageSrc;
+    private String imageId;
+    
+    private LocalDate releaseDate;
+
+    private HashSet<String> franchises;
 
     @ElementCollection
-    private List<String> genres;
+    private HashSet<String> genres;
     
     @ElementCollection
-    private List<String> tags;
+    private HashSet<String> gameModes;
     
     @ElementCollection
-    private List<String> developers;
+    private HashSet<String> playerPerspectives;
     
     @ElementCollection
-    private List<String> publishers;
+    private HashSet<String> platforms;
 
     @ElementCollection
-    private List<String> platforms;
+    private HashSet<String> keywords;
 
-    private LocalDate released;
+    private Double igdbRating;
 
-    private Integer metacritic;
+    private Integer igdbRatingCount;
 
     public Game() {
 
     }
-
+    
+    /*
     public Game(Long rawgId,
                 String name,
                 String imageSrc,
@@ -60,67 +65,79 @@ public class Game {
         this.released = released;
         this.metacritic = metacritic;
     }
-
-    /* 
-    public Game(Integer rawgId,
+    */
+    
+    public Game(Long igdbId,
                 String name,
-                String imageSrc,
-                List<String> genres,
-                List<String> tags,
-                List<String> developers,
-                List<String> publishers,
-                List<String> platforms,
-                LocalDate released,
-                Integer metacritic) {
-        this.rawgId = rawgId;
+                String imageId,
+                LocalDate releaseDate,
+                HashSet<String> franchises,
+                HashSet<String> genres,
+                HashSet<String> gameModes,
+                HashSet<String> playerPerspectives,
+                HashSet<String> platforms,
+                HashSet<String> keywords,
+                Double igdbRating,
+                Integer igdbRatingCount) {
+        this.igdbId = igdbId;
         this.name = name;
-        this.imageSrc = imageSrc;
+        this.imageId = imageId;
+        this.releaseDate = releaseDate;
+        this.franchises = franchises;
         this.genres = genres;
-        this.tags = tags;
-        this.developers = developers;
-        this.publishers= publishers;
+        this.gameModes = gameModes;
+        this.playerPerspectives = playerPerspectives;
         this.platforms = platforms;
-        this.released = released;
-        this.metacritic = metacritic;
-    }*/
+        this.keywords = keywords;
+        this.igdbRating = igdbRating;
+        this.igdbRatingCount = igdbRatingCount;
+    }
 
-    public Long getRawgId() {
-        return rawgId;
+    public Long getIgdbId() {
+        return igdbId;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getImageSrc() {
-        return imageSrc;
+    public String getImageId() {
+        return imageId;
+    }
+    
+    public LocalDate getReleased() {
+        return releaseDate;
     }
 
-    public List<String> getGenres() {
+    public HashSet<String> getFranchises() {
+        return franchises;
+    }
+    
+    public HashSet<String> getGenres() {
         return genres;
     }
     
-    public List<String> getTags() {
-        return tags;
+    public HashSet<String> getGameModes() {
+        return gameModes;
     }
     
-    public List<String> getDevelopers() {
-        return developers;
+    public HashSet<String> getPlayerPerspectives() {
+        return playerPerspectives;
     }
     
-    public List<String> getPublishers() {
-        return publishers;
-    }
-
-    public List<String> getPlatforms() {
+    public HashSet<String> getPlatforms() {
         return platforms;
     }
 
-    public LocalDate getReleased() {
-        return released;
+    public HashSet<String> getKeywords() {
+        return keywords;
     }
 
-    public Integer getMetacritic() {
-        return metacritic;
+    public Double getIgdbRating() {
+        return igdbRating;
+    }
+
+    public Integer getIgdbRatingCount() {
+        return igdbRatingCount;
     }
 }
