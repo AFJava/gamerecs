@@ -74,21 +74,28 @@ async function search() {
     console.log(games); //DEBUG
 
     games.forEach(game => {
-        const gameDiv = document.createElement("div");
+        const gameDiv = document.createElement("\cdiv");
+
+        const igdbId = game.id;
+
         gameDiv.classList.add("search-item");
-        gameDiv.dataset.gameId = `${game.id}`; //Same id used for button
+        gameDiv.dataset.igdbId = `${igdbId}`; //Same id used for button
 
         const searchSummary = document.createElement("div");
         searchSummary.classList.add("search-summary");
-        searchSummary.dataset.gameId = `${game.id}`;
-        resultsMap.set(Number(game.id), game);
+        searchSummary.dataset.igdbId = `${igdbId}`;
+        resultsMap.set(Number(igdbId), game);
+
+        //Create IGDB image link from image_id
+        const image_id = game.cover.image_id;
+        const imageURL = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + image_id + ".jpg"
 
         //Select confirmation message or rate & add button depending on whether game has been added
-        const actionHTML = window.userGamesRawgIds.has(Number(game.id))
+        const actionHTML = window.userGamesRawgIds.has(Number(igdbId))
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
-            : `<button type="button" class="rate-button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`
+            : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" data-game-name = "${game.name}">Rate and add to profile</button>`
         
-        searchSummary.innerHTML = `<img src = ${game.cover.url} class = "game-preview-search">
+        searchSummary.innerHTML = `<img src = ${imageURL} class = "game-preview-search">
             <h2 class = "game-name">${game.name}</h2>
             ${actionHTML}`;
 
