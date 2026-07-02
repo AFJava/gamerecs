@@ -9,7 +9,7 @@ const filterObscureButton = document.getElementById("filter-obscure");
 const resultsMap = new Map();
 
 let debounceTimeout;
-let debounceTime = 300; //in ms (CURRENTLY SET TO 3 SECONDS FOR DEVELOPMENT)
+let debounceTime = 1000; //in ms (CURRENTLY SET TO 3 SECONDS FOR DEVELOPMENT)
 
 filterObscureButton.addEventListener("change", () => {
     clearTimeout(debounceTimeout);
@@ -61,7 +61,7 @@ async function search() {
     //Build URI depending on filter status
     const searchURI = `/api/games/search?q=${encodeURIComponent(searchContent)}&filterObscure=${filterObscureChecked}`;
 
-    //console.log("URI built");
+    console.log("URI built");
 
     //Response receives a RawgSearchResponse object which converts to JSON containing a list of search content along with search metadata
     const response = await fetch(
@@ -73,7 +73,7 @@ async function search() {
     const games = await response.json()
     console.log(games); //DEBUG
 
-    games.results.forEach(game => {
+    games.forEach(game => {
         const gameDiv = document.createElement("div");
         gameDiv.classList.add("search-item");
         gameDiv.dataset.gameId = `${game.id}`; //Same id used for button
@@ -88,7 +88,7 @@ async function search() {
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
             : `<button type="button" class="rate-button" data-game-id = "${game.id}" data-game-name = "${game.name}">Rate and add to profile</button>`
         
-        searchSummary.innerHTML = `<img src = ${game.background_image} class = "game-preview-search">
+        searchSummary.innerHTML = `<img src = ${game.cover.url} class = "game-preview-search">
             <h2 class = "game-name">${game.name}</h2>
             ${actionHTML}`;
 

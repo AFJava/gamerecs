@@ -2,6 +2,7 @@ package com.af.gamerecs.service;
 
 import java.time.Instant;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -11,7 +12,7 @@ import com.af.gamerecs.dto.TwitchAuthResponse;
 @Service
 public class TwitchAuthService {
     private final TwitchProperties twitchProperties;
-    private final WebClient twitchWebClient;
+    @Qualifier("twitchWebClient") private final WebClient twitchWebClient;
     private String accessToken;
     private Instant expiration;
 

@@ -7,31 +7,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.af.gamerecs.dto.RawgGameDto;
-import com.af.gamerecs.dto.RawgSearchResponse;
-import com.af.gamerecs.service.RawgService;
+import com.af.gamerecs.dto.IgdbGameDto;
+import com.af.gamerecs.service.IgdbService;
 
 @RestController
 @RequestMapping("/api/games")
 public class GameApiController {
-    private final RawgService rawgService;
+    private final IgdbService igdbService;
 
-    public GameApiController(RawgService rawgService) {
-        this.rawgService = rawgService;
+    public GameApiController(IgdbService igdbService) {
+        this.igdbService = igdbService;
     }
 
     /* Endpoint to dynamically retrieve first 5 results from searchbar */
     @GetMapping("/search")
-    public RawgSearchResponse searchGames(@RequestParam String q, @RequestParam boolean filterObscure) {
-        RawgSearchResponse response = rawgService.searchGames(q);
-        List<RawgGameDto> games = response.results();
+    public List<IgdbGameDto> searchGames(@RequestParam String q, @RequestParam boolean filterObscure) {
+        System.out.println("Sending IGDB request");
+
+        List<IgdbGameDto> games = igdbService.searchGames(q);
 
         if(filterObscure) {
             //Filter out games that do not have an official metacritic rating or have been added <100 times on RAWG (unless exact name match)
             games = games.stream()
                 .filter(g -> g.name().equalsIgnoreCase(q)
-                    || g.metacritic() != null
-                    || (g.added() != null && g.added() >= 100)
+                    || (g.rating_count() != null && g.rating_count() >= 100)
                 )
                 .toList();
         }
@@ -46,19 +45,12 @@ public class GameApiController {
             )
             .limit(5)
             .toList();
-
-        response = new RawgSearchResponse(
-            response.count(),
-            response.next(),
-            response.previous(),
-            games
-        );
         
-        return response;
+        return games;
     }
 
     /* Show high scoring results first; only name matching, for now */
-    private int scoreSearchResult(RawgGameDto game, String query) {
+    private int scoreSearchResult(IgdbGameDto game, String query) {
         int score = 0;
         String name = game.name().toLowerCase();
         String q = query.toLowerCase();

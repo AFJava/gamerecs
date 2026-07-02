@@ -1,8 +1,8 @@
 package com.af.gamerecs.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 
@@ -17,7 +17,7 @@ public class ApiClientConfig {
     }
 
     @Bean
-    WebClient IgdbWebClient() {
+    WebClient igdbWebClient() {
         return WebClient.builder()
             .baseUrl("https://api.igdb.com/v4")
             .build();
