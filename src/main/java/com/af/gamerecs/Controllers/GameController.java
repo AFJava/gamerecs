@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.af.gamerecs.dto.RawgGameDto;
+import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
@@ -37,11 +37,11 @@ public class GameController {
         
         User user = currentUserService.userFromPrincipal(principal);
 
-        Long rawgId = saveGameRequest.rawgId();
+        Long igdbId = saveGameRequest.igdbId();
         Integer rating = saveGameRequest.rating();
-        RawgGameDto rawgGameDto = saveGameRequest.game();
+        IgdbGameDto igdbGameDto = saveGameRequest.game();
 
-        Game g = gameService.getGame(rawgId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(rawgGameDto)));
+        Game g = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(igdbGameDto)));
 
         userGameService.saveToProfile(user, g, rating);
         
@@ -57,9 +57,9 @@ public class GameController {
         Long userId = user.getId();
 
         List<UserGame> userGames = userGameService.getUserGames(userId);
-        List<Long> rawgIds = userGameService.getRawgIds(userGames);
+        List<Long> igdbIds = userGameService.getIgdbIds(userGames);
 
-        //Get details from RAWG
+        //Get details from IGDB
 
         return "";
     }

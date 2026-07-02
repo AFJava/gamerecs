@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.af.gamerecs.entities.UserGame;
 
 public interface UserGameRepository extends JpaRepository<UserGame, Integer> {
-    boolean existsByUserIdAndGame_RawgId(Long userId, Long rawgId);
+    boolean existsByUserIdAndGame_IgdbId(Long userId, Long IgdbId);
     List<UserGame> findByUserId(Long userId);
 }

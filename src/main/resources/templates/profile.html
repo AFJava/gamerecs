@@ -51,7 +51,7 @@
             <p class="no-games-msg" th:if="${userGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
 
             <div th:each="userGame : ${userGames}" class="profile-card">
-                <img class="game-preview" th:src="${userGame.game.imageSrc}">
+                <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_cover_big/' + ${userGame.game.imageId} + '.jpg'">
                 <h2 class="game-name" th:text="${userGame.game.name}"></h2>
                 <p class="game-rating" th:text="|Rating: ${userGame.rating} / 10|"></p>
             </div>
@@ -70,7 +70,7 @@
 </body>
 
 <script th:inline="javascript">
-    window.userGamesRawgIds = new Set(/*[[${userGamesRawgIds}]]*/ []);
+    window.userGamesIgdbIds = new Set(/*[[${userGamesIgdbIds}]]*/ []);
 </script>
 <script src="/js/search.js"></script>
 <script src="/js/profile.js"></script>

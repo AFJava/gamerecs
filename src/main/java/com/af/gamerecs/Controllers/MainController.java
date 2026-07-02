@@ -45,11 +45,11 @@ public class MainController {
         Long userId = user.getId();
         List<UserGame> userGames = userGameService.getUserGames(userId);
 
-        //Check if game has already been added by comparing RAWG id
-        HashSet<Long> userGamesRawgIds = new HashSet<>(userGameService.getRawgIds(userGames));
+        //Check if game has already been added by comparing IGDB id
+        HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
 
         model.addAttribute("userGames", userGames);
-        model.addAttribute("userGamesRawgIds", userGamesRawgIds);
+        model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
         
         return "profile";
     }

@@ -63,7 +63,7 @@ async function search() {
 
     console.log("URI built");
 
-    //Response receives a RawgSearchResponse object which converts to JSON containing a list of search content along with search metadata
+    //Response receives a List<IgdbGameDto> object which converts to JSON containing a list of search content along with search metadata
     const response = await fetch(
         searchURI,
     );
@@ -91,7 +91,7 @@ async function search() {
         const imageURL = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + image_id + ".jpg"
 
         //Select confirmation message or rate & add button depending on whether game has been added
-        const actionHTML = window.userGamesRawgIds.has(Number(igdbId))
+        const actionHTML = window.userGamesIgdbIds.has(Number(igdbId))
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
             : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" data-game-name = "${game.name}">Rate and add to profile</button>`
         

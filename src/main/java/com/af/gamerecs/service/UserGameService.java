@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserGame;
-import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.repositories.UserGameRepository;
 
 @Service
@@ -22,7 +22,7 @@ public class UserGameService {
         Long userId = user.getId();
         
         //Do not save if game has already been added (has same userId and rawgId)
-        if(userGameRepository.existsByUserIdAndGame_RawgId(userId, game.getRawgId())) {
+        if(userGameRepository.existsByUserIdAndGame_IgdbId(userId, game.getIgdbId())) {
             throw new IllegalArgumentException("Game Already Saved");
         }
         
@@ -34,13 +34,13 @@ public class UserGameService {
         return userGameRepository.findByUserId(userId);
     }
 
-    public List<Long> getRawgIds(List<UserGame> userGames) {
-        List<Long> rawgIds = new ArrayList<>();
+    public List<Long> getIgdbIds(List<UserGame> userGames) {
+        List<Long> igdbIds = new ArrayList<>();
         
         for(UserGame userGame : userGames) {
-            rawgIds.add(userGame.getGame().getRawgId());
+            igdbIds.add(userGame.getGame().getIgdbId());
         }
 
-        return rawgIds;
+        return igdbIds;
     }
 }

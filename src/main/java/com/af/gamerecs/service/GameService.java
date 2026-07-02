@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,9 +37,6 @@ public class GameService {
     */
 
     public Game gameFromDto(IgdbGameDto game) {
-        List<NameDto> franchises = game.franchises();
-        franchises.add(game.franchise());
-
         LocalDate releaseDate = Instant.ofEpochSecond(game.first_release_date())
             .atZone(ZoneOffset.UTC)
             .toLocalDate();
@@ -47,7 +45,7 @@ public class GameService {
                         game.name(),
                         game.cover().image_id(),
                         releaseDate,
-                        new HashSet<>(names(franchises)),
+                        new HashSet<>(franchiseNames(game)),
                         new HashSet<>(names(game.genres())),
                         new HashSet<>(names(game.game_modes())),
                         new HashSet<>(names(game.player_perspectives())),
@@ -65,14 +63,29 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-    private List<String> names(List<NameDto> values) {
-    if (values == null) {
-        return new ArrayList<>();
+    private Set<String> names(List<NameDto> values) {
+        if (values == null) {
+            return new HashSet<>();
+        }
+
+        return values.stream()
+                .filter(Objects::nonNull)
+                .map(NameDto::name)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
-    return values.stream()
-            .map(NameDto::name)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toCollection(ArrayList::new));
-}
+    private Set<String> franchiseNames(IgdbGameDto game) {
+        Set<String> result = new HashSet<>();
+
+        if (game.franchise() != null && game.franchise().name() != null) {
+            result.add(game.franchise().name());
+        }
+
+        if (game.franchises() != null) {
+            result.addAll(names(game.franchises()));
+        }
+
+        return result;
+    }
 }

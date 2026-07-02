@@ -1,7 +1,7 @@
 package com.af.gamerecs.entities;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -28,22 +28,22 @@ public class Game {
     
     private LocalDate releaseDate;
 
-    private HashSet<String> franchises;
+    private Set<String> franchises;
 
     @ElementCollection
-    private HashSet<String> genres;
+    private Set<String> genres;
     
     @ElementCollection
-    private HashSet<String> gameModes;
+    private Set<String> gameModes;
     
     @ElementCollection
-    private HashSet<String> playerPerspectives;
+    private Set<String> playerPerspectives;
     
     @ElementCollection
-    private HashSet<String> platforms;
+    private Set<String> platforms;
 
     @ElementCollection
-    private HashSet<String> keywords;
+    private Set<String> keywords;
 
     private Double igdbRating;
 
@@ -71,12 +71,12 @@ public class Game {
                 String name,
                 String imageId,
                 LocalDate releaseDate,
-                HashSet<String> franchises,
-                HashSet<String> genres,
-                HashSet<String> gameModes,
-                HashSet<String> playerPerspectives,
-                HashSet<String> platforms,
-                HashSet<String> keywords,
+                Set<String> franchises,
+                Set<String> genres,
+                Set<String> gameModes,
+                Set<String> playerPerspectives,
+                Set<String> platforms,
+                Set<String> keywords,
                 Double igdbRating,
                 Integer igdbRatingCount) {
         this.igdbId = igdbId;
@@ -109,27 +109,27 @@ public class Game {
         return releaseDate;
     }
 
-    public HashSet<String> getFranchises() {
+    public Set<String> getFranchises() {
         return franchises;
     }
     
-    public HashSet<String> getGenres() {
+    public Set<String> getGenres() {
         return genres;
     }
     
-    public HashSet<String> getGameModes() {
+    public Set<String> getGameModes() {
         return gameModes;
     }
     
-    public HashSet<String> getPlayerPerspectives() {
+    public Set<String> getPlayerPerspectives() {
         return playerPerspectives;
     }
     
-    public HashSet<String> getPlatforms() {
+    public Set<String> getPlatforms() {
         return platforms;
     }
 
-    public HashSet<String> getKeywords() {
+    public Set<String> getKeywords() {
         return keywords;
     }
 
