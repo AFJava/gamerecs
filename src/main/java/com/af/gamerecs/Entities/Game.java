@@ -28,6 +28,7 @@ public class Game {
     
     private LocalDate releaseDate;
 
+    @ElementCollection
     private Set<String> franchises;
 
     @ElementCollection
