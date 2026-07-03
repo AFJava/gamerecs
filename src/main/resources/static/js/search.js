@@ -87,15 +87,15 @@ async function search() {
         resultsMap.set(Number(igdbId), game);
 
         //Create IGDB image link from image_id
-        const image_id = game.cover.image_id;
-        const imageURL = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + image_id + ".jpg"
+        const imageId = game.cover.image_id;
+        const imageURL = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + imageId + ".jpg";
 
         //Select confirmation message or rate & add button depending on whether game has been added
         const actionHTML = window.userGamesIgdbIds.has(Number(igdbId))
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
             : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" data-game-name = "${game.name}">Rate and add to profile</button>`
         
-        searchSummary.innerHTML = `<img src = ${imageURL} class = "game-preview-search">
+        searchSummary.innerHTML = `<img data-image-id=${imageId} src = ${imageURL} class = "game-preview-search">
             <h2 class = "game-name">${game.name}</h2>
             ${actionHTML}`;
 

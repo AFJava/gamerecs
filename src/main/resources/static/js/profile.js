@@ -85,6 +85,17 @@ async function add(event) {
 
     console.log("POST sent");
 
+    //Add igdbId to set so next search correctly displays confirmation message
+    window.userGamesIgdbIds.add(Number(igdbId));
+    //console.log(window.userGamesIgdbIds);
+
+    //Remove all messages displayed when no games are added, if any
+    const noGamesMsgs = document.querySelectorAll(".no-games-msg");
+    
+    if(noGamesMsgs !== null) {
+        noGamesMsgs.forEach(msg => msg.remove());
+    }
+
     //Replace rate button and rating interface with confirmation messages
     const rateButton = document.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
     rateButton.remove();
@@ -105,8 +116,9 @@ async function add(event) {
     const gameName = rateButton.dataset.gameName;
     confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
 
-    const gamePreview = document.querySelector(".game-preview-search");
-    const imageSrc = gamePreview.src;
+    const gamePreview = searchSummary.querySelector(".game-preview-search");
+    const imageId = gamePreview.dataset.imageId;
+    const imageSrc = "https://images.igdb.com/igdb/image/upload/t_1080p/" + imageId + ".jpg";
 
     //Append confirmation messages to correct gameDiv
     const gameDiv = document.querySelector(`.search-item[data-igdb-id = "${igdbId}"]`);
