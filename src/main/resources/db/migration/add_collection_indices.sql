@@ -1,8 +1,11 @@
-CREATE INDEX IF NOT EXISTS idx_game_developers_game_id
-ON game_developers(game_id);
-
 CREATE INDEX IF NOT EXISTS idx_game_franchises_game_id
 ON game_franchises(game_id);
+
+CREATE INDEX IF NOT EXISTS idx_game_genres_game_id
+ON game_genres(game_id);
+
+CREATE INDEX IF NOT EXISTS idx_game_themes_game_id
+ON game_themes(game_id);
 
 CREATE INDEX IF NOT EXISTS idx_game_game_modes_game_id
 ON game_game_modes(game_id);
