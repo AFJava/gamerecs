@@ -33,6 +33,9 @@ public class Game {
 
     @ElementCollection
     private Set<String> genres;
+
+    @ElementCollection
+    private Set<String> themes;
     
     @ElementCollection
     private Set<String> gameModes;
@@ -116,6 +119,10 @@ public class Game {
     
     public Set<String> getGenres() {
         return genres;
+    }
+
+    public Set<String> getThemes() {
+        return themes;
     }
     
     public Set<String> getGameModes() {
