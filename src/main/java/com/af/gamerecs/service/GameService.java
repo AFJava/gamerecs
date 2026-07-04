@@ -3,12 +3,11 @@ package com.af.gamerecs.service;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -61,6 +60,10 @@ public class GameService {
 
     public Game saveGame(Game game) {
         return gameRepository.save(game);
+    }
+
+    public List<Game> getGamesFromIgdbIds(List<Long> igdbIds) {
+        return gameRepository.findAllByIgdbIdIn(igdbIds);
     }
 
     private Set<String> names(List<NameDto> values) {

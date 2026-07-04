@@ -60,6 +60,7 @@ public class GameController {
         List<Long> igdbIds = userGameService.getIgdbIds(userGames);
 
         //Get details from IGDB
+        List<Game> games = gameService.getGamesFromIgdbIds(igdbIds);
 
         return "";
     }
