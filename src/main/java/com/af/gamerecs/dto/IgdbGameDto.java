@@ -12,11 +12,12 @@ public record IgdbGameDto(Long id,
                           Long first_release_date,
                           NameDto franchise,
                           List<NameDto> franchises,
+                          List<NameDto> involved_companies,
+                          List<NameDto> platforms,
                           List<NameDto> genres,
                           List<NameDto> themes,
                           List<NameDto> game_modes,
                           List<NameDto> player_perspectives,
-                          List<NameDto> platforms,
                           List<NameDto> keywords,
                           Double rating, //Rating from IGDB
                           Integer rating_count) {

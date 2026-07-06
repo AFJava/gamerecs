@@ -45,10 +45,12 @@ public class GameService {
                         game.cover().image_id(),
                         releaseDate,
                         new HashSet<>(franchiseNames(game)),
+                        new HashSet<>(names(game.involved_companies())),
+                        new HashSet<>(names(game.platforms())),
                         new HashSet<>(names(game.genres())),
+                        new HashSet<>(names(game.themes())),
                         new HashSet<>(names(game.game_modes())),
                         new HashSet<>(names(game.player_perspectives())),
-                        new HashSet<>(names(game.platforms())),
                         new HashSet<>(names(game.keywords())),
                         game.rating(),
                         game.rating_count());

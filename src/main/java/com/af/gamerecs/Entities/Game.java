@@ -30,7 +30,13 @@ public class Game {
 
     @ElementCollection
     private Set<String> franchises;
-
+    
+    @ElementCollection
+    private Set<String> companies;
+    
+    @ElementCollection
+    private Set<String> platforms;
+    
     @ElementCollection
     private Set<String> genres;
 
@@ -42,9 +48,6 @@ public class Game {
     
     @ElementCollection
     private Set<String> playerPerspectives;
-    
-    @ElementCollection
-    private Set<String> platforms;
 
     @ElementCollection
     private Set<String> keywords;
@@ -76,10 +79,11 @@ public class Game {
                 String imageId,
                 LocalDate releaseDate,
                 Set<String> franchises,
+                Set<String> companies,
+                Set<String> platforms,
                 Set<String> genres,
                 Set<String> gameModes,
                 Set<String> playerPerspectives,
-                Set<String> platforms,
                 Set<String> keywords,
                 Double igdbRating,
                 Integer igdbRatingCount) {
@@ -87,6 +91,7 @@ public class Game {
         this.name = name;
         this.imageId = imageId;
         this.releaseDate = releaseDate;
+        this.companies = companies;
         this.franchises = franchises;
         this.genres = genres;
         this.gameModes = gameModes;

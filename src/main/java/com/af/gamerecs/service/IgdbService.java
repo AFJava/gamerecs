@@ -24,7 +24,7 @@ public class IgdbService {
 
     public List<IgdbGameDto> searchGames(String query) {
         String body = """
-            fields id, name, cover.image_id, first_release_date, franchise.name, franchises.name, genres.name, themes.name, game_modes.name, player_perspectives.name, platforms.name, keywords.name, themes.name, rating, rating_count;
+            fields id, name, cover.image_id, first_release_date, franchise.name, franchises.name, involved_companies.name, genres.name, themes.name, game_modes.name, player_perspectives.name, platforms.name, keywords.name, rating, rating_count;
             search "%s";
             limit 20;
         """.formatted(query);
