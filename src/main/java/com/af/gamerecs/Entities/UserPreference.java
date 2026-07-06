@@ -21,7 +21,7 @@ import jakarta.persistence.UniqueConstraint;
             "feature_value"
         })
     })
-public class UserPreferences {
+public class UserPreference {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,7 +37,7 @@ public class UserPreferences {
 
     private double weight;
 
-    public UserPreferences() {
+    public UserPreference() {
 
     }
 }
