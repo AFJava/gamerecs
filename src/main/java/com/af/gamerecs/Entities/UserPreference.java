@@ -40,4 +40,38 @@ public class UserPreference {
     public UserPreference() {
 
     }
+
+    public UserPreference(User user, FeatureType featureType, String featureName) {
+        this.user = user;
+        this.featureType = featureType;
+        this.featureName = featureName;
+        weight = 0.0;
+    }
+
+    public UserPreference(User user, FeatureType featureType, String featureName, weight weight) {
+        this.user = user;
+        this.featureType = featureType;
+        this.featureName = featureName;
+        this.weight = weight;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public FeatureType getFeatureType() {
+        return featureType;
+    }
+
+    public String getFeatureName() {
+        return featureName;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
 }
