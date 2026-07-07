@@ -82,6 +82,7 @@ public class Game {
                 Set<String> companies,
                 Set<String> platforms,
                 Set<String> genres,
+                Set<String> themes,
                 Set<String> gameModes,
                 Set<String> playerPerspectives,
                 Set<String> keywords,
@@ -94,6 +95,7 @@ public class Game {
         this.companies = companies;
         this.franchises = franchises;
         this.genres = genres;
+        this.themes = themes;
         this.gameModes = gameModes;
         this.playerPerspectives = playerPerspectives;
         this.platforms = platforms;
