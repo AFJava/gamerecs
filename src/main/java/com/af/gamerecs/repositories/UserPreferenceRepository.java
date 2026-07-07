@@ -1,5 +1,12 @@
 package com.af.gamerecs.repositories;
 
-public class UserPreferenceRepository {
+import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.af.gamerecs.entities.FeatureType;
+import com.af.gamerecs.entities.UserPreference;
+
+public interface UserPreferenceRepository extends JpaRepository<UserPreference, Integer>{
+    public Optional<UserPreference> findByUserIdAndFeatureTypeAndFeatureName(Long userId, FeatureType featureType, String featureName);
 }
