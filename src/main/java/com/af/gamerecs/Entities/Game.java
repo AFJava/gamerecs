@@ -92,13 +92,13 @@ public class Game {
         this.name = name;
         this.imageId = imageId;
         this.releaseDate = releaseDate;
-        this.companies = companies;
         this.franchises = franchises;
+        this.companies = companies;
+        this.platforms = platforms;
         this.genres = genres;
         this.themes = themes;
         this.gameModes = gameModes;
         this.playerPerspectives = playerPerspectives;
-        this.platforms = platforms;
         this.keywords = keywords;
         this.igdbRating = igdbRating;
         this.igdbRatingCount = igdbRatingCount;
@@ -123,7 +123,15 @@ public class Game {
     public Set<String> getFranchises() {
         return franchises;
     }
-    
+
+    public Set<String> getCompanies() {
+        return companies;
+    }
+        
+    public Set<String> getPlatforms() {
+        return platforms;
+    }
+
     public Set<String> getGenres() {
         return genres;
     }
@@ -138,10 +146,6 @@ public class Game {
     
     public Set<String> getPlayerPerspectives() {
         return playerPerspectives;
-    }
-    
-    public Set<String> getPlatforms() {
-        return platforms;
     }
 
     public Set<String> getKeywords() {
