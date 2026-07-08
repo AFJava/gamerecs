@@ -1,6 +1,7 @@
 package com.af.gamerecs.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -57,6 +58,15 @@ public class UserPreferenceService {
         }
         
         userPreferenceRepository.saveAll(updatedPreferences);
+    }
+
+    public List<UserPreference> getTopPreferences(User user) {
+        List<UserPreference> topPreferences = userPreferenceRepository.findAllByUserId(user.getId()).stream()
+            .sorted(Comparator.comparingDouble(UserPreference::getWeight).reversed())
+            .limit(10)
+            .toList();
+
+        return topPreferences;
     }
 
     public UserPreference getNewPreference(UserPreference preference, double rating) {
