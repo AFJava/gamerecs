@@ -2,6 +2,8 @@ package com.af.gamerecs.entities;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -158,5 +160,43 @@ public class Game {
 
     public Integer getIgdbRatingCount() {
         return igdbRatingCount;
+    }
+
+    public List<Feature> getFeatures() {
+        List<Feature> features = new ArrayList<>();
+        
+        for(String franchise : franchises) {
+            features.add(new Feature(FeatureType.FRANCHISE, franchise));
+        }
+
+        for(String company : companies) {
+            features.add(new Feature(FeatureType.COMPANY, company));
+        }
+
+        for(String platform : platforms) {
+            features.add(new Feature(FeatureType.PLATFORM, platform));
+        }
+
+        for(String genre : genres) {
+            features.add(new Feature(FeatureType.GENRE, genre));
+        }
+
+        for(String theme : themes) {
+            features.add(new Feature(FeatureType.THEME, theme));
+        }
+
+        for(String gameMode : gameModes) {
+            features.add(new Feature(FeatureType.GAME_MODE, gameMode));
+        }
+
+        for(String playerPerspective : playerPerspectives) {
+            features.add(new Feature(FeatureType.PLAYER_PERSPECTIVE, playerPerspective));
+        }
+
+        for(String keyword : keywords) {
+            features.add(new Feature(FeatureType.KEYWORD, keyword));
+        }
+
+        return features;
     }
 }
