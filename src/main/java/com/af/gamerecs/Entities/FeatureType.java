@@ -6,7 +6,7 @@ public enum FeatureType {
     PLATFORM,
     GENRE,
     THEME,
-    GAMEMODE,
-    PLAYERPERSPECTIVE,
+    GAME_MODE,
+    PLAYER_PERSPECTIVE,
     KEYWORD
 }
