@@ -1,17 +1,19 @@
 package com.af.gamerecs.service;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import com.af.gamerecs.entities.Feature;
-import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.Game;
+import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.repositories.UserPreferenceRepository;
 
-
+@Service
 public class UserPreferenceService {
     private final UserPreferenceRepository userPreferenceRepository;
 
@@ -20,7 +22,7 @@ public class UserPreferenceService {
     }
 
     public void updatePreference(User user, double rating, Feature feature) {
-        UserPreference userPreference = userPreferenceRepository.findByUserIdAndFeatureTypeAndFeatureName(user.getId(), featureType, featureName)
+        UserPreference userPreference = userPreferenceRepository.findByUserIdAndFeature(user.getId(), feature)
             .orElseGet(() -> new UserPreference(
                 user,
                 feature
