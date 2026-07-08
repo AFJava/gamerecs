@@ -30,7 +30,7 @@ public class UserPreferenceService {
     }
 
     //Update every feature associated with a game in one query
-    public void updatePreferenceFromGame(User user, double rating, Game game) {
+    public void updatePreferenceFromGame(User user, Game game, double rating) {
         List<Feature> features = game.getFeatures();
 
         List<UserPreference> currentPreferences = userPreferenceRepository.findAllByUserId(user.getId());

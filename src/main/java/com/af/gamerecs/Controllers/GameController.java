@@ -17,6 +17,7 @@ import com.af.gamerecs.entities.UserGame;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameService;
 import com.af.gamerecs.service.UserGameService;
+import com.af.gamerecs.service.UserPreferenceService;
 
 @RestController
 @RequestMapping("/games")
@@ -24,11 +25,13 @@ public class GameController {
     public final UserGameService userGameService;
     public final CurrentUserService currentUserService;
     public final GameService gameService;
+    public final UserPreferenceService userPreferenceService;
 
-    public GameController(UserGameService userGameService, CurrentUserService currentUserService, GameService gameService) {
+    public GameController(UserGameService userGameService, CurrentUserService currentUserService, GameService gameService, UserPreferenceService userPreferenceService) {
         this.userGameService = userGameService;
         this.currentUserService = currentUserService;
         this.gameService = gameService;
+        this.userPreferenceService = userPreferenceService;
     }
 
     @PostMapping("/add")
@@ -44,13 +47,14 @@ public class GameController {
         Game g = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(igdbGameDto)));
 
         userGameService.saveToProfile(user, g, rating);
+        userPreferenceService.updatePreferenceFromGame(user, g, rating);
         
         return "";
     }
 
     @GetMapping("/rec")
     public String rec(Authentication authentication) {
-        //Retrieve user id, search for user's added games, get RAWG IDs
+        //Check user preferences for top scoring features; query IGDB for best matches, use other features to thin out
         Object principal = authentication.getPrincipal();
         
         User user = currentUserService.userFromPrincipal(principal);
@@ -59,7 +63,6 @@ public class GameController {
         List<UserGame> userGames = userGameService.getUserGames(userId);
         List<Long> igdbIds = userGameService.getIgdbIds(userGames);
 
-        //Get details from IGDB
         List<Game> games = gameService.getGamesFromIgdbIds(igdbIds);
 
         return "";
