@@ -97,6 +97,14 @@ public class GameService {
 
         return companies;
     }
+    
+    private List<FeatureDto> safeList(List<FeatureDto> list) {
+        if(list == null) {
+            return new ArrayList<>();
+        }
+
+        return list;
+    }
 
     public Set<Feature> parseFeatures(List<FeatureDto> franchises,
             List<FeatureDto> companies,
@@ -108,35 +116,35 @@ public class GameService {
             List<FeatureDto> keywords) {
         Set<Feature> features = new HashSet<>();
         
-        for(FeatureDto franchise : franchises) {
+        for(FeatureDto franchise : safeList(franchises)) {
             features.add(new Feature(FeatureType.FRANCHISE, franchise.id(), franchise.name()));
         }
 
-        for(FeatureDto company : companies) {
+        for(FeatureDto company : safeList(companies)) {
             features.add(new Feature(FeatureType.COMPANY, company.id(), company.name()));
         }
 
-        for(FeatureDto platform : platforms) {
+        for(FeatureDto platform : safeList(platforms)) {
             features.add(new Feature(FeatureType.PLATFORM, platform.id(), platform.name()));
         }
 
-        for(FeatureDto genre : genres) {
+        for(FeatureDto genre : safeList(genres)) {
             features.add(new Feature(FeatureType.GENRE, genre.id(), genre.name()));
         }
 
-        for(FeatureDto theme : themes) {
+        for(FeatureDto theme : safeList(themes)) {
             features.add(new Feature(FeatureType.THEME, theme.id(), theme.name()));
         }
 
-        for(FeatureDto gameMode : gameModes) {
+        for(FeatureDto gameMode : safeList(gameModes)) {
             features.add(new Feature(FeatureType.GAME_MODE, gameMode.id(), gameMode.name()));
         }
 
-        for(FeatureDto playerPerspective : playerPerspectives) {
+        for(FeatureDto playerPerspective : safeList(playerPerspectives)) {
             features.add(new Feature(FeatureType.PLAYER_PERSPECTIVE, playerPerspective.id(), playerPerspective.name()));
         }
 
-        for(FeatureDto keyword : keywords) {
+        for(FeatureDto keyword : safeList(keywords)) {
             features.add(new Feature(FeatureType.KEYWORD, keyword.id(), keyword.name()));
         }
 
