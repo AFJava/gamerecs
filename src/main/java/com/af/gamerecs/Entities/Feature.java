@@ -19,6 +19,10 @@ public class Feature {
     @Column(name = "feature_name", nullable = false)
     public String featureName;
 
+    public Feature() {
+
+    }
+
     public Feature(FeatureType featureType, Long igdbFeatureId, String featureName) {
         this.featureType = featureType;
         this.igdbFeatureId = igdbFeatureId;
