@@ -1,4 +1,7 @@
 package com.af.gamerecs.entities;
+
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -16,8 +19,9 @@ public class Feature {
     @Column(name = "feature_name", nullable = false)
     public String featureName;
 
-    public Feature(FeatureType featureType, String featureName) {
+    public Feature(FeatureType featureType, Long igdbFeatureId, String featureName) {
         this.featureType = featureType;
+        this.igdbFeatureId = igdbFeatureId;
         this.featureName = featureName;
     }
 
@@ -31,5 +35,17 @@ public class Feature {
 
     public String getFeatureName() {
         return featureName;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(!(o instanceof Feature other)) return false;
+
+        return this.featureType == other.featureType && Objects.equals(igdbFeatureId, other.igdbFeatureId);
+    }
+
+    public int hashcode() {
+        return Objects.hash(featureType, igdbFeatureId);
     }
 }
