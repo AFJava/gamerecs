@@ -1,5 +1,6 @@
 package com.af.gamerecs.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,10 +25,26 @@ public class IgdbService {
 
     public List<IgdbGameDto> searchGames(String query) {
         String body = """
-            fields id, name, cover.image_id, first_release_date, franchise.name, franchises.name, involved_companies.name, genres.name, themes.name, game_modes.name, player_perspectives.name, platforms.name, keywords.name, rating, rating_count;
+            fields id,
+                name,
+                cover.image_id,
+                first_release_date, 
+                franchise.name,
+                franchises.name,
+                involved_companies.company.name,
+                genres.name,
+                themes.name,
+                game_modes.name,
+                player_perspectives.name,
+                platforms.name,
+                keywords.name,
+                rating,
+                rating_count;
             search "%s";
             limit 20;
         """.formatted(query);
+
+        //System.out.println("Before POST");
 
         IgdbGameDto[] games = igdbWebClient.post()
             .uri("/games")
@@ -37,9 +54,15 @@ public class IgdbService {
             .retrieve()
             .bodyToMono(IgdbGameDto[].class)
             .block();
-        
+
+        //System.out.println(twitchProperties.client_id());
+        //System.out.println(twitchAuthService.getAccessToken());
         //System.out.println(Arrays.asList(games));
         
         return Arrays.asList(games);
+    }
+
+    public List<IgdbGameDto> searchMatchingGames() {
+        return new ArrayList<>();
     }
 }
