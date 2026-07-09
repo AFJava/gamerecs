@@ -49,7 +49,13 @@ public class Feature {
         return this.featureType == other.featureType && Objects.equals(igdbFeatureId, other.igdbFeatureId);
     }
 
-    public int hashcode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(featureType, igdbFeatureId);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%s, %d, %s)", featureType, igdbFeatureId, featureName);
     }
 }

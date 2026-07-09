@@ -52,11 +52,11 @@ public class UserPreferenceService {
         for(Feature feature : features) {
             //If feature not in map, create preference; either case, add weight
             UserPreference preference = featureMap.get(feature);
-            System.out.println("If preference found, it is " + preference);
+            //System.out.println("If preference found, it is " + preference);
 
             if(preference == null) {
                 preference = new UserPreference(user, feature);
-                System.out.println("Preference not found; creating new preference " + preference);
+                //System.out.println("Preference not found; creating new preference " + preference);
             }
 
             preference.setWeight(preference.getWeight() + rating);

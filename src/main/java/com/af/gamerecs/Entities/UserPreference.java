@@ -69,4 +69,9 @@ public class UserPreference {
     public void setWeight(double weight) {
         this.weight = weight;
     }
+
+    @Override
+    public String toString() {
+        return String.format("(%d, %d, %s, %f)", id, user.getId(), feature.toString(), weight);
+    }
 }
