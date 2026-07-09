@@ -13,7 +13,7 @@ import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
-import com.af.gamerecs.entities.UserGame;
+import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameService;
 import com.af.gamerecs.service.UserGameService;
@@ -58,12 +58,8 @@ public class GameController {
         Object principal = authentication.getPrincipal();
         
         User user = currentUserService.userFromPrincipal(principal);
-        Long userId = user.getId();
 
-        List<UserGame> userGames = userGameService.getUserGames(userId);
-        List<Long> igdbIds = userGameService.getIgdbIds(userGames);
-
-        List<Game> games = gameService.getGamesFromIgdbIds(igdbIds);
+        List<UserPreference> topPreferences = userPreferenceService.getTopPreferences(user);
 
         return "";
     }
