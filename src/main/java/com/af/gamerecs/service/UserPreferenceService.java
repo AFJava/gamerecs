@@ -24,19 +24,19 @@ public class UserPreferenceService {
     }
 
     public void updatePreference(User user, double rating, Feature feature) {
-        UserPreference userPreference = userPreferenceRepository.findByUserIdAndFeature(user.getId(), feature)
+        UserPreference preference = userPreferenceRepository.findByUserIdAndFeature(user.getId(), feature)
             .orElseGet(() -> new UserPreference(
                 user,
                 feature
             ));
 
-        userPreferenceRepository.save(getNewPreference(userPreference, rating));
+        preference.setWeight(preference.getWeight() + rating);
+
+        userPreferenceRepository.save(preference);
     }
 
     //Update every feature associated with a game in one query
     public void updatePreferenceFromGame(User user, Game game, double rating) {
-        Set<Feature> features = game.getFeatures();
-
         List<UserPreference> currentPreferences = userPreferenceRepository.findAllByUserId(user.getId());
 
         Map<Feature, UserPreference> featureMap = currentPreferences.stream()
@@ -46,16 +46,22 @@ public class UserPreferenceService {
             ));
         
         List<UserPreference> updatedPreferences = new ArrayList<>();
-
+        
+        Set<Feature> features = game.getFeatures();
+        
         for(Feature feature : features) {
             //If feature not in map, create preference; either case, add weight
             UserPreference preference = featureMap.get(feature);
+            System.out.println("If preference found, it is " + preference);
 
             if(preference == null) {
                 preference = new UserPreference(user, feature);
+                System.out.println("Preference not found; creating new preference " + preference);
             }
 
-            updatedPreferences.add(getNewPreference(preference, rating));
+            preference.setWeight(preference.getWeight() + rating);
+
+            updatedPreferences.add(preference);
         }
         
         userPreferenceRepository.saveAll(updatedPreferences);
@@ -68,15 +74,5 @@ public class UserPreferenceService {
             .toList();
 
         return topPreferences;
-    }
-
-    public UserPreference getNewPreference(UserPreference preference, double rating) {
-        double currentWeight = preference.getWeight();
-        
-        return new UserPreference(
-            preference.getUser(),
-            preference.getFeature(),
-            currentWeight + rating / 10.0
-        );
     }
 }
