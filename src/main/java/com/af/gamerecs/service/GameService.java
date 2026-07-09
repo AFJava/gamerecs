@@ -3,17 +3,19 @@ package com.af.gamerecs.service;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.af.gamerecs.dto.CompanyDto;
+import com.af.gamerecs.dto.FeatureDto;
 import com.af.gamerecs.dto.IgdbGameDto;
-import com.af.gamerecs.dto.NameDto;
+import com.af.gamerecs.entities.Feature;
+import com.af.gamerecs.entities.FeatureType;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.repositories.GameRepository;
 
@@ -44,14 +46,14 @@ public class GameService {
                         game.name(),
                         game.cover().image_id(),
                         releaseDate,
-                        new HashSet<>(franchiseNames(game)),
-                        new HashSet<>(names(game.involved_companies())),
-                        new HashSet<>(names(game.platforms())),
-                        new HashSet<>(names(game.genres())),
-                        new HashSet<>(names(game.themes())),
-                        new HashSet<>(names(game.game_modes())),
-                        new HashSet<>(names(game.player_perspectives())),
-                        new HashSet<>(names(game.keywords())),
+                        parseFeatures(franchiseNames(game),
+                            parseCompanies(game),
+                            game.platforms(),
+                            game.genres(),
+                            game.themes(),
+                            game.game_modes(),
+                            game.player_perspectives(),
+                            game.keywords()),
                         game.rating(),
                         game.rating_count());
     }
@@ -68,29 +70,76 @@ public class GameService {
         return gameRepository.findAllByIgdbIdIn(igdbIds);
     }
 
-    private Set<String> names(List<NameDto> values) {
-        if (values == null) {
-            return new HashSet<>();
-        }
+    private List<FeatureDto> franchiseNames(IgdbGameDto game) {
+        List<FeatureDto> result = new ArrayList<>();
 
-        return values.stream()
-                .filter(Objects::nonNull)
-                .map(NameDto::name)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-    }
-
-    private Set<String> franchiseNames(IgdbGameDto game) {
-        Set<String> result = new HashSet<>();
-
-        if (game.franchise() != null && game.franchise().name() != null) {
-            result.add(game.franchise().name());
+        if (game.franchise() != null) {
+            result.add(game.franchise());
         }
 
         if (game.franchises() != null) {
-            result.addAll(names(game.franchises()));
+            result.addAll(game.franchises());
         }
 
         return result;
+    }
+
+    private List<FeatureDto> parseCompanies(IgdbGameDto game) {
+        List<FeatureDto> companies = new ArrayList<>();
+
+        if(game.involved_companies() == null) {
+            return null;
+        }
+
+        for(CompanyDto involvedCompany : game.involved_companies()) {
+            companies.add(involvedCompany.company());
+        }
+
+        return companies;
+    }
+
+    public Set<Feature> parseFeatures(List<FeatureDto> franchises,
+            List<FeatureDto> companies,
+            List<FeatureDto> platforms,
+            List<FeatureDto> genres,
+            List<FeatureDto> themes,
+            List<FeatureDto> gameModes,
+            List<FeatureDto> playerPerspectives,
+            List<FeatureDto> keywords) {
+        Set<Feature> features = new HashSet<>();
+        
+        for(FeatureDto franchise : franchises) {
+            features.add(new Feature(FeatureType.FRANCHISE, franchise.id(), franchise.name()));
+        }
+
+        for(FeatureDto company : companies) {
+            features.add(new Feature(FeatureType.COMPANY, company.id(), company.name()));
+        }
+
+        for(FeatureDto platform : platforms) {
+            features.add(new Feature(FeatureType.PLATFORM, platform.id(), platform.name()));
+        }
+
+        for(FeatureDto genre : genres) {
+            features.add(new Feature(FeatureType.GENRE, genre.id(), genre.name()));
+        }
+
+        for(FeatureDto theme : themes) {
+            features.add(new Feature(FeatureType.THEME, theme.id(), theme.name()));
+        }
+
+        for(FeatureDto gameMode : gameModes) {
+            features.add(new Feature(FeatureType.GAME_MODE, gameMode.id(), gameMode.name()));
+        }
+
+        for(FeatureDto playerPerspective : playerPerspectives) {
+            features.add(new Feature(FeatureType.PLAYER_PERSPECTIVE, playerPerspective.id(), playerPerspective.name()));
+        }
+
+        for(FeatureDto keyword : keywords) {
+            features.add(new Feature(FeatureType.KEYWORD, keyword.id(), keyword.name()));
+        }
+
+        return features;
     }
 }

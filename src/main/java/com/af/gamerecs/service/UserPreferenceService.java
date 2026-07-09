@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -34,13 +35,13 @@ public class UserPreferenceService {
 
     //Update every feature associated with a game in one query
     public void updatePreferenceFromGame(User user, Game game, double rating) {
-        List<Feature> features = game.getFeatures();
+        Set<Feature> features = game.getFeatures();
 
         List<UserPreference> currentPreferences = userPreferenceRepository.findAllByUserId(user.getId());
 
         Map<Feature, UserPreference> featureMap = currentPreferences.stream()
             .collect(Collectors.toMap(
-                preference -> new Feature(preference.getFeature().getFeatureType(), preference.getFeature().getFeatureName()),
+                preference -> new Feature(preference.getFeature().getFeatureType(), preference.getFeature().getIgdbFeatureId(), preference.getFeature().getFeatureName()),
                 preference -> preference
             ));
         
