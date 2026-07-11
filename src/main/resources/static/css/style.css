@@ -151,8 +151,8 @@ main {
 .profile-card {
     display: grid;
     grid-template-rows: auto auto;
-    grid-template-columns: 30% 70%;
-    width: -webkit-fill-available;
+    grid-template-columns: 1.5in auto;
+    width: 100%;
     border-radius: 5px;
     background-color: gray; /* placeholder color */
 }
@@ -303,15 +303,13 @@ p#signuperr:empty {
     grid-row-start: 1;
     grid-row-end: 3;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 3 / 4;
     object-fit: cover;
 }
 
 .game-preview-search {
-    max-width: 2in;
-    max-height: 1in;
-    width: 16%;
-    aspect-ratio: 16 / 9;
+    height: 95%;
+    aspect-ratio: 3 / 4;
     border-radius: 5px;
     object-fit: cover;
 }
