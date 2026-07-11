@@ -134,4 +134,6 @@ async function add(event) {
     
     const profileGameDiv = document.querySelector(".added-games");
     profileGameDiv.appendChild(profileCard);
+
+    rec();
 }
