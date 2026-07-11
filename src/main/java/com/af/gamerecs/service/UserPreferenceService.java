@@ -67,13 +67,13 @@ public class UserPreferenceService {
         userPreferenceRepository.saveAll(updatedPreferences);
     }
 
-    public List<UserPreference> getTopPreferences(User user) {
-        List<UserPreference> topPreferences = userPreferenceRepository.findAllByUserId(user.getId()).stream()
+    //Gets all user preferences, sorted most to least preferred
+    public List<UserPreference> getSortedPreferences(User user) {
+        List<UserPreference> preferences = userPreferenceRepository.findAllByUserId(user.getId()).stream()
             .sorted(Comparator.comparingDouble(UserPreference::getWeight).reversed())
-            .limit(10)
             .toList();
 
-        return topPreferences;
+        return preferences;
     }
 
     public List<Feature> getFeaturesFromPreferences(List<UserPreference> preferences) {
