@@ -16,6 +16,7 @@ import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameService;
+import com.af.gamerecs.service.IgdbService;
 import com.af.gamerecs.service.UserGameService;
 import com.af.gamerecs.service.UserPreferenceService;
 
@@ -26,12 +27,15 @@ public class GameController {
     public final CurrentUserService currentUserService;
     public final GameService gameService;
     public final UserPreferenceService userPreferenceService;
+    public final IgdbService igdbService;
+    public int numFeaturesMatched = 5; //Number of features to be used in IGDB request for recommended games
 
-    public GameController(UserGameService userGameService, CurrentUserService currentUserService, GameService gameService, UserPreferenceService userPreferenceService) {
+    public GameController(UserGameService userGameService, CurrentUserService currentUserService, GameService gameService, UserPreferenceService userPreferenceService, IgdbService igdbService) {
         this.userGameService = userGameService;
         this.currentUserService = currentUserService;
         this.gameService = gameService;
         this.userPreferenceService = userPreferenceService;
+        this.igdbService = igdbService;
     }
 
     @PostMapping("/add")
@@ -59,7 +63,13 @@ public class GameController {
         
         User user = currentUserService.userFromPrincipal(principal);
 
-        List<UserPreference> topPreferences = userPreferenceService.getTopPreferences(user);
+        List<UserPreference> preferences = userPreferenceService.getSortedPreferences(user);
+
+        List<IgdbGameDto> topMatches = igdbService.searchMatchingGames(
+            userPreferenceService.getFeaturesFromPreferences(preferences.subList(0, numFeaturesMatched))
+        );
+
+        System.out.println(topMatches);
 
         return "";
     }
