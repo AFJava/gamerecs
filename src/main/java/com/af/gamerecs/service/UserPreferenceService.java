@@ -75,4 +75,10 @@ public class UserPreferenceService {
 
         return topPreferences;
     }
+
+    public List<Feature> getFeaturesFromPreferences(List<UserPreference> preferences) {
+        return preferences.stream()
+            .map(UserPreference::getFeature)
+            .toList();
+    }
 }
