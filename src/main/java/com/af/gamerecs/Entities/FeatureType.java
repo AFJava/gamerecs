@@ -8,5 +8,15 @@ public enum FeatureType {
     THEME,
     GAME_MODE,
     PLAYER_PERSPECTIVE,
-    KEYWORD
+    KEYWORD;
+
+    public String toIgdbField() {
+        if(this == FeatureType.FRANCHISE) {
+            return "companies";
+        }
+
+        String fieldName = this.toString().toLowerCase() + "s";
+
+        return fieldName;
+    }
 }

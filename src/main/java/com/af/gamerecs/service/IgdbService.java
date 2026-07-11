@@ -1,6 +1,5 @@
 package com.af.gamerecs.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.af.gamerecs.config.TwitchProperties;
-import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.dto.IgdbGameDto;
+import com.af.gamerecs.entities.Feature;
 
 @Service
 public class IgdbService {
@@ -68,11 +67,12 @@ public class IgdbService {
         String params = "";
 
         //Handle first case separately
-        params += String.format("%s = (%d)", topFeatures.get(0).getFeatureType(), topFeatures.get(0).getIgdbFeatureId());
+        //NOTE that IGDB field must be lowercase, plural (handled by FeatureType::toIgdbField())
+        params += String.format("%s = (%d)", topFeatures.get(0).getFeatureType().toIgdbField(), topFeatures.get(0).getIgdbFeatureId());
         
         for(int i = 0; i < topFeatures.size() - 1; i++) {
             Feature feature = topFeatures.get(i);
-            params += String.format(" | %s = (%d)", feature.getFeatureType(), feature.getIgdbFeatureId());
+            params += String.format(" | %s = (%d)", feature.getFeatureType().toIgdbField(), feature.getIgdbFeatureId());
         }
         
         System.out.println(params);
