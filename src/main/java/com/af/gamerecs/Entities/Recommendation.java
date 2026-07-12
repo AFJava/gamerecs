@@ -1,11 +1,14 @@
 package com.af.gamerecs.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,13 +18,18 @@ public class Recommendation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
+
+    LocalDateTime lastSeen;
+
+    //Add pressure every time this recommendation is seen; pressure decays exponentially
+    Double pressure;
 
     public Recommendation() {
 
