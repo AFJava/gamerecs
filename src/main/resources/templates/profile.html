@@ -55,6 +55,10 @@
                 <h2 class="game-name" th:text="${userGame.game.name}"></h2>
                 <p class="game-rating" th:text="|Rating: ${userGame.rating} / 10|"></p>
             </div>
+
+            <div th:if="${expandAdded}" class="">
+                <a href="profile/added?page=1">All added games</a>
+            </div>
         </div>
 
         <h1>Recommended Games</h1>
