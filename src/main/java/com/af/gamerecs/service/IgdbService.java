@@ -40,7 +40,7 @@ public class IgdbService {
                 keywords.name,
                 rating,
                 rating_count;
-            search "%s";
+            where name ~ *"%s"*;
             limit 20;
         """.formatted(query);
 

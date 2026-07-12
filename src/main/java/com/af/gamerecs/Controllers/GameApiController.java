@@ -27,15 +27,16 @@ public class GameApiController {
         List<IgdbGameDto> games = igdbService.searchGames(q);
 
         if(filterObscure) {
-            //Filter out games that do not have an official metacritic rating or have been added <100 times on RAWG (unless exact name match)
+            //Filter out games that have not been rated at all or ones that do not have any official companies tagged
             games = games.stream()
-                .filter(g -> g.name().equalsIgnoreCase(q)
-                    || (g.rating_count() != null && g.rating_count() >= 100)
+                .filter(g -> (g.name().equalsIgnoreCase(q)
+                        || (g.involved_companies() != null)
+                    )   && g.rating() != null
                 )
                 .toList();
         }
 
-        //Limit to 5 results in either case
+        //Limit to 5 results in either case and keep most relevant results on top
         games = games.stream()
             .sorted((a, b) ->
                 Integer.compare(
@@ -64,8 +65,6 @@ public class GameApiController {
         else if(name.contains(q)) {
             score += 600;
         }
-
-        //Add popularity filters (redundant?)
 
         return score;
     }
