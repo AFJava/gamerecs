@@ -3,6 +3,8 @@ package com.af.gamerecs.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.af.gamerecs.entities.Game;
@@ -32,6 +34,10 @@ public class UserGameService {
 
     public List<UserGame> getUserGames(Long userId) {
         return userGameRepository.findByUserId(userId);
+    }
+    
+    public Page<UserGame> getPaginatedUserGames(Long userId, Pageable pageable) {
+        return userGameRepository.findByUserId(userId, pageable);
     }
 
     public List<Long> getIgdbIds(List<UserGame> userGames) {
