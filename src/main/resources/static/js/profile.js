@@ -147,5 +147,5 @@ async function add(event) {
         profileGameDiv.appendChild(profileCard);
     }
 
-    rec();
+    //rec();
 }

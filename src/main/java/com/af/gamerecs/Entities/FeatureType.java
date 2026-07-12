@@ -11,7 +11,7 @@ public enum FeatureType {
     KEYWORD;
 
     public String toIgdbField() {
-        if(this == FeatureType.FRANCHISE) {
+        if(this == FeatureType.COMPANY) {
             return "companies";
         }
 
