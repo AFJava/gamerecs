@@ -213,6 +213,12 @@ main {
     background-color: #717c98;
 }
 
+.page-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 footer {
     display: flex;
     flex-direction: column;

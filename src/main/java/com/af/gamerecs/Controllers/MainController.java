@@ -3,10 +3,13 @@ package com.af.gamerecs.controllers;
 import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.af.gamerecs.entities.User;
@@ -20,6 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class MainController {
     public final UserGameService userGameService;
     public final CurrentUserService currentUserService;
+    public int pageSize = 10;
     
     public MainController(UserGameService userGameService, CurrentUserService currentUserService) {
         this.userGameService = userGameService;
@@ -62,19 +66,25 @@ public class MainController {
     }
 
     @GetMapping("/users/{id}/profile/added")
-    public String added(Model model, Authentication authentication, @RequestParam int page) {
-        Object principal = authentication.getPrincipal();
-        
-        User user = currentUserService.userFromPrincipal(principal);
+    public String added(Model model, Authentication authentication, @PathVariable Long id, @RequestParam int page) {
+        Page<UserGame> userGamesPage = userGameService.getPaginatedUserGames(id, PageRequest.of(page - 1, pageSize));
 
-        //Add profile cards for each game added
-        Long userId = user.getId();
-        List<UserGame> userGames = userGameService.getUserGames(userId);
+        //GetContent() returns List<UserGame>
+        model.addAttribute("userGames", userGamesPage.getContent());
 
-        //Separate into 10 depending on page
-        userGames = userGames.subList(10 * (page - 1), Math.min(userGames.size(), 10 * page));
+        //Page nav logic
+        int totalPages = userGamesPage.getTotalPages();
 
-        model.addAttribute("userGames", userGames);
+        int startPage = Math.max(1, page - 2);
+        int endPage = Math.min(totalPages, page + 2);
+
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("showFirstPage", startPage > 1);
+        model.addAttribute("showLastPage", endPage < totalPages);
+        model.addAttribute("showLeftEllipsis", startPage > 2);
+        model.addAttribute("showRightEllipsis", endPage < totalPages - 1);
 
         return "added";
     }
