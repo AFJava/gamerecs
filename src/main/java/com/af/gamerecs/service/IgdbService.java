@@ -26,6 +26,7 @@ public class IgdbService {
 
     //For dynamic searchbar
     public List<IgdbGameDto> searchGames(String query) {
+        //If 26, frontend adds button navigating to expanded search results (25 displayed, paginated)
         String body = """
             fields id,
                 name,
@@ -43,7 +44,7 @@ public class IgdbService {
                 rating,
                 rating_count;
             where name ~ *"%s"*;
-            limit 30;
+            limit 26;
         """.formatted(query);
 
         //System.out.println("Before POST");

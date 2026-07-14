@@ -22,7 +22,7 @@ public class GameApiController {
     /* Endpoint to dynamically retrieve first 5 results from searchbar */
     @GetMapping("/search")
     public List<IgdbGameDto> searchGames(@RequestParam String q, @RequestParam boolean filterObscure) {
-        System.out.println("Sending IGDB request");
+        //System.out.println("Sending IGDB request");
 
         List<IgdbGameDto> games = igdbService.searchGames(q);
 
@@ -44,7 +44,6 @@ public class GameApiController {
                     scoreSearchResult(a, q)
                 )
             )
-            .limit(5)
             .toList();
         
         return games;
