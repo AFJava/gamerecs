@@ -23,6 +23,7 @@ public class IgdbService {
         this.igdbWebClient = igdbWebClient;
     }
 
+    //For dynamic searchbar
     public List<IgdbGameDto> searchGames(String query) {
         String body = """
             fields id,
@@ -41,8 +42,49 @@ public class IgdbService {
                 rating,
                 rating_count;
             where name ~ *"%s"*;
-            limit 20;
+            limit 30;
         """.formatted(query);
+
+        //System.out.println("Before POST");
+
+        IgdbGameDto[] games = igdbWebClient.post()
+            .uri("/games")
+            .header("Client-ID", twitchProperties.client_id())
+            .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
+            .bodyValue(body)
+            .retrieve()
+            .bodyToMono(IgdbGameDto[].class)
+            .block();
+
+        //System.out.println(twitchProperties.client_id());
+        //System.out.println(twitchAuthService.getAccessToken());
+        //System.out.println(Arrays.asList(games));
+        
+        return Arrays.asList(games);
+    }
+
+    //For expanded search results
+    public List<IgdbGameDto> searchGames(String query, int pageSize, int page) {
+        String body = """
+            fields id,
+                name,
+                cover.image_id,
+                first_release_date, 
+                franchise.name,
+                franchises.name,
+                involved_companies.company.name,
+                genres.name,
+                themes.name,
+                game_modes.name,
+                player_perspectives.name,
+                platforms.name,
+                keywords.name,
+                rating,
+                rating_count;
+            where name ~ *"%s"*;
+            limit %d;
+            offset %d;
+        """.formatted(query, pageSize, (page - 1) * pageSize);
 
         //System.out.println("Before POST");
 
