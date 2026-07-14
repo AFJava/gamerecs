@@ -44,6 +44,7 @@ public class IgdbService {
                 rating,
                 rating_count;
             where name ~ *"%s"*;
+            sort name asc;
             limit 26;
         """.formatted(query);
 
@@ -84,6 +85,7 @@ public class IgdbService {
                 rating,
                 rating_count;
             where name ~ *"%s"*;
+            sort name asc;
             limit %d;
             offset %d;
         """.formatted(query, pageSize, (page - 1) * pageSize);
