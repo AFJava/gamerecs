@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.af.gamerecs.config.TwitchProperties;
 import com.af.gamerecs.dto.IgdbGameDto;
+import com.af.gamerecs.dto.CountResponse;
 import com.af.gamerecs.entities.Feature;
 
 @Service
@@ -86,8 +87,6 @@ public class IgdbService {
             offset %d;
         """.formatted(query, pageSize, (page - 1) * pageSize);
 
-        //System.out.println("Before POST");
-
         IgdbGameDto[] games = igdbWebClient.post()
             .uri("/games")
             .header("Client-ID", twitchProperties.client_id())
@@ -97,11 +96,28 @@ public class IgdbService {
             .bodyToMono(IgdbGameDto[].class)
             .block();
 
-        //System.out.println(twitchProperties.client_id());
-        //System.out.println(twitchAuthService.getAccessToken());
         //System.out.println(Arrays.asList(games));
         
         return Arrays.asList(games);
+    }
+
+    public int numResults(String query) {
+        String body = """
+            where name ~ *"%s"*;
+        """.formatted(query);
+
+        CountResponse response = igdbWebClient.post()
+            .uri("/games/count")
+            .header("Client-ID", twitchProperties.client_id())
+            .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
+            .bodyValue(body)
+            .retrieve()
+            .bodyToMono(CountResponse.class)
+            .block();
+        
+        //System.out.println(numResults);
+        
+        return response.count();
     }
 
     // Assume topFeatures is not null and of set size
