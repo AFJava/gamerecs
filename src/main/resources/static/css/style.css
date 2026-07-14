@@ -197,7 +197,7 @@ main {
 }
 
 .game-added-msg-container {
-    width: 2in;
+    max-width: 150px;
 }
 
 .added-games, .rec-games {
