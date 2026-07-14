@@ -1,20 +1,27 @@
 //console.log("JS loaded");
 
-//TODO: Move searchbar back on z-axis when clicking away, then re-prioritize when clicking back on searchbar
-//Also remove search results instantly when empty
+//TODO: remove search results instantly when emptied
+//Display page nav links
+//Display message for no results
+//Restyle "game already added message" so things align
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
 const resultsMap = new Map();
 
+let lastSearchQuery = "";
+let lastSearchResult = [];
+let lastSearchFilterChecked;
+let totalPages = 0;
+
 let debounceTimeout;
-let debounceTime = 1000; //in ms (CURRENTLY SET TO 3 SECONDS FOR DEVELOPMENT)
+let debounceTime = 1000; //in ms (SET TO 1 SECOND FOR DEVELOPMENT)
 
 filterObscureButton.addEventListener("change", () => {
     clearTimeout(debounceTimeout);
 
-    search();
+    search(1);
 })
 
 searchbar.addEventListener("input", () => {
@@ -24,7 +31,7 @@ searchbar.addEventListener("input", () => {
     clearTimeout(debounceTimeout);
 
     debounceTimeout = setTimeout(() => {
-        search();
+        search(1);
     }, debounceTime); 
 });
 
@@ -39,7 +46,7 @@ document.addEventListener("click", (event) => {
     }
 });
 
-async function search() {
+async function search(page) {
     console.log("search began");
 
     resultsMap.clear();
@@ -53,24 +60,38 @@ async function search() {
 
     //console.log(searchContent);
 
-    //DO NOT search if under 3 alphanumeric characters are given
-    if(searchContent.trim().length < 3) {
-        return;
+    let games = [];
+
+    //If searchContent not same as cached query, perform new search and re-cache
+    if(searchContent !== lastSearchQuery || filterObscureChecked !== lastSearchFilterChecked) {
+        //DO NOT search if under 3 alphanumeric characters are given
+        if(searchContent.trim().length < 3) {
+            return;
+        }
+
+        //Build URI depending on filter status
+        const searchURI = `/api/games/search?q=${encodeURIComponent(searchContent)}&filterObscure=${filterObscureChecked}`;
+
+        console.log("URI built");
+
+        //Response receives a List<IgdbGameDto> object which converts to JSON containing a list of search content along with search metadata
+        const response = await fetch(
+            searchURI,
+        );
+
+        //console.log("request sent");
+
+        //Cache query, results and store displayed page in games
+        lastSearchQuery = searchContent;
+        lastSearchResult = await response.json();
+        lastSearchFilterChecked = filterObscureChecked;
+    } 
+    
+    //From cached result, retrieve page for display 
+    for(let i = 5 * (page - 1); i < 5 * page; i++) {
+        games.push(lastSearchResult[i]);
     }
 
-    //Build URI depending on filter status
-    const searchURI = `/api/games/search?q=${encodeURIComponent(searchContent)}&filterObscure=${filterObscureChecked}`;
-
-    console.log("URI built");
-
-    //Response receives a List<IgdbGameDto> object which converts to JSON containing a list of search content along with search metadata
-    const response = await fetch(
-        searchURI,
-    );
-
-    //console.log("request sent");
-
-    const games = await response.json()
     console.log(games); //DEBUG
 
     games.forEach(game => {
