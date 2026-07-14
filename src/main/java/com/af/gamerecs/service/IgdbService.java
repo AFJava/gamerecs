@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.af.gamerecs.config.TwitchProperties;
-import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.CountResponse;
+import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.entities.Feature;
 
 @Service
@@ -99,6 +99,12 @@ public class IgdbService {
         //System.out.println(Arrays.asList(games));
         
         return Arrays.asList(games);
+    }
+
+    public int numPages(String query, int pageSize) {
+        int numResults = numResults(query);
+
+        return (int) Math.ceil((double) numResults / pageSize);
     }
 
     public int numResults(String query) {
