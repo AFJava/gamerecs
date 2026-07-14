@@ -29,6 +29,12 @@ filterObscureButton.addEventListener("change", () => {
 searchbar.addEventListener("input", () => {
     //console.log("event triggered");
 
+    //Clear results immediately if empty
+    if(searchbar.value.length == 0) {
+        resultsList.replaceChildren();
+        searchNavDiv.replaceChildren();
+    }
+
     //Only do an API search if user stops typing for 1 second
     clearTimeout(debounceTimeout);
 
@@ -70,8 +76,14 @@ async function search(page) {
 
     //If searchContent not same as cached query, perform new search and re-cache
     if(searchContent !== lastSearchQuery || filterObscureChecked !== lastSearchFilterChecked) {
-        //DO NOT search if under 3 alphanumeric characters are given
-        if(searchContent.trim().length < 3) {
+        //DO NOT search if under 2 alphanumeric characters are given
+        if(searchContent.trim().length < 2) {
+            const noGamesMessage = document.createElement("p");
+            noGamesMessage.classList.add("no-games-msg");
+            noGamesMessage.textContent = "No search results found. Please enter a longer query. ";
+
+            resultsList.appendChild(noGamesMessage);
+
             return;
         }
 
@@ -105,6 +117,7 @@ async function search(page) {
         noGamesMessage.textContent = "No search results for \"" + searchContent + "\". ";
 
         resultsList.appendChild(noGamesMessage);
+
         return;
     }
 
