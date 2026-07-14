@@ -271,21 +271,8 @@ p#signuperr:empty {
     display: none;
 }
 
-.game-name {
+.game-name, .game-added-msg, .game-rating, .no-games-msg{
     text-align: center;
-}
-
-.game-added-msg {
-    text-align: center;
-}
-
-.game-rating {
-    text-align: center;
-}
-
-.no-games-msg {
-    text-align: center;
-    width: 80%;
 }
 
 /* Image Formatting */

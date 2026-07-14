@@ -91,18 +91,28 @@ async function search(page) {
         lastSearchQuery = searchContent;
         lastSearchResult = await response.json();
         lastSearchFilterChecked = filterObscureChecked;
-    } 
+    }
     
     //From cached result, retrieve page for display 
     for(let i = 5 * (page - 1); i < Math.min(5 * page, lastSearchResult.length); i++) {
         games.push(lastSearchResult[i]);
     }
 
+    //If results are completely empty display message
+    if(games.length == 0) {
+        const noGamesMessage = document.createElement("p");
+        noGamesMessage.classList.add("no-games-msg");
+        noGamesMessage.textContent = "No search results for \"" + searchContent + "\". ";
+
+        resultsList.appendChild(noGamesMessage);
+        return;
+    }
+
     console.log(games); //DEBUG
 
     //Display page
     games.forEach(game => {
-        const gameDiv = document.createElement("\cdiv");
+        const gameDiv = document.createElement("div");
 
         const igdbId = game.id;
 
