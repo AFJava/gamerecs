@@ -8,6 +8,8 @@
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
+const searchNavDiv = document.querySelector(".page-nav");
+const resultsList = document.querySelector(".results-list");
 const resultsMap = new Map();
 
 let lastSearchQuery = "";
@@ -40,6 +42,9 @@ document.addEventListener("click", (event) => {
     //Avoid changing active status when clicking on filter button (reruns search anyways) or empty top-left grid cell
     if( !(resultsDiv.contains(event.target) || searchbar.contains(event.target)) ) {
         resultsDiv.classList.remove("active");
+        console.log(event.target);
+        console.log(resultsDiv.contains(event.target));
+        console.log(searchNavDiv.contains(event.target));
     } 
     else if(searchbar.contains(event.target)) {
         resultsDiv.classList.add("active");
@@ -55,7 +60,8 @@ async function search(page) {
     const filterObscureChecked = filterObscureButton.checked;
 
     //Clear search results
-    resultsDiv.replaceChildren();
+    resultsList.replaceChildren();
+    searchNavDiv.replaceChildren();
     resultsDiv.classList.add("active");
 
     //console.log(searchContent);
@@ -88,12 +94,13 @@ async function search(page) {
     } 
     
     //From cached result, retrieve page for display 
-    for(let i = 5 * (page - 1); i < 5 * page; i++) {
+    for(let i = 5 * (page - 1); i < Math.min(5 * page, lastSearchResult.length); i++) {
         games.push(lastSearchResult[i]);
     }
 
     console.log(games); //DEBUG
 
+    //Display page
     games.forEach(game => {
         const gameDiv = document.createElement("\cdiv");
 
@@ -121,6 +128,30 @@ async function search(page) {
             ${actionHTML}`;
 
         gameDiv.appendChild(searchSummary);
-        resultsDiv.appendChild(gameDiv);
+        resultsList.appendChild(gameDiv);
     });
+
+    //Display page nav
+    let pages = Math.ceil(lastSearchResult.length / 5);
+    let hasMoreResults = pages > 5;
+    pages = Math.min(pages, 5);
+
+    for(let i = 1; i <= pages; i++) {
+        let searchNavItem;
+
+        if(i === page) {
+            searchNavItem = document.createElement("span");
+        }
+        else {
+            searchNavItem = document.createElement("button");
+            searchNavItem.classList.add(); //TODO: Style later
+
+            searchNavItem.addEventListener("click", () => {
+                setTimeout(() => search(i), 0);
+            });
+        }
+
+        searchNavItem.textContent = i;
+        searchNavDiv.appendChild(searchNavItem);
+    }
 }
