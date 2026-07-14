@@ -1,9 +1,6 @@
 //console.log("JS loaded");
 
-//TODO: remove search results instantly when emptied
-//Display page nav links
-//Display message for no results
-//Restyle "game already added message" so things align
+//TODO: Handle null image_id with a placeholder error image
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -138,15 +135,23 @@ async function search(page) {
         resultsMap.set(Number(igdbId), game);
 
         //Create IGDB image link from image_id
-        const imageId = game.cover.image_id;
-        const imageURL = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + imageId + ".jpg";
+        let imageId = 0;
+        let imageURL;
 
+        if(game.cover !== null) {
+            imageId = game.cover.image_id;
+            imageURL = "https://images.igdb.com/igdb/image/upload/t_cover_big/" + imageId + ".jpg";
+        } else {
+            imageURL = "/assets/Image_not_found.png";
+        }
+        
         //Select confirmation message or rate & add button depending on whether game has been added
         const actionHTML = window.userGamesIgdbIds.has(Number(igdbId))
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
             : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" data-game-name = "${game.name}">Rate and add to profile</button>`
         
-        searchSummary.innerHTML = `<img data-image-id=${imageId} src = ${imageURL} class = "game-preview-search">
+        searchSummary.innerHTML = 
+            `<img data-image-id=${imageId} src = ${imageURL} class = "game-preview-search">
             <h2 class = "game-name">${game.name}</h2>
             ${actionHTML}`;
 
