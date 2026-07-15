@@ -1,6 +1,6 @@
 //console.log("JS loaded");
 
-//TODO: Handle null image_id with a placeholder error image
+//TODO: Style page nav buttons
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -163,10 +163,12 @@ async function search(page) {
     let pages = Math.ceil(lastSearchResult.length / 5);
     let hasMoreResults = pages > 5;
     pages = Math.min(pages, 5);
+    
+    let searchNavItem = document.createElement("p");
+    searchNavItem.textContent = "Page: ";
+    searchNavDiv.appendChild(searchNavItem);
 
     for(let i = 1; i <= pages; i++) {
-        let searchNavItem;
-
         if(i === page) {
             searchNavItem = document.createElement("span");
         }
@@ -181,5 +183,14 @@ async function search(page) {
 
         searchNavItem.textContent = i;
         searchNavDiv.appendChild(searchNavItem);
+    }
+
+    console.log(lastSearchResult.length);
+    console.log(hasMoreResults);
+
+    if(hasMoreResults) {
+        searchNavItem = document.createElement("span");
+        searchNavItem.innerHTML = `<a href="/search">More Results</a>`
+        searchNavDiv.appendChild(searchNavItem)
     }
 }
