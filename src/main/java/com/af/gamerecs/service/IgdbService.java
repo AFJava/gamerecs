@@ -129,7 +129,8 @@ public class IgdbService {
         return response.count();
     }
 
-    // Assume topFeatures is not null and of set size
+    //Search for recommendations
+    //Assume topFeatures is not null and of set size
     public List<IgdbGameDto> searchMatchingGames(List<Feature> topFeatures) {
         String params = "";
 

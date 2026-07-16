@@ -343,3 +343,7 @@ button[type="submit"], button.rate-button {
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
 }
+
+.page-input {
+    display: none;
+}

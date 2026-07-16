@@ -30,7 +30,19 @@
         <h1 th:text="|Search results for &quot;${query}&quot;|"></h1>
 
         <div class="search-results-expanded">
-            
+            <div class="results-list">
+                <div th:each="game : ${games}" class="search-item">
+                    <div class="search-summary">
+                        <img th:if="${game.cover != null}" th:src="https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg">
+                        <img th:if="${game.cover == null}" src="/assets/Image_not_found.png">
+                        <h2 class="game-name" th:text="${game.name}"></h2>
+                        <span th:if="${userGamesIgdbIds.contains(game.id)}" class="game-added-msg-container">
+                            <p class="game-added-msg">This game has already been added to your profile.</p>
+                        </span>
+                        <button th:if="${! userGamesIgdbIds.contains(game.id)}" type="button" class="rate-button" th:data-igdb-id="${game.id}" th:data-game-name="${game.name}">Rate and add to profile</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="page-nav" th:if="${totalPages > 1}">
@@ -60,4 +72,7 @@
         <p class="igdb-disclaimer">All game data and cover images provided by <a href="https://www.igdb.com" target="_blank">igdb.com</a></p>
     </footer>
 </body>
+
+<script src="/js/profile.js"></script>
+
 </html>

@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserGame;
 import com.af.gamerecs.service.CurrentUserService;
+import com.af.gamerecs.service.GameSearchService;
+import com.af.gamerecs.service.IgdbService;
 import com.af.gamerecs.service.UserGameService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,11 +26,15 @@ import jakarta.servlet.http.HttpServletRequest;
 public class MainController {
     public final UserGameService userGameService;
     public final CurrentUserService currentUserService;
+    public final GameSearchService gameSearchService;
+    public final IgdbService igdbService;
     public int pageSize = 10;
     
-    public MainController(UserGameService userGameService, CurrentUserService currentUserService) {
+    public MainController(UserGameService userGameService, CurrentUserService currentUserService, GameSearchService gameSearchService, IgdbService igdbService) {
         this.userGameService = userGameService;
         this.currentUserService = currentUserService;
+        this.igdbService = igdbService;
+        this.gameSearchService = gameSearchService;
     }
 
     @GetMapping("/")
@@ -43,11 +50,10 @@ public class MainController {
     @GetMapping("/users/{id}/profile")
     public String profile(Model model, Authentication authentication) {
         Object principal = authentication.getPrincipal();
-        
         User user = currentUserService.userFromPrincipal(principal);
-
-        //Add profile cards for each game added
         Long userId = user.getId();
+        
+        //Add profile cards for each game added
         List<UserGame> userGames = userGameService.getUserGames(userId);
 
         //Check if game has already been added by comparing IGDB id
@@ -66,7 +72,10 @@ public class MainController {
     }
 
     @GetMapping("/users/{id}/profile/added")
-    public String added(Model model, Authentication authentication, @PathVariable Long id, @RequestParam int page) {
+    public String added(Model model, 
+                        Authentication authentication,
+                        @PathVariable Long id,
+                        @RequestParam int page) {
         Page<UserGame> userGamesPage = userGameService.getPaginatedUserGames(id, PageRequest.of(page - 1, pageSize));
 
         //GetContent() returns List<UserGame>
@@ -90,8 +99,25 @@ public class MainController {
     }
 
     @GetMapping("/search")
-    public String search(Model model, Authentication authentication, @RequestParam String query, @RequestParam("filter-obscure") boolean filterObscure) {
+    public String search(Model model,
+                        Authentication authentication,
+                        @RequestParam String query,
+                        @RequestParam("filter-obscure") boolean filterObscure,
+                        @RequestParam int page) {
         model.addAttribute("query", query);
+
+        List<IgdbGameDto> games = igdbService.searchGames(query, pageSize, page);
+        games = gameSearchService.sortGames(games, query, filterObscure);
+
+        model.addAttribute("games", games);
+
+        Object principal = authentication.getPrincipal();
+        User user = currentUserService.userFromPrincipal(principal);
+        Long userId = user.getId();
+
+        List<UserGame> userGames = userGameService.getUserGames(userId);
+        HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
+        model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
         
         return "search";
     }
