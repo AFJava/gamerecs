@@ -332,7 +332,7 @@ button[type="submit"], button.rate-button {
     background-color: #565f76;
 }
 
-input[name="search"] {
+#searchbar {
     width: 100%;
     background-color: transparent;
     font-size: 1rem;
