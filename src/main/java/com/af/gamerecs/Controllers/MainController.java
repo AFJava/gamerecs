@@ -88,6 +88,13 @@ public class MainController {
 
         return "added";
     }
+
+    @GetMapping("/search")
+    public String search(Model model, Authentication authentication, @RequestParam String query, @RequestParam("filter-obscure") boolean filterObscure) {
+        model.addAttribute("query", query);
+        
+        return "search";
+    }
 }
 
 

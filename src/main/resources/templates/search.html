@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <link rel = "stylesheet" href = "/css/style.css">
+    <title>GameRecs - Search</title>
+</head>
+
+<body>
+    <header class="profile-header">
+        <div class = "navbar">
+            <div class = "logo">
+                <img src = "/assets/Logo.png">
+            </div>
+
+            <div class = "links">
+                <a href = "/" class = "nav-item">Home</a>
+                <form th:action = "@{/logout}" method = "post">
+                    <button type = "submit" class = "nav-item">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <h1 th:text="|Search results for &quot;${query}&quot;|"></h1>
+
+        <div class="search-results-expanded">
+            
+        </div>
+
+        <div class="page-nav" th:if="${totalPages > 1}">
+            <a th:if="${showFirstPage}"
+                th:href="@{/users/{id}/profile/added(id=${id}, page=1)}">
+                    1
+            </a>
+
+            <span th:if="${showLeftEllipsis}">...</span>
+
+            <a th:each="p : ${#numbers.sequence(startPage, endPage)}"
+                th:href="@{/users/{id}/profile/added(id=${id}, page=${p})}"
+                th:text="${p}"
+                th:classappend="${p == page} ? ' active'">
+            </a>
+
+            <span th:if="${showRightEllipsis}">...</span>
+
+            <a th:if="${showLastPage}"
+                th:href="@{/users/{id}/profile/added(id=${id}, page=${totalPages})}"
+                th:text="${totalPages}">
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p class="igdb-disclaimer">All game data and cover images provided by <a href="https://www.igdb.com" target="_blank">igdb.com</a></p>
+    </footer>
+</body>
+</html>
