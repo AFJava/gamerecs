@@ -3,7 +3,6 @@
 //TODO: Style page nav buttons
 //Stop search in progress if another search begins
 
-const searchForm = document.querySelector(".search-form");
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
@@ -18,10 +17,6 @@ let totalPages = 0;
 
 let debounceTimeout;
 let debounceTime = 1000; //in ms (SET TO 1 SECOND FOR DEVELOPMENT)
-
-searchForm.addEventListener("submit", (event) => {
-    fetch("/search");
-})
 
 filterObscureButton.addEventListener("change", () => {
     clearTimeout(debounceTimeout);
