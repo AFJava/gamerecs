@@ -57,7 +57,7 @@ public class MainController {
         List<UserGame> userGames = userGameService.getUserGames(userId);
 
         //Check if game has already been added by comparing IGDB id
-        HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
+        //HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
 
         //Check if userGames is longer than 5; if so, take first 5 for display and add button        
         if(userGames.size() > 5) {
@@ -66,7 +66,7 @@ public class MainController {
         }
         
         model.addAttribute("userGames", userGames);
-        model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
+        //model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
         
         return "profile";
     }
@@ -115,9 +115,12 @@ public class MainController {
         User user = currentUserService.userFromPrincipal(principal);
         Long userId = user.getId();
 
-        List<UserGame> userGames = userGameService.getUserGames(userId);
-        HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
-        model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
+        List<Long> gameIgdbIds = games.stream()
+            .map(IgdbGameDto::id)
+            .toList();
+
+        HashSet<Long> addedGamesIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(userId, gameIgdbIds));
+        model.addAttribute("addedGamesIgdbIds", addedGamesIgdbIds);
         
         return "search";
     }

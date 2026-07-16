@@ -36,10 +36,10 @@
                         <img th:if="${game.cover != null}" th:src="https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg">
                         <img th:if="${game.cover == null}" src="/assets/Image_not_found.png">
                         <h2 class="game-name" th:text="${game.name}"></h2>
-                        <span th:if="${userGamesIgdbIds.contains(game.id)}" class="game-added-msg-container">
+                        <span th:if="${addedGamesIgdbIds.contains(game.id)}" class="game-added-msg-container">
                             <p class="game-added-msg">This game has already been added to your profile.</p>
                         </span>
-                        <button th:if="${! userGamesIgdbIds.contains(game.id)}" type="button" class="rate-button" th:data-igdb-id="${game.id}" th:data-game-name="${game.name}">Rate and add to profile</button>
+                        <button th:if="${! addedGamesIgdbIds.contains(game.id)}" type="button" class="rate-button" th:data-igdb-id="${game.id}" th:data-game-name="${game.name}">Rate and add to profile</button>
                     </div>
                 </div>
             </div>
