@@ -10,6 +10,7 @@ const searchNavDiv = document.querySelector(".page-nav");
 const resultsList = document.querySelector(".results-list");
 const resultsMap = new Map();
 
+let addedGamesIgdbIds = new Set();
 let lastSearchQuery = "";
 let lastSearchResult = [];
 let lastSearchFilterChecked;
@@ -95,11 +96,14 @@ async function search(page) {
             searchURI,
         );
 
+        const responseData = await response.json();
+
         //console.log("request sent");
 
         //Cache query, results and store displayed page in games
+        addedGamesIgdbIds = new Set(responseData.addedGamesIgdbIds)
         lastSearchQuery = searchContent;
-        lastSearchResult = await response.json();
+        lastSearchResult = responseData.games;
         lastSearchFilterChecked = filterObscureChecked;
     }
     
@@ -147,7 +151,7 @@ async function search(page) {
         }
         
         //Select confirmation message or rate & add button depending on whether game has been added
-        const actionHTML = window.userGamesIgdbIds.has(Number(igdbId))
+        const actionHTML = addedGamesIgdbIds.has(Number(igdbId))
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
             : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" data-game-name = "${game.name}">Rate and add to profile</button>`
         

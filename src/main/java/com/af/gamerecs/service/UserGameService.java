@@ -1,7 +1,8 @@
 package com.af.gamerecs.service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,5 +49,9 @@ public class UserGameService {
         }
 
         return igdbIds;
+    }
+    
+    public List<Long> getAddedIgdbIds(Long userId, List<Long> IgdbIds) {
+        return userGameRepository.findAddedIgdbIds(userId, IgdbIds);
     }
 }

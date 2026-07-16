@@ -86,7 +86,7 @@ async function add(event) {
     console.log("POST sent");
 
     //Add igdbId to set so next search correctly displays confirmation message
-    window.userGamesIgdbIds.add(Number(igdbId));
+    //window.userGamesIgdbIds.add(Number(igdbId));
     //console.log(window.userGamesIgdbIds);
 
     //Remove all messages displayed when no games are added, if any

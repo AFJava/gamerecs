@@ -1,6 +1,7 @@
 package com.af.gamerecs.controllers;
 
 import java.util.List;
+import java.util.HashSet;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.SaveGameRequest;
+import com.af.gamerecs.dto.SearchResponse;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
@@ -44,14 +46,25 @@ public class GameController {
 
     /* Endpoint to dynamically results for searchbar */
     @GetMapping("/search")
-    public List<IgdbGameDto> searchGames(@RequestParam String q, @RequestParam boolean filterObscure) {
+    public SearchResponse searchGames(Authentication authentication, @RequestParam String q, @RequestParam boolean filterObscure) {
         //System.out.println("Sending IGDB request");
 
         List<IgdbGameDto> games = igdbService.searchGames(q);
-
         games = gameSearchService.sortGames(games, q, filterObscure);
-        
-        return games;
+
+        Object principal = authentication.getPrincipal();
+        User user = currentUserService.userFromPrincipal(principal);
+        Long userId = user.getId();
+
+        List<Long> gameIgdbIds = games.stream()
+            .map(IgdbGameDto::id)
+            .toList();
+
+        HashSet<Long> addedGamesIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(userId, gameIgdbIds));
+
+        SearchResponse response = new SearchResponse(games, addedGamesIgdbIds);
+
+        return response;
     }
 
     @PostMapping("/add")
