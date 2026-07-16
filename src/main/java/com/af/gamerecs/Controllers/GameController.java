@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.af.gamerecs.dto.IgdbGameDto;
@@ -15,6 +16,7 @@ import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.service.CurrentUserService;
+import com.af.gamerecs.service.GameSearchService;
 import com.af.gamerecs.service.GameService;
 import com.af.gamerecs.service.IgdbService;
 import com.af.gamerecs.service.UserGameService;
@@ -28,14 +30,28 @@ public class GameController {
     public final GameService gameService;
     public final UserPreferenceService userPreferenceService;
     public final IgdbService igdbService;
+    public final GameSearchService gameSearchService;
     public int numFeaturesMatched = 5; //Number of features to be used in IGDB request for recommended games
 
-    public GameController(UserGameService userGameService, CurrentUserService currentUserService, GameService gameService, UserPreferenceService userPreferenceService, IgdbService igdbService) {
+    public GameController(UserGameService userGameService, CurrentUserService currentUserService, GameService gameService, UserPreferenceService userPreferenceService, IgdbService igdbService, GameSearchService gameSearchService) {
         this.userGameService = userGameService;
         this.currentUserService = currentUserService;
         this.gameService = gameService;
         this.userPreferenceService = userPreferenceService;
         this.igdbService = igdbService;
+        this.gameSearchService = gameSearchService;
+    }
+
+    /* Endpoint to dynamically results for searchbar */
+    @GetMapping("/search")
+    public List<IgdbGameDto> searchGames(@RequestParam String q, @RequestParam boolean filterObscure) {
+        //System.out.println("Sending IGDB request");
+
+        List<IgdbGameDto> games = igdbService.searchGames(q);
+
+        games = gameSearchService.sortGames(games, q, filterObscure);
+        
+        return games;
     }
 
     @PostMapping("/add")
@@ -69,7 +85,7 @@ public class GameController {
             userPreferenceService.getFeaturesFromPreferences(preferences.subList(0, numFeaturesMatched))
         );
 
-        System.out.println(topMatches);
+        //System.out.println(topMatches);
 
         return "";
     }

@@ -86,7 +86,7 @@ async function search(page) {
         }
 
         //Build URI depending on filter status
-        const searchURI = `/api/games/search?q=${encodeURIComponent(searchContent)}&filterObscure=${filterObscureChecked}`;
+        const searchURI = `/games/search?q=${encodeURIComponent(searchContent)}&filterObscure=${filterObscureChecked}`;
 
         console.log("URI built");
 
