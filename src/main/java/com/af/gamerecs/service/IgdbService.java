@@ -102,11 +102,7 @@ public class IgdbService {
                 keywords.name,
                 rating,
                 rating_count;
-            where name ~ *"%s"*;
-            sort name asc;
-            limit %d;
-            offset %d;
-        """.formatted(query, pageSize, (page - 1) * pageSize);
+            """;
 
         String where;
         
