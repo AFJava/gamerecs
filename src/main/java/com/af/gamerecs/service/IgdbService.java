@@ -142,16 +142,28 @@ public class IgdbService {
         return Arrays.asList(games);
     }
 
-    public int numPages(String query, int pageSize) {
-        int numResults = numResults(query);
+    public int numPages(String query, int pageSize, boolean filterObscure) {
+        int numResults = numResults(query, filterObscure);
 
         return (int) Math.ceil((double) numResults / pageSize);
     }
 
-    public int numResults(String query) {
+    public int numResults(String query, boolean filterObscure) {
         String body = """
-            where name ~ *"%s"*;
+            where name ~ *"%s"*
         """.formatted(query);
+
+        String where = ";";
+
+        if(filterObscure) {
+            where = """
+                &
+                rating != null &
+                involved_companies != null;
+            """;
+        }
+
+        body += where;
 
         CountResponse response = igdbWebClient.post()
             .uri("/games/count")
@@ -162,7 +174,7 @@ public class IgdbService {
             .bodyToMono(CountResponse.class)
             .block();
         
-        //System.out.println(numResults);
+        System.out.println(response.count());
         
         return response.count();
     }
