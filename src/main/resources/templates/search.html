@@ -31,10 +31,10 @@
 
         <div class="search-results-expanded">
             <div class="results-list">
-                <div th:each="game : ${games}" class="search-item">
+                <div th:each="game : ${games}" class="search-item-expanded">
                     <div class="search-summary">
-                        <img th:if="${game.cover != null}" th:src="https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg">
-                        <img th:if="${game.cover == null}" src="/assets/Image_not_found.png">
+                        <img th:if="${game.cover != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg|" class="game-preview-search-expanded">
+                        <img th:if="${game.cover == null}" src="/assets/Image_not_found.png" class="game-preview-search-expanded">
                         <h2 class="game-name" th:text="${game.name}"></h2>
                         <span th:if="${addedGamesIgdbIds.contains(game.id)}" class="game-added-msg-container">
                             <p class="game-added-msg">This game has already been added to your profile.</p>
