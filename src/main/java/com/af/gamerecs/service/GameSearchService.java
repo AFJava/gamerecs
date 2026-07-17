@@ -27,18 +27,7 @@ public class GameSearchService {
         return score;
     }
 
-    public List<IgdbGameDto> sortGames(List<IgdbGameDto> games, String query, boolean filterObscure) { 
-        if(filterObscure) {
-            //Filter out games that have not been rated at all or ones that do not have any official companies tagged
-            games = games.stream()
-                .filter(g -> (g.name().equalsIgnoreCase(query)
-                        || (g.involved_companies() != null)
-                    )   && g.rating() != null
-                )
-                .toList();
-        }
-
-        //Limit to 5 results in either case and keep most relevant results on top
+    public List<IgdbGameDto> sortGames(List<IgdbGameDto> games, String query) {
         games = games.stream()
             .sorted((a, b) ->
                 Integer.compare(

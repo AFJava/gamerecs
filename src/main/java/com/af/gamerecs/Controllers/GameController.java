@@ -49,8 +49,8 @@ public class GameController {
     public SearchResponse searchGames(Authentication authentication, @RequestParam String q, @RequestParam boolean filterObscure) {
         //System.out.println("Sending IGDB request");
 
-        List<IgdbGameDto> games = igdbService.searchGames(q);
-        games = gameSearchService.sortGames(games, q, filterObscure);
+        List<IgdbGameDto> games = igdbService.searchGames(q, filterObscure);
+        games = gameSearchService.sortGames(games, q);
 
         Object principal = authentication.getPrincipal();
         User user = currentUserService.userFromPrincipal(principal);

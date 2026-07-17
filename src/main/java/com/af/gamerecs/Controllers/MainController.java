@@ -102,12 +102,14 @@ public class MainController {
     public String search(Model model,
                         Authentication authentication,
                         @RequestParam String query,
-                        @RequestParam("filter-obscure") boolean filterObscure,
+                        @RequestParam(name = "filter-obscure", defaultValue = "false") boolean filterObscure,
                         @RequestParam int page) {
         model.addAttribute("query", query);
 
-        List<IgdbGameDto> games = igdbService.searchGames(query, pageSize, page);
-        games = gameSearchService.sortGames(games, query, filterObscure);
+        List<IgdbGameDto> games = igdbService.searchGames(query, pageSize, page, filterObscure);
+        games = gameSearchService.sortGames(games, query);
+
+        System.out.println(games.size());
 
         model.addAttribute("games", games);
 

@@ -25,7 +25,7 @@ public class IgdbService {
     }
 
     //For dynamic searchbar
-    public List<IgdbGameDto> searchGames(String query) {
+    public List<IgdbGameDto> searchGames(String query, boolean filterObscure) {
         //If 26, frontend adds button navigating to expanded search results (25 displayed, paginated)
         String body = """
             fields id,
@@ -43,10 +43,28 @@ public class IgdbService {
                 keywords.name,
                 rating,
                 rating_count;
-            where name ~ *"%s"*;
-            sort name asc;
-            limit 26;
-        """.formatted(query);
+            """;
+        
+        String where;
+        
+        if(! filterObscure) {
+            where = """
+                where name ~ *"%s"*;
+                sort name asc;
+                limit 26;
+            """.formatted(query);
+        }
+        else {
+            where = """
+                where name ~ *"%s"* &
+                rating != null &
+                involved_companies != null;
+                sort name asc;
+                limit 26;
+            """.formatted(query);
+        }
+
+        body += where;
 
         //System.out.println("Before POST");
 
@@ -67,7 +85,7 @@ public class IgdbService {
     }
 
     //For expanded search results
-    public List<IgdbGameDto> searchGames(String query, int pageSize, int page) {
+    public List<IgdbGameDto> searchGames(String query, int pageSize, int page, boolean filterObscure) {
         String body = """
             fields id,
                 name,
@@ -90,6 +108,29 @@ public class IgdbService {
             offset %d;
         """.formatted(query, pageSize, (page - 1) * pageSize);
 
+        String where;
+        
+        if(! filterObscure) {
+            where = """
+                where name ~ *"%s"*;
+                sort name asc;
+                limit %d;
+                offset %d;
+            """.formatted(query, pageSize, (page - 1) * pageSize);
+        }
+        else {
+            where = """
+                where name ~ *"%s"* &
+                rating != null &
+                involved_companies != null;
+                sort name asc;
+                limit %d;
+                offset %d;
+            """.formatted(query, pageSize, (page - 1) * pageSize);
+        }
+
+        body += where;
+
         IgdbGameDto[] games = igdbWebClient.post()
             .uri("/games")
             .header("Client-ID", twitchProperties.client_id())
@@ -99,6 +140,7 @@ public class IgdbService {
             .bodyToMono(IgdbGameDto[].class)
             .block();
 
+        System.out.println(games.length);
         //System.out.println(Arrays.asList(games));
         
         return Arrays.asList(games);
