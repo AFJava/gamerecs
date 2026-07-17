@@ -123,6 +123,21 @@ public class MainController {
 
         HashSet<Long> addedGamesIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(userId, gameIgdbIds));
         model.addAttribute("addedGamesIgdbIds", addedGamesIgdbIds);
+
+        int totalPages = igdbService.numPages(query, pageSize, filterObscure);
+
+        int startPage = Math.max(1, page - 2);
+        int endPage = Math.min(totalPages, page + 2);
+
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("showFirstPage", startPage > 1);
+        model.addAttribute("showLastPage", endPage < totalPages);
+        model.addAttribute("showLeftEllipsis", startPage > 2);
+        model.addAttribute("showRightEllipsis", endPage < totalPages - 1);
+
+        model.addAttribute("filterObscure", filterObscure);
         
         return "search";
     }
