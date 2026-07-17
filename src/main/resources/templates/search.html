@@ -24,6 +24,29 @@
                 </form>
             </div>
         </div>
+
+        <div class="search-container">
+            <form class = "search-form" action="/search" method="GET">
+                <input type="number" name="page" value="1" class="page-input">
+
+                <div class="filter-container">
+                    <input type="checkbox" name="filter-obscure" id="filter-obscure" checked>
+                    <label for="filter-obscure" title="Exclude games added by &lt;100 players">Filter obscure results</label>
+                </div>
+                
+                <div class="searchbar-container">
+                    <input type = "text" name = "query" class = "searchbar" id="searchbar" placeholder = "Add and rate games you've played to your profile">
+                    <button id="search-button" class="search-button" type="submit">
+                        <img src = "/assets/Search Icon.png" class = "search-icon">
+                    </button>
+                </div>
+            </form>
+            
+            <div class="search-results">
+                <div class="results-list"></div>
+                <div class="page-nav"></div>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -31,10 +54,10 @@
 
         <div class="search-results-expanded">
             <div class="results-list">
-                <div th:each="game : ${games}" class="search-item-expanded">
+                <div th:each="game : ${games}" class="search-item expanded">
                     <div class="search-summary">
-                        <img th:if="${game.cover != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg|" class="game-preview-search-expanded">
-                        <img th:if="${game.cover == null}" src="/assets/Image_not_found.png" class="game-preview-search-expanded">
+                        <img th:if="${game.cover != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg|" class="game-preview-search">
+                        <img th:if="${game.cover == null}" src="/assets/Image_not_found.png" class="game-preview-search">
                         <h2 class="game-name" th:text="${game.name}"></h2>
                         <span th:if="${addedGamesIgdbIds.contains(game.id)}" class="game-added-msg-container">
                             <p class="game-added-msg">This game has already been added to your profile.</p>
@@ -73,6 +96,16 @@
     </footer>
 </body>
 
+<script src="/js/search.js"></script>
+<script th:inline="javascript" type="text/javascript">
+    const games = /*[[${games}]]*/ [];
+
+    console.log(games);
+
+    games.forEach(game => {
+        resultsMap.set(Number(game.id), game);
+    });
+</script>
 <script src="/js/profile.js"></script>
 
 </html>
