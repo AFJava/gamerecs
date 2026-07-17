@@ -180,11 +180,7 @@ main {
     background-color: #565f76;
 }
 
-.search-item-expanded {
-    display: grid;
-    grid-template-rows: 1in auto;
-    width: 100%;
-    border-radius: 5px;
+.expanded:hover {
     background-color: #717c98;
 }
 
