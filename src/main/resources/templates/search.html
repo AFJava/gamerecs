@@ -19,6 +19,7 @@
 
             <div class = "links">
                 <a href = "/" class = "nav-item">Home</a>
+                <a th:if="${authenticated}" th:href="@{/users/{id}/profile(id=${id})}" class="nav-item">Profile</a>
                 <form th:if="${authenticated}" th:action = "@{/logout}" method = "post">
                     <button type = "submit" class = "nav-item">Logout</button>
                 </form>

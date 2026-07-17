@@ -48,7 +48,7 @@ public class MainController {
     }
 
     @GetMapping("/users/{id}/profile")
-    public String profile(Model model, Authentication authentication) {
+    public String profile(Model model, Authentication authentication, @PathVariable Long id) {
         Object principal = authentication.getPrincipal();
         User user = currentUserService.userFromPrincipal(principal);
         Long userId = user.getId();
@@ -128,6 +128,8 @@ public class MainController {
                 .toList();
             
             addedGamesIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(userId, gameIgdbIds));
+
+            model.addAttribute("id", userId);
         }
 
         model.addAttribute("authenticated", authenticated);
