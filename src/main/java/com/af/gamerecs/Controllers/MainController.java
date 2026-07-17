@@ -112,16 +112,25 @@ public class MainController {
         System.out.println(games.size());
 
         model.addAttribute("games", games);
+        
+        HashSet<Long> addedGamesIgdbIds = new HashSet<>();
+        boolean authenticated = false;
 
-        Object principal = authentication.getPrincipal();
-        User user = currentUserService.userFromPrincipal(principal);
-        Long userId = user.getId();
+        if(authentication != null) {
+            authenticated = true;
 
-        List<Long> gameIgdbIds = games.stream()
-            .map(IgdbGameDto::id)
-            .toList();
+            Object principal = authentication.getPrincipal();
+            User user = currentUserService.userFromPrincipal(principal);
+            Long userId = user.getId();
+            
+            List<Long> gameIgdbIds = games.stream()
+                .map(IgdbGameDto::id)
+                .toList();
+            
+            addedGamesIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(userId, gameIgdbIds));
+        }
 
-        HashSet<Long> addedGamesIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(userId, gameIgdbIds));
+        model.addAttribute("authenticated", authenticated);
         model.addAttribute("addedGamesIgdbIds", addedGamesIgdbIds);
 
         int totalPages = igdbService.numPages(query, pageSize, filterObscure);
