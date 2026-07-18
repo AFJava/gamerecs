@@ -38,7 +38,7 @@ public class TwitchAuthService {
                 .build()
             )
             .retrieve()
-            .bodyToMono(TwitchAuthResponse.class) //TODO create TwitchAuthResponse
+            .bodyToMono(TwitchAuthResponse.class)
             .block();
         
         accessToken = response.access_token();
