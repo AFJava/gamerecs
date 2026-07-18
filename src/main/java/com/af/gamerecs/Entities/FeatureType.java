@@ -2,7 +2,9 @@ package com.af.gamerecs.entities;
 
 public enum FeatureType {
     FRANCHISE,
-    COMPANY,
+    PUBLISHER,
+    DEVELOPER,
+    INVOLVED_COMPANY,
     PLATFORM,
     GENRE,
     THEME,
@@ -11,8 +13,8 @@ public enum FeatureType {
     KEYWORD;
 
     public String toIgdbField() {
-        if(this == FeatureType.COMPANY) {
-            return "companies";
+        if(this == FeatureType.PUBLISHER || this == FeatureType.DEVELOPER || this == FeatureType.INVOLVED_COMPANY) {
+            return "involved_companies";
         }
 
         String fieldName = this.toString().toLowerCase() + "s";

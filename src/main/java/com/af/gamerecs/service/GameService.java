@@ -47,7 +47,7 @@ public class GameService {
                         game.cover().image_id(),
                         releaseDate,
                         parseFeatures(franchiseNames(game),
-                            parseCompanies(game),
+                            game.involved_companies(),
                             game.platforms(),
                             game.genres(),
                             game.themes(),
@@ -83,22 +83,8 @@ public class GameService {
 
         return result;
     }
-
-    private List<FeatureDto> parseCompanies(IgdbGameDto game) {
-        List<FeatureDto> companies = new ArrayList<>();
-
-        if(game.involved_companies() == null) {
-            return null;
-        }
-
-        for(CompanyDto involvedCompany : game.involved_companies()) {
-            companies.add(involvedCompany.company());
-        }
-
-        return companies;
-    }
     
-    private List<FeatureDto> safeList(List<FeatureDto> list) {
+    private <T> List<T> safeList(List<T> list) {
         if(list == null) {
             return new ArrayList<>();
         }
@@ -107,7 +93,7 @@ public class GameService {
     }
 
     public Set<Feature> parseFeatures(List<FeatureDto> franchises,
-            List<FeatureDto> companies,
+            List<CompanyDto> companies,
             List<FeatureDto> platforms,
             List<FeatureDto> genres,
             List<FeatureDto> themes,
@@ -120,8 +106,21 @@ public class GameService {
             features.add(new Feature(FeatureType.FRANCHISE, franchise.id(), franchise.name()));
         }
 
-        for(FeatureDto company : safeList(companies)) {
-            features.add(new Feature(FeatureType.COMPANY, company.id(), company.name()));
+        for(CompanyDto company : safeList(companies)) {
+            FeatureType companyType;
+
+            if(company.developer()) {
+                companyType = FeatureType.DEVELOPER;
+            }
+            else if(company.publisher()) {
+                companyType = FeatureType.PUBLISHER;
+            }
+            else {
+                //Generic involved company, weighted lower than developer/publisher
+                companyType = FeatureType.INVOLVED_COMPANY;
+            }
+
+            features.add(new Feature(companyType, company.id(), company.company().name()));
         }
 
         for(FeatureDto platform : safeList(platforms)) {
