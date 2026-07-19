@@ -107,22 +107,7 @@ public class GameService {
         }
 
         for(CompanyDto company : safeList(companies)) {
-            FeatureType companyType;
-
-            if(company.developer()) {
-                companyType = FeatureType.DEVELOPER;
-            }
-            else if(company.publisher()) {
-                companyType = FeatureType.PUBLISHER;
-            }
-            else if(company.porting()) {
-                companyType = FeatureType.PORTING;
-            }
-            else {
-                companyType = FeatureType.SUPPORTING;
-            }
-
-            features.add(new Feature(companyType, company.company().id(), company.company().name()));
+            features.add(new Feature(getCompanyRole(company), company.company().id(), company.company().name()));
         }
 
         for(FeatureDto platform : safeList(platforms)) {
@@ -150,5 +135,20 @@ public class GameService {
         }
 
         return features;
+    }
+
+    public FeatureType getCompanyRole(CompanyDto company) {
+        if(company.developer()) {
+            return FeatureType.DEVELOPER;
+        }
+        else if(company.publisher()) {
+            return FeatureType.PUBLISHER;
+        }
+        else if(company.porting()) {
+            return FeatureType.PORTING;
+        }
+        else {
+            return FeatureType.SUPPORTING;
+        }
     }
 }

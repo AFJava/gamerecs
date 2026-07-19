@@ -19,6 +19,7 @@ import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.entities.CompanyReference;
+import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.service.CompanyReferenceService;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameSearchService;
@@ -97,7 +98,14 @@ public class GameController {
             List<CompanyDto> involvedCompanies = game.involved_companies();
 
             for(CompanyDto involvedCompany : involvedCompanies) {
-                companyReferenceService.saveCompanyReference(new CompanyReference(involvedCompany.id(), involvedCompany.company().id()));
+                companyReferenceService.saveCompanyReference(new CompanyReference(
+                    involvedCompany.id(), 
+                    new Feature(
+                        gameService.getCompanyRole(involvedCompany),
+                        involvedCompany.company().id(),
+                        involvedCompany.company().name() 
+                    ))
+                );
             }
         }
         
