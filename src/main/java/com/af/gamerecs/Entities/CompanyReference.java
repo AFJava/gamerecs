@@ -16,4 +16,17 @@ public class CompanyReference {
     public CompanyReference() {
 
     }
+
+    public CompanyReference(Long involvedCompanyId, Long companyId) {
+        this.involvedCompanyId = involvedCompanyId;
+        this.companyId = companyId;
+    }
+
+    public Long getInvolvedCompanyId() {
+        return involvedCompanyId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
 }
