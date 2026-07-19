@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.dto.SearchResponse;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
+import com.af.gamerecs.entities.CompanyReference;
+import com.af.gamerecs.service.CompanyReferenceService;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameSearchService;
 import com.af.gamerecs.service.GameService;
@@ -33,15 +36,23 @@ public class GameController {
     public final UserPreferenceService userPreferenceService;
     public final IgdbService igdbService;
     public final GameSearchService gameSearchService;
+    public final CompanyReferenceService companyReferenceService;
     public int numFeaturesMatched = 5; //Number of features to be used in IGDB request for recommended games
 
-    public GameController(UserGameService userGameService, CurrentUserService currentUserService, GameService gameService, UserPreferenceService userPreferenceService, IgdbService igdbService, GameSearchService gameSearchService) {
+    public GameController(UserGameService userGameService,
+                        CurrentUserService currentUserService,
+                        GameService gameService,
+                        UserPreferenceService userPreferenceService,
+                        IgdbService igdbService,
+                        GameSearchService gameSearchService,
+                        CompanyReferenceService companyReferenceService) {
         this.userGameService = userGameService;
         this.currentUserService = currentUserService;
         this.gameService = gameService;
         this.userPreferenceService = userPreferenceService;
         this.igdbService = igdbService;
         this.gameSearchService = gameSearchService;
+        this.companyReferenceService = companyReferenceService;
     }
 
     /* Endpoint to dynamically results for searchbar */
@@ -75,12 +86,21 @@ public class GameController {
 
         Long igdbId = saveGameRequest.igdbId();
         Integer rating = saveGameRequest.rating();
-        IgdbGameDto igdbGameDto = saveGameRequest.game();
+        IgdbGameDto game = saveGameRequest.game();
 
-        Game g = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(igdbGameDto)));
+        Game g = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(game)));
 
         userGameService.saveToProfile(user, g, rating);
         userPreferenceService.updatePreferenceFromGame(user, g, rating);
+
+        if(game.involved_companies() != null) {
+            List<CompanyDto> involvedCompanies = game.involved_companies();
+
+            for(CompanyDto involvedCompany : involvedCompanies) {
+                companyReferenceService.saveCompanyReference(new CompanyReference(involvedCompany.id(), involvedCompany.company().id()));
+            }
+        }
+        
         
         return "";
     }
