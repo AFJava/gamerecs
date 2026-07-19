@@ -4,7 +4,8 @@ public enum FeatureType {
     FRANCHISE,
     PUBLISHER,
     DEVELOPER,
-    INVOLVED_COMPANY,
+    SUPPORTING,
+    PORTING,
     PLATFORM,
     GENRE,
     THEME,
@@ -13,7 +14,10 @@ public enum FeatureType {
     KEYWORD;
 
     public String toIgdbField() {
-        if(this == FeatureType.PUBLISHER || this == FeatureType.DEVELOPER || this == FeatureType.INVOLVED_COMPANY) {
+        if(this == FeatureType.PUBLISHER
+            || this == FeatureType.DEVELOPER
+            || this == FeatureType.SUPPORTING
+            || this == FeatureType.PORTING) {
             return "involved_companies";
         }
 

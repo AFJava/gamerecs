@@ -115,9 +115,11 @@ public class GameService {
             else if(company.publisher()) {
                 companyType = FeatureType.PUBLISHER;
             }
+            else if(company.porting()) {
+                companyType = FeatureType.PORTING;
+            }
             else {
-                //Generic involved company, weighted lower than developer/publisher
-                companyType = FeatureType.INVOLVED_COMPANY;
+                companyType = FeatureType.SUPPORTING;
             }
 
             features.add(new Feature(companyType, company.company().id(), company.company().name()));
