@@ -120,7 +120,7 @@ public class GameService {
                 companyType = FeatureType.INVOLVED_COMPANY;
             }
 
-            features.add(new Feature(companyType, company.id(), company.company().name()));
+            features.add(new Feature(companyType, company.company().id(), company.company().name()));
         }
 
         for(FeatureDto platform : safeList(platforms)) {
