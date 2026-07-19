@@ -5,12 +5,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.UniqueConstraint;
+
 
 @Entity
-@Table(name = "company_reference")
+@Table(name = "company_reference",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+            "involved_company_id",
+            "feature_id"
+        })
+    }
+)
 public class CompanyReference {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,23 +29,23 @@ public class CompanyReference {
     @Column(unique = true)
     Long involvedCompanyId;
 
-    @Column(unique = true)
-    Long companyId;
+    @Embedded
+    Feature company;
 
     public CompanyReference() {
 
     }
 
-    public CompanyReference(Long involvedCompanyId, Long companyId) {
+    public CompanyReference(Long involvedCompanyId, Feature company) {
         this.involvedCompanyId = involvedCompanyId;
-        this.companyId = companyId;
+        this.company = company;
     }
 
     public Long getInvolvedCompanyId() {
         return involvedCompanyId;
     }
 
-    public Long getCompanyId() {
-        return companyId;
+    public Feature getCompanyId() {
+        return company;
     }
 }
