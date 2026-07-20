@@ -2,6 +2,7 @@ package com.af.gamerecs.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.af.gamerecs.config.TwitchProperties;
 import com.af.gamerecs.dto.CountResponse;
 import com.af.gamerecs.dto.IgdbGameDto;
+import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.entities.Feature;
 
 @Service
@@ -268,5 +270,23 @@ public class IgdbService {
         //System.out.println(Arrays.asList(games));
         
         return Arrays.asList(games);
+    }
+
+    public List<CompanyDto> getInvolvedCompanyInstances(Long companyId) {
+        String body = """
+            fields id, developer, publisher, supporting, porting;
+            where company = %d;
+        """.formatted(companyId);
+
+        CompanyDto[] response = igdbWebClient.post()
+            .uri("/involved_companies")
+            .header("Client-ID", twitchProperties.client_id())
+            .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
+            .bodyValue(body)
+            .retrieve()
+            .bodyToMono(CompanyDto[].class)
+            .block();
+
+        return Arrays.asList(response);
     }
 }
