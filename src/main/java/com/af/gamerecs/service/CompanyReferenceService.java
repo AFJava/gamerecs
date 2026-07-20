@@ -3,6 +3,7 @@ package com.af.gamerecs.service;
 import org.springframework.stereotype.Service;
 
 import com.af.gamerecs.entities.CompanyReference;
+import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.entities.FeatureType;
 import com.af.gamerecs.repositories.CompanyReferenceRepository;
 
@@ -22,7 +23,7 @@ public class CompanyReferenceService {
         return companyReferenceRepository.findByCompanyIgdbFeatureIdAndCompanyFeatureType(companyId, companyRole);
     }
     
-    public Long getInvolvedCompanyId(Long companyId, FeatureType companyRole) {
-        return getCompanyReference(companyId, companyRole).getInvolvedCompanyId();
+    public Long getInvolvedCompanyId(Feature company) {
+        return getCompanyReference(company.getIgdbFeatureId(), company.getFeatureType()).getInvolvedCompanyId();
     }
 }

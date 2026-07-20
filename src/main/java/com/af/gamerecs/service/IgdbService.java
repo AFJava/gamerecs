@@ -16,12 +16,14 @@ import com.af.gamerecs.entities.Feature;
 public class IgdbService {
     private final TwitchProperties twitchProperties;
     private final TwitchAuthService twitchAuthService;
+    private final CompanyReferenceService companyReferenceService;
     @Qualifier("igdbWebClient") private final WebClient igdbWebClient;
 
-    public IgdbService(TwitchProperties twitchProperties, TwitchAuthService twitchAuthService, WebClient igdbWebClient) {
+    public IgdbService(TwitchProperties twitchProperties, TwitchAuthService twitchAuthService, WebClient igdbWebClient, CompanyReferenceService companyReferenceService) {
         this.twitchProperties = twitchProperties;
         this.twitchAuthService = twitchAuthService;
         this.igdbWebClient = igdbWebClient;
+        this.companyReferenceService = companyReferenceService;
     }
 
     //For dynamic searchbar
@@ -37,6 +39,8 @@ public class IgdbService {
                 involved_companies.company.name,
                 involved_companies.developer,
                 involved_companies.publisher,
+                involved_companies.supporting,
+                involved_companies.porting,
                 genres.name,
                 themes.name,
                 game_modes.name,
@@ -98,6 +102,8 @@ public class IgdbService {
                 involved_companies.company.name,
                 involved_companies.developer,
                 involved_companies.publisher,
+                involved_companies.supporting,
+                involved_companies.porting,
                 genres.name,
                 themes.name,
                 game_modes.name,
@@ -190,11 +196,35 @@ public class IgdbService {
 
         //Handle first case separately
         //NOTE that IGDB field must be lowercase, plural (handled by FeatureType::toIgdbField())
-        params += String.format("%s = (%d)", topFeatures.get(0).getFeatureType().toIgdbField(), topFeatures.get(0).getIgdbFeatureId());
+
+        if(topFeatures.get(0).getFeatureType().isCompany()) {
+            params += String.format("%s = (%d)",
+                topFeatures.get(0).getFeatureType().toIgdbField(),
+                companyReferenceService.getInvolvedCompanyId(topFeatures.get(0))
+            );
+        }
+        else {
+            params += String.format("%s = (%d)",
+                topFeatures.get(0).getFeatureType().toIgdbField(),
+                topFeatures.get(0).getIgdbFeatureId()
+            );
+        }
         
-        for(int i = 0; i < topFeatures.size() - 1; i++) {
+        for(int i = 1; i < topFeatures.size(); i++) {
             Feature feature = topFeatures.get(i);
-            params += String.format(" | %s = (%d)", feature.getFeatureType().toIgdbField(), feature.getIgdbFeatureId());
+
+            if(feature.getFeatureType().isCompany()) {
+                params += String.format(" | %s = (%d)",
+                    feature.getFeatureType().toIgdbField(),
+                    companyReferenceService.getInvolvedCompanyId(feature)
+                );
+            }
+            else {
+                params += String.format(" | %s = (%d)",
+                    feature.getFeatureType().toIgdbField(),
+                    feature.getIgdbFeatureId()
+                );
+            }
         }
         
         System.out.println(params);
@@ -209,6 +239,8 @@ public class IgdbService {
                 involved_companies.company.name,
                 involved_companies.developer,
                 involved_companies.publisher,
+                involved_companies.supporting,
+                involved_companies.porting,
                 genres.name,
                 themes.name,
                 game_modes.name,

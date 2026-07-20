@@ -14,15 +14,19 @@ public enum FeatureType {
     KEYWORD;
 
     public String toIgdbField() {
-        if(this == FeatureType.PUBLISHER
-            || this == FeatureType.DEVELOPER
-            || this == FeatureType.SUPPORTING
-            || this == FeatureType.PORTING) {
+        if(isCompany()) {
             return "involved_companies";
         }
 
         String fieldName = this.toString().toLowerCase() + "s";
 
         return fieldName;
+    }
+
+    public boolean isCompany() {
+        return this == FeatureType.PUBLISHER
+            || this == FeatureType.DEVELOPER
+            || this == FeatureType.SUPPORTING
+            || this == FeatureType.PORTING;
     }
 }
