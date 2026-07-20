@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.dto.SearchResponse;
+import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
@@ -93,22 +93,6 @@ public class GameController {
 
         userGameService.saveToProfile(user, g, rating);
         userPreferenceService.updatePreferenceFromGame(user, g, rating);
-
-        if(game.involved_companies() != null) {
-            List<CompanyDto> involvedCompanies = game.involved_companies();
-
-            for(CompanyDto involvedCompany : involvedCompanies) {
-                companyReferenceService.saveCompanyReference(new CompanyReference(
-                    involvedCompany.id(), 
-                    new Feature(
-                        gameService.getCompanyRole(involvedCompany),
-                        involvedCompany.company().id(),
-                        involvedCompany.company().name() 
-                    ))
-                );
-            }
-        }
-        
         
         return "";
     }
@@ -121,9 +105,48 @@ public class GameController {
         User user = currentUserService.userFromPrincipal(principal);
 
         List<UserPreference> preferences = userPreferenceService.getSortedPreferences(user);
+        List<UserPreference> topPreferences = preferences.subList(0, numFeaturesMatched);
+
+        //If any top preference is a company, find involved_compnay ids and store as CompanyReference
+        for(UserPreference preference : topPreferences) {
+            if(preference.getFeature().getFeatureType().isCompany()) {
+                //Check if already stored
+                List<CompanyReference> references = companyReferenceService.getAllCompanyReferences(
+                    preference.getFeature().getIgdbFeatureId(), 
+                    preference.getFeature().getFeatureType()
+                );
+
+                if(references.isEmpty()) {
+                    //If reference was added more than 30 days ago
+                    //if(references.get(0).getAdded())
+
+                    List<CompanyDto> involvedCompanies = igdbService.getInvolvedCompanyInstances(
+                        preference.getFeature().getIgdbFeatureId()
+                    );
+
+                    for(CompanyDto dto : involvedCompanies) {
+                        references.add(new CompanyReference(
+                            dto.id(),
+                            preference.getFeature().getIgdbFeatureId(),
+                            gameService.getCompanyRole(dto)
+                        ));
+                    }
+
+                    companyReferenceService.saveAllCompanyReferences(references);
+                }
+
+                //Delay?
+                try {
+                    Thread.sleep(500); //Pause for 500ms to avoid hitting rate limit
+                }
+                catch(InterruptedException e) {
+
+                }
+            }
+        }
 
         List<IgdbGameDto> topMatches = igdbService.searchMatchingGames(
-            userPreferenceService.getFeaturesFromPreferences(preferences.subList(0, numFeaturesMatched))
+            userPreferenceService.getFeaturesFromPreferences(topPreferences)
         );
 
         //System.out.println(topMatches);
