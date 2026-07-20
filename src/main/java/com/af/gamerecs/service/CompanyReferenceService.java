@@ -1,9 +1,10 @@
 package com.af.gamerecs.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.af.gamerecs.entities.CompanyReference;
-import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.entities.FeatureType;
 import com.af.gamerecs.repositories.CompanyReferenceRepository;
 
@@ -15,15 +16,16 @@ public class CompanyReferenceService {
         this.companyReferenceRepository = companyReferenceRepository;
     }
 
-    public CompanyReference saveCompanyReference(CompanyReference reference) {
-        return companyReferenceRepository.save(reference);
+    public List<CompanyReference> saveAllCompanyReferences(List<CompanyReference> references) {
+        return companyReferenceRepository.saveAll(references);
     }
 
-    public CompanyReference getCompanyReference(Long companyId, FeatureType companyRole) {
-        return companyReferenceRepository.findByCompanyIgdbFeatureIdAndCompanyFeatureType(companyId, companyRole);
+    public List<CompanyReference> getAllCompanyReferences(Long companyId, FeatureType role) {
+        return companyReferenceRepository.findAllByCompanyIdAndRole(companyId, role);
     }
-    
-    public Long getInvolvedCompanyId(Feature company) {
-        return getCompanyReference(company.getIgdbFeatureId(), company.getFeatureType()).getInvolvedCompanyId();
+    public List<Long> getAllInvolvedCompanyIds(Long companyId, FeatureType role) {
+        return companyReferenceRepository.findAllByCompanyIdAndRole(companyId, role).stream()
+            .map(CompanyReference::getInvolvedCompanyId)
+            .toList();
     }
 }
