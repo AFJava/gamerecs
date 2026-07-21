@@ -1,6 +1,7 @@
 package com.af.gamerecs.service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ import com.af.gamerecs.dto.CountResponse;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.entities.Feature;
+import com.af.gamerecs.entities.FeatureType;
 
 @Service
 public class IgdbService {
@@ -194,42 +196,7 @@ public class IgdbService {
     //Search for recommendations
     //Assume topFeatures is not null and of set size
     public List<IgdbGameDto> searchMatchingGames(List<Feature> topFeatures) {
-        String params = "";
-
-        //Handle first case separately
-        //NOTE that IGDB field must be lowercase, plural (handled by FeatureType::toIgdbField())
-
-        if(topFeatures.get(0).getFeatureType().isCompany()) {
-            params += String.format("%s = (%d)",
-                topFeatures.get(0).getFeatureType().toIgdbField(),
-                companyReferenceService.getInvolvedCompanyId(topFeatures.get(0))
-            );
-        }
-        else {
-            params += String.format("%s = (%d)",
-                topFeatures.get(0).getFeatureType().toIgdbField(),
-                topFeatures.get(0).getIgdbFeatureId()
-            );
-        }
-        
-        for(int i = 1; i < topFeatures.size(); i++) {
-            Feature feature = topFeatures.get(i);
-
-            if(feature.getFeatureType().isCompany()) {
-                params += String.format(" | %s = (%d)",
-                    feature.getFeatureType().toIgdbField(),
-                    companyReferenceService.getInvolvedCompanyId(feature)
-                );
-            }
-            else {
-                params += String.format(" | %s = (%d)",
-                    feature.getFeatureType().toIgdbField(),
-                    feature.getIgdbFeatureId()
-                );
-            }
-        }
-        
-        System.out.println(params);
+        String params = parseParams(topFeatures);
 
         String body = """
             fields id,
@@ -265,8 +232,7 @@ public class IgdbService {
             .bodyToMono(IgdbGameDto[].class)
             .block();
 
-        //System.out.println(twitchProperties.client_id());
-        //System.out.println(twitchAuthService.getAccessToken());
+        System.out.println("Search matching successful");
         //System.out.println(Arrays.asList(games));
         
         return Arrays.asList(games);
@@ -288,5 +254,49 @@ public class IgdbService {
             .block();
 
         return Arrays.asList(response);
+    }
+
+    public String parseParams(List<Feature> features) {
+        HashMap<FeatureType, List<Long>> featureIdMap = new HashMap<>();
+
+        for(Feature feature : features) {
+            FeatureType type = feature.getFeatureType();
+            
+            if(! featureIdMap.containsKey(type)) {
+                featureIdMap.put(type, new ArrayList<Long>());
+            }
+
+            if(! type.isCompany()) {
+                featureIdMap.get(type).add(feature.getIgdbFeatureId());
+            }
+            else {
+                featureIdMap.get(type).addAll(
+                    companyReferenceService.getAllInvolvedCompanyIds(feature.getIgdbFeatureId(), type)
+                );
+            }
+        }
+
+        StringBuilder params = new StringBuilder("");
+
+        for(FeatureType type : featureIdMap.keySet()) {
+            StringBuilder param = new StringBuilder(type.toIgdbField() + " = (");
+
+            for(int i = 0; i < featureIdMap.get(type).size(); i++) {
+                if(i == 0) {
+                    param.append(featureIdMap.get(type).get(i));
+                } else {
+                    param.append(", " + featureIdMap.get(type).get(i));
+                }
+            }
+
+            param.append(")");
+            params.append(param + " | ");
+        }
+
+        params.setLength(params.length() - 3);
+
+        System.out.println(params);
+
+        return params.toString();
     }
 }
