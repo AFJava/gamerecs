@@ -59,7 +59,7 @@ public class UserPreferenceService {
                 //System.out.println("Preference not found; creating new preference " + preference);
             }
 
-            preference.setWeight(preference.getWeight() + rating);
+            preference.setWeight(preference.getWeight() + feature.getFeatureType().getWeightMultiplier() * rating);
 
             updatedPreferences.add(preference);
         }
