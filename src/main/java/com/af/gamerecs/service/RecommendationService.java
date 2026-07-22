@@ -3,13 +3,17 @@ package com.af.gamerecs.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.af.gamerecs.dto.IgdbGameDto;
+import com.af.gamerecs.entities.Feature;
+import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.entities.User;
+import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.repositories.RecommendationRepository;
 
 @Service
@@ -50,5 +54,22 @@ public class RecommendationService {
         }
 
         return recs;
+    }
+
+    public double scoreRecommendation(Recommendation rec, List<UserPreference> preferences) {
+        Game game = rec.getGame();
+        Set<Feature> gameFeatures = game.getFeatures();
+        
+        double score = 0;
+
+        for(UserPreference preference : preferences) {
+            if(gameFeatures.contains(preference.getFeature())) {
+                score += preference.getWeight();
+            }
+        }
+
+        score -= rec.getPressure();
+
+        return score;
     }
 }

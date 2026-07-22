@@ -56,7 +56,7 @@ public class Recommendation {
         return lastSeen;
     }
 
-    public Double pressure() {
+    public Double getPressure() {
         return pressure;
     }
 
