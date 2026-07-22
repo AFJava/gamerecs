@@ -1,6 +1,6 @@
 package com.af.gamerecs.service;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,8 +30,12 @@ public class RecommendationService {
         return recommendationRepository.findAllMatchingUserRecommendations(userId, igdbIds);
     }
 
-    public List<Recommendation> sortRecommendations(User user, List<IgdbGameDto> gameDtos) {
-        return new ArrayList<>();
+    public List<Recommendation> sortRecommendations(User user, List<IgdbGameDto> gameDtos, List<UserPreference> preferences) {
+        List<Recommendation> recs = parseRecommendations(user, gameDtos);
+
+        recs.sort(Comparator.comparing(rec -> scoreRecommendation(rec, preferences)));
+
+        return recs;
     }
 
     public List<Recommendation> parseRecommendations(User user, List<IgdbGameDto> gameDtos) {

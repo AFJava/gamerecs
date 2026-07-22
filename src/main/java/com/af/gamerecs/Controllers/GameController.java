@@ -16,6 +16,7 @@ import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.dto.SearchResponse;
 import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.entities.Game;
+import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.entities.CompanyReference;
@@ -25,6 +26,7 @@ import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameSearchService;
 import com.af.gamerecs.service.GameService;
 import com.af.gamerecs.service.IgdbService;
+import com.af.gamerecs.service.RecommendationService;
 import com.af.gamerecs.service.UserGameService;
 import com.af.gamerecs.service.UserPreferenceService;
 
@@ -38,7 +40,9 @@ public class GameController {
     public final IgdbService igdbService;
     public final GameSearchService gameSearchService;
     public final CompanyReferenceService companyReferenceService;
-    public int numFeaturesMatched = 5; //Number of features to be used in IGDB request for recommended games
+    public final RecommendationService recommendationService;
+    public int numFeaturesMatched = 5; //Number of features to be used in initial IGDB request for recommended games
+    public int numFeaturesMatchedScore = 100; //Number of features to be used when scoring, sorting recommended games
 
     public GameController(UserGameService userGameService,
                         CurrentUserService currentUserService,
@@ -46,7 +50,8 @@ public class GameController {
                         UserPreferenceService userPreferenceService,
                         IgdbService igdbService,
                         GameSearchService gameSearchService,
-                        CompanyReferenceService companyReferenceService) {
+                        CompanyReferenceService companyReferenceService,
+                        RecommendationService recommendationService) {
         this.userGameService = userGameService;
         this.currentUserService = currentUserService;
         this.gameService = gameService;
@@ -54,6 +59,7 @@ public class GameController {
         this.igdbService = igdbService;
         this.gameSearchService = gameSearchService;
         this.companyReferenceService = companyReferenceService;
+        this.recommendationService = recommendationService;
     }
 
     /* Endpoint to dynamically results for searchbar */
@@ -149,6 +155,8 @@ public class GameController {
             userPreferenceService.getFeaturesFromPreferences(topPreferences)
         );
 
+        List<Recommendation> recs = recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatched));
+        
         //System.out.println(topMatches);
 
         return "";
