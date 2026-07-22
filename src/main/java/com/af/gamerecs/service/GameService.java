@@ -151,4 +151,10 @@ public class GameService {
             return FeatureType.SUPPORTING;
         }
     }
+
+    public List<Long> getIgdbIdsFromDtos(List<IgdbGameDto> dtos) {
+        return dtos.stream()
+            .map(IgdbGameDto::id)
+            .toList();
+    }
 }
