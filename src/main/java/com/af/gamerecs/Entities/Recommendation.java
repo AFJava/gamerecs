@@ -1,6 +1,7 @@
 package com.af.gamerecs.entities;
 
 import java.time.LocalDateTime;
+import java.time.Duration;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,11 +33,11 @@ public class Recommendation {
     Double pressure;
 
     public Recommendation() {
-
+        pressure = 0.0;
     }
 
     public Recommendation(User user, Game game) {
-
+        pressure = 0.0;
     }
 
     public Long getId() {
@@ -57,5 +58,14 @@ public class Recommendation {
 
     public Double pressure() {
         return pressure;
+    }
+
+    public void updatePressure() {
+        LocalDateTime now = LocalDateTime.now();
+
+        Duration elapsed = Duration.between(lastSeen, now);
+
+        //Once recommendation is seen, calculate decay
+        pressure = pressure * Math.pow(0.5, elapsed.toMinutes() / 1440) + 50;
     }
 }
