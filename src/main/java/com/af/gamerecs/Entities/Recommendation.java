@@ -34,4 +34,24 @@ public class Recommendation {
     public Recommendation() {
 
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public LocalDateTime getLastSeen() {
+        return lastSeen;
+    }
+
+    public Double pressure() {
+        return pressure;
+    }
 }
