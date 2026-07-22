@@ -35,6 +35,10 @@ public class Recommendation {
 
     }
 
+    public Recommendation(User user, Game game) {
+
+    }
+
     public Long getId() {
         return id;
     }
