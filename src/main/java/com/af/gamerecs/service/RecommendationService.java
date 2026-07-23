@@ -32,11 +32,16 @@ public class RecommendationService {
     }
 
     public List<Recommendation> sortRecommendations(User user, List<IgdbGameDto> gameDtos, List<UserPreference> preferences) {
+        clearCurrentBatch(user.getId());
+        
         List<Recommendation> recs = parseRecommendations(user, gameDtos);
-
         recs.sort(Comparator.comparing(rec -> scoreRecommendation(rec, preferences)));
 
-        return recs;
+        for(int i = 0; i < recs.size(); i++) {
+            recs.get(i).setRank(i);
+        }
+        
+        return recommendationRepository.saveAll(recs);
     }
 
     public List<Recommendation> parseRecommendations(User user, List<IgdbGameDto> gameDtos) {
@@ -102,5 +107,13 @@ public class RecommendationService {
         score -= rec.getPressure();
 
         return score;
+    }
+
+    public void clearCurrentBatch(Long userId) {
+        List<Recommendation> currentBatch = recommendationRepository.findAllActiveRecommendations(userId);
+
+        for(Recommendation rec : currentBatch) {
+            rec.setRank(null);
+        }
     }
 }
