@@ -2,6 +2,8 @@ package com.af.gamerecs.controllers;
 
 import java.util.List;
 import java.util.HashSet;
+import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -121,10 +123,7 @@ public class GameController {
                     preference.getFeature().getFeatureType()
                 );
 
-                if(references.isEmpty()) {
-                    //If reference was added more than 30 days ago
-                    //if(references.get(0).getAdded())
-
+                if(references.isEmpty() || ChronoUnit.DAYS.between(references.get(0).getAdded(), LocalDate.now()) > 30) {
                     List<CompanyDto> involvedCompanies = igdbService.getInvolvedCompanyInstances(
                         preference.getFeature().getIgdbFeatureId()
                     );
