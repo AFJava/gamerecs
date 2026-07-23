@@ -16,6 +16,15 @@ if(expandedResultsDiv !== null) {
     });
 }
 
+const recDiv = document.querySelector(".rec-games");
+
+if(recDiv !== null) {
+    recDiv.addEventListener("click", (event) => {
+        if (event.target.classList.contains("rate-button")) {
+            rate(event);
+        }
+    });
+}
 
 async function rate(event) {
     console.log("Button clicked");
@@ -39,7 +48,7 @@ async function rate(event) {
         </form>`;
 
     //Append rating div
-    const gameDiv = event.target.closest(".search-item");
+    const gameDiv = event.target.closest(".search-item, .rec-item");
 
     //Check if there is an existing rating interface
     const current = document.querySelector(".rate");
@@ -123,9 +132,9 @@ async function add(event) {
 
     gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>';
 
-    //Append to search-summary in place of button
-    const searchSummary = document.querySelector(`.search-summary[data-igdb-id = "${igdbId}"]`);
-    searchSummary.appendChild(gameAddedMsgContainer);
+    //Append to summary div in place of button
+    const summaryDiv = document.querySelector(`.search-summary[data-igdb-id = "${igdbId}"], .rec-summary[data-igdb-id = "${igdbId}"]`);
+    summaryDiv.appendChild(gameAddedMsgContainer);
 
     const confirmation = document.createElement("div");
     confirmation.classList.add("confirmation");
@@ -133,7 +142,7 @@ async function add(event) {
     const gameName = rateButton.dataset.gameName;
     confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
 
-    const gamePreview = searchSummary.querySelector(".game-preview-search");
+    const gamePreview = summaryDiv.querySelector(".game-preview-search");
     const imageId = gamePreview.dataset.imageId;
     const imageSrc = "https://images.igdb.com/igdb/image/upload/t_1080p/" + imageId + ".jpg";
 
