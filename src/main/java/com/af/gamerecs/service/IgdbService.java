@@ -218,8 +218,8 @@ public class IgdbService {
                 keywords.name,
                 rating,
                 rating_count;
+            limit 100;
             where %s;
-            limit 30;
         """.formatted(params);
         //System.out.println("Before POST");
 
