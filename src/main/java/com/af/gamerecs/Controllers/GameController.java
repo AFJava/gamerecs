@@ -156,6 +156,12 @@ public class GameController {
 
         List<Recommendation> recs = recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatched));
         
+        /*
+        for(Recommendation rec : recs) {
+            System.out.println(rec.getGame().getName());
+        }
+        */
+        
         //System.out.println(topMatches);
 
         return "";

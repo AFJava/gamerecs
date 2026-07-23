@@ -73,10 +73,28 @@ public class RecommendationService {
 
                 if(existingGamesMap.containsKey(dto.id())) {
                     game = existingGamesMap.get(dto.id());
+
+                    /* 
+                    if(game != null) {
+                        System.out.println("Existing game " + game.getName());
+                    }
+                    else {
+                        System.out.println("Existing game is null");
+                    }
+                    */
                 }
                 else {
                     game = gameService.gameFromDto(dto);
                     newGames.add(game);
+
+                    /* 
+                    if(game != null) {
+                        System.out.println("New game " + game.getName());
+                    }
+                    else {
+                        System.out.println("New game is null");
+                    }
+                    */
                 }
 
                 recs.add(new Recommendation(
