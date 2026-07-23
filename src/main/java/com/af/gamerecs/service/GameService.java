@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.dto.FeatureDto;
 import com.af.gamerecs.dto.IgdbGameDto;
-import com.af.gamerecs.dto.ImageDto;
 import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.entities.FeatureType;
 import com.af.gamerecs.entities.Game;

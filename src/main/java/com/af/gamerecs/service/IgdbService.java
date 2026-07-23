@@ -1,9 +1,7 @@
 package com.af.gamerecs.service;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,21 +11,17 @@ import com.af.gamerecs.config.TwitchProperties;
 import com.af.gamerecs.dto.CountResponse;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.CompanyDto;
-import com.af.gamerecs.entities.Feature;
-import com.af.gamerecs.entities.FeatureType;
 
 @Service
 public class IgdbService {
     private final TwitchProperties twitchProperties;
     private final TwitchAuthService twitchAuthService;
-    private final CompanyReferenceService companyReferenceService;
     @Qualifier("igdbWebClient") private final WebClient igdbWebClient;
 
-    public IgdbService(TwitchProperties twitchProperties, TwitchAuthService twitchAuthService, WebClient igdbWebClient, CompanyReferenceService companyReferenceService) {
+    public IgdbService(TwitchProperties twitchProperties, TwitchAuthService twitchAuthService, WebClient igdbWebClient) {
         this.twitchProperties = twitchProperties;
         this.twitchAuthService = twitchAuthService;
         this.igdbWebClient = igdbWebClient;
-        this.companyReferenceService = companyReferenceService;
     }
 
     //For dynamic searchbar
@@ -195,9 +189,7 @@ public class IgdbService {
 
     //Search for recommendations
     //Assume topFeatures is not null and of set size
-    public List<IgdbGameDto> searchMatchingGames(List<Feature> topFeatures) {
-        String params = parseParams(topFeatures);
-
+    public List<IgdbGameDto> searchMatchingGames(String params) {
         String body = """
             fields id,
                 name,
@@ -254,49 +246,5 @@ public class IgdbService {
             .block();
 
         return Arrays.asList(response);
-    }
-
-    public String parseParams(List<Feature> features) {
-        HashMap<FeatureType, List<Long>> featureIdMap = new HashMap<>();
-
-        for(Feature feature : features) {
-            FeatureType type = feature.getFeatureType();
-            
-            if(! featureIdMap.containsKey(type)) {
-                featureIdMap.put(type, new ArrayList<Long>());
-            }
-
-            if(! type.isCompany()) {
-                featureIdMap.get(type).add(feature.getIgdbFeatureId());
-            }
-            else {
-                featureIdMap.get(type).addAll(
-                    companyReferenceService.getAllInvolvedCompanyIds(feature.getIgdbFeatureId(), type)
-                );
-            }
-        }
-
-        StringBuilder params = new StringBuilder("");
-
-        for(FeatureType type : featureIdMap.keySet()) {
-            StringBuilder param = new StringBuilder(type.toIgdbField() + " = (");
-
-            for(int i = 0; i < featureIdMap.get(type).size(); i++) {
-                if(i == 0) {
-                    param.append(featureIdMap.get(type).get(i));
-                } else {
-                    param.append(", " + featureIdMap.get(type).get(i));
-                }
-            }
-
-            param.append(")");
-            params.append(param + " | ");
-        }
-
-        params.setLength(params.length() - 3);
-
-        System.out.println(params);
-
-        return params.toString();
     }
 }

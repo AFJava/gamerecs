@@ -2,8 +2,6 @@ package com.af.gamerecs.controllers;
 
 import java.util.List;
 import java.util.HashSet;
-import java.time.temporal.ChronoUnit;
-import java.time.LocalDate;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.dto.SearchResponse;
-import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
-import com.af.gamerecs.entities.CompanyReference;
 import com.af.gamerecs.service.CompanyReferenceService;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameSearchService;
 import com.af.gamerecs.service.GameService;
+import com.af.gamerecs.service.IgdbQueryBuilder;
 import com.af.gamerecs.service.IgdbService;
 import com.af.gamerecs.service.RecommendationService;
 import com.af.gamerecs.service.UserGameService;
@@ -39,6 +36,7 @@ public class GameController {
     public final GameService gameService;
     public final UserPreferenceService userPreferenceService;
     public final IgdbService igdbService;
+    public final IgdbQueryBuilder igdbQueryBuilder;
     public final GameSearchService gameSearchService;
     public final CompanyReferenceService companyReferenceService;
     public final RecommendationService recommendationService;
@@ -50,6 +48,7 @@ public class GameController {
                         GameService gameService,
                         UserPreferenceService userPreferenceService,
                         IgdbService igdbService,
+                        IgdbQueryBuilder igdbQueryBuilder,
                         GameSearchService gameSearchService,
                         CompanyReferenceService companyReferenceService,
                         RecommendationService recommendationService) {
@@ -58,6 +57,7 @@ public class GameController {
         this.gameService = gameService;
         this.userPreferenceService = userPreferenceService;
         this.igdbService = igdbService;
+        this.igdbQueryBuilder = igdbQueryBuilder;
         this.gameSearchService = gameSearchService;
         this.companyReferenceService = companyReferenceService;
         this.recommendationService = recommendationService;
@@ -115,42 +115,12 @@ public class GameController {
         List<UserPreference> topPreferences = preferences.subList(0, numFeaturesMatched);
 
         //If any top preference is a company, find involved_compnay ids and store as CompanyReference
-        for(UserPreference preference : topPreferences) {
-            if(preference.getFeature().getFeatureType().isCompany()) {
-                //Check if already stored
-                List<CompanyReference> references = companyReferenceService.getAllCompanyReferences(
-                    preference.getFeature().getIgdbFeatureId(), 
-                    preference.getFeature().getFeatureType()
-                );
-
-                if(references.isEmpty() || ChronoUnit.DAYS.between(references.get(0).getAdded(), LocalDate.now()) > 30) {
-                    List<CompanyDto> involvedCompanies = igdbService.getInvolvedCompanyInstances(
-                        preference.getFeature().getIgdbFeatureId()
-                    );
-
-                    for(CompanyDto dto : involvedCompanies) {
-                        references.add(new CompanyReference(
-                            dto.id(),
-                            preference.getFeature().getIgdbFeatureId(),
-                            gameService.getCompanyRole(dto)
-                        ));
-                    }
-
-                    companyReferenceService.saveAllCompanyReferences(references);
-                }
-
-                //Delay?
-                try {
-                    Thread.sleep(500); //Pause for 500ms to avoid hitting rate limit
-                }
-                catch(InterruptedException e) {
-
-                }
-            }
-        }
+        companyReferenceService.saveAllCompanyReferences(topPreferences);
 
         List<IgdbGameDto> topMatches = igdbService.searchMatchingGames(
-            userPreferenceService.getFeaturesFromPreferences(topPreferences)
+            igdbQueryBuilder.parseParams(
+                userPreferenceService.getFeaturesFromPreferences(topPreferences)
+            )
         );
 
         List<Recommendation> recs = recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatched));
