@@ -27,10 +27,13 @@ public class Recommendation {
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    LocalDateTime lastSeen;
+    private LocalDateTime lastSeen;
 
     //Add pressure every time this recommendation is seen; pressure decays exponentially
-    Double pressure;
+    private Double pressure;
+
+    //Not part of current recommendation batch if null
+    private Integer rank;
 
     public Recommendation() {
         pressure = 0.0;
@@ -60,6 +63,10 @@ public class Recommendation {
         return pressure;
     }
 
+    public Integer getRank() {
+        return rank;
+    }
+
     public void updatePressure() {
         LocalDateTime now = LocalDateTime.now();
 
@@ -67,5 +74,9 @@ public class Recommendation {
 
         //Once recommendation is seen, calculate decay
         pressure = pressure * Math.pow(0.5, elapsed.toMinutes() / 1440) + 50;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
     }
 }
