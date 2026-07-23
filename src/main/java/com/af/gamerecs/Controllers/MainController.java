@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserGame;
+import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameSearchService;
 import com.af.gamerecs.service.IgdbService;
+import com.af.gamerecs.service.RecommendationService;
 import com.af.gamerecs.service.UserGameService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,13 +30,19 @@ public class MainController {
     public final CurrentUserService currentUserService;
     public final GameSearchService gameSearchService;
     public final IgdbService igdbService;
+    public final RecommendationService recommendationService;
     public int pageSize = 10;
     
-    public MainController(UserGameService userGameService, CurrentUserService currentUserService, GameSearchService gameSearchService, IgdbService igdbService) {
+    public MainController(UserGameService userGameService,
+                        CurrentUserService currentUserService,
+                        GameSearchService gameSearchService,
+                        IgdbService igdbService,
+                        RecommendationService recommendationService) {
         this.userGameService = userGameService;
         this.currentUserService = currentUserService;
         this.igdbService = igdbService;
         this.gameSearchService = gameSearchService;
+        this.recommendationService = recommendationService;
     }
 
     @GetMapping("/")
@@ -58,6 +66,7 @@ public class MainController {
 
         //Check if game has already been added by comparing IGDB id
         //HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
+        //model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
 
         //Check if userGames is longer than 5; if so, take first 5 for display and add button        
         if(userGames.size() > 5) {
@@ -66,7 +75,15 @@ public class MainController {
         }
         
         model.addAttribute("userGames", userGames);
-        //model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
+
+        List<Recommendation> recs = recommendationService.getActiveRecommendations(userId);
+
+        if(recs.size() > 5) {
+            recs = recs.subList(0, 5);
+            model.addAttribute("expandRec", true);
+        }
+
+        model.addAttribute("recs", recs);
         
         return "profile";
     }

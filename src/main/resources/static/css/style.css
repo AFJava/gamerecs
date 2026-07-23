@@ -168,7 +168,7 @@ main {
     width: 100%;
 }
 
-.search-item {
+.search-item, .rec-item {
     display: grid;
     grid-template-rows: 1in auto;
     width: 100%;
@@ -184,7 +184,7 @@ main {
     background-color: #717c98;
 }
 
-.search-summary {
+.search-summary, .rec-summary {
     grid-row: span 1;
     display: flex;
     align-items: center;

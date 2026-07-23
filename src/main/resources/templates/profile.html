@@ -55,6 +55,7 @@
     <main>
         <h1>My Games</h1>
 
+        <!--Note that both userGames and recs use Game objects for display, so syntax is different from search, which uses dtos-->
         <div class="added-games">
             <p class="no-games-msg" th:if="${userGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
 
@@ -73,6 +74,17 @@
         
         <div class="rec-games">
             <p class="no-games-msg" th:if="${userGames.empty}">Add games using the searchbar to get recommendations!</p>
+            <div th:each="rec : ${recs}" class="rec-item">
+                <div class="rec-summary">
+                    <img th:if="${rec.game.imageId != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${rec.game.imageId}.jpg|" class="game-preview-search">
+                    <img th:if="${rec.game.imageId == null}" src="/assets/Image_not_found.png" class="game-preview-search">
+                    <h2 class="game-name" th:text="${rec.game.name}"></h2>
+                    <!--<span th:if="${addedGamesIgdbIds.contains(rec.game.igdbId)}" class="game-added-msg-container">
+                        <p class="game-added-msg">This game has already been added to your profile.</p>
+                    </span>-->
+                    <button type="button" class="rate-button" th:data-igdb-id="${rec.game.igdbId}" th:data-game-name="${rec.game.name}">Rate and add to profile</button>
+                </div>
+            </div>
         </div>
     </main>
     
