@@ -195,7 +195,7 @@ async function search(page) {
 
     if(hasMoreResults) {
         searchNavItem = document.createElement("span");
-        searchNavItem.innerHTML = `<a href="/search">More Results</a>`
+        searchNavItem.innerHTML = `<a href="/search?page=1&query=${encodeURIComponent(searchContent)}&filter-obscure=${filterObscureChecked}">More Results</a>`
         searchNavDiv.appendChild(searchNavItem)
     }
 }
