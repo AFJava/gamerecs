@@ -35,6 +35,10 @@ public class RecommendationService {
         return recommendationRepository.findAllActiveRecommendations(userId);
     }
 
+    public List<Long> getAddedIgdbIds(Long userId) {
+        return recommendationRepository.findAddedIgdbIds(userId);
+    }
+
     public List<Recommendation> sortRecommendations(User user, List<IgdbGameDto> gameDtos, List<UserPreference> preferences) {
         clearCurrentBatch(user.getId());
         

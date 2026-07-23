@@ -84,6 +84,9 @@ public class MainController {
         }
 
         model.addAttribute("recs", recs);
+
+        HashSet<Long> sharedIgdbIds = new HashSet<>(recommendationService.getAddedIgdbIds(userId));
+        model.addAttribute("sharedIgdbIds", sharedIgdbIds);
         
         return "profile";
     }

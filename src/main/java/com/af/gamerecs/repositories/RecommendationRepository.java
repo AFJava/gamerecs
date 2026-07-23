@@ -24,4 +24,15 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
         order by rec.rank
             """)
     public List<Recommendation> findAllActiveRecommendations(Long userId);
+
+    @Query("""
+        select rec.game.igdbId
+        from Recommendation rec
+        join UserGame ug
+            on ug.user.id = rec.user.id
+            and ug.game.igdbId = rec.game.igdbId
+        where rec.rank is not null
+            and rec.user.id = :userId
+    """)
+    public List<Long> findAddedIgdbIds(Long userId);
 }
