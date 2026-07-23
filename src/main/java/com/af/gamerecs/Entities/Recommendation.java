@@ -41,6 +41,8 @@ public class Recommendation {
 
     public Recommendation(User user, Game game) {
         pressure = 0.0;
+        this.user = user;
+        this.game = game;
     }
 
     public Long getId() {
