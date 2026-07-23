@@ -18,10 +18,10 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
 
     @Query("""
         select rec
-        from Recommendation Rec
+        from Recommendation rec
         where rec.user.id = :userId
         and rec.rank is not null
-        order by r.rank
+        order by rec.rank
             """)
     public List<Recommendation> findAllActiveRecommendations(Long userId);
 }

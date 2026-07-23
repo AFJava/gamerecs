@@ -12,13 +12,7 @@ public interface GameRepository extends JpaRepository<Game, Integer> {
     Optional<Game> findByIgdbId(Long igdbId);
 
     @EntityGraph(attributePaths = {
-        "franchises",
-        "genres",
-        "themes",
-        "gameModes",
-        "playerPerspectives",
-        "platforms",
-        "keywords"
+        "features"
     })
     List<Game> findAllByIgdbIdIn(List<Long> igdbIds);
 }
