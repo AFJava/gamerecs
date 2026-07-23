@@ -20,7 +20,6 @@ import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.entities.CompanyReference;
-import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.service.CompanyReferenceService;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameSearchService;
