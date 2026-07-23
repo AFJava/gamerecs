@@ -66,6 +66,10 @@ public class GameService {
         return gameRepository.save(game);
     }
 
+    public List<Game> saveAllGames(List<Game> games) {
+        return gameRepository.saveAll(games);
+    }
+
     public List<Game> getGamesFromIgdbIds(List<Long> igdbIds) {
         return gameRepository.findAllByIgdbIdIn(igdbIds);
     }

@@ -1,5 +1,6 @@
 package com.af.gamerecs.service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -41,21 +42,47 @@ public class RecommendationService {
     public List<Recommendation> parseRecommendations(User user, List<IgdbGameDto> gameDtos) {
         List<Long> igdbIds = gameService.getIgdbIdsFromDtos(gameDtos);
         List<Recommendation> recs = getExistingRecommendations(user.getId(), igdbIds);
-
+        
+        //Creation of new Recommendation objects is expensive; use existing if possible
         Map<Long, Recommendation> existingRecsMap = recs.stream()
             .collect(Collectors.toMap(
                 existingRec -> existingRec.getGame().getIgdbId(),
                 existingRec -> existingRec
             ));
+
+        List<Game> existingGames = gameService.getGamesFromIgdbIds(igdbIds);
+
+        //Creation of new Game objects is also expensive; also ensures no duplicate games are saved
+        Map<Long, Game> existingGamesMap = existingGames.stream()
+            .collect(Collectors.toMap(
+                game -> game.getIgdbId(),
+                game -> game
+            ));
+        
+        List<Game> newGames = new ArrayList<>();
         
         for(IgdbGameDto dto : gameDtos) {
-            if(! existingRecsMap.keySet().contains(dto.id())) {
+            //If rec exists, the associated game must also exist already
+            if(! existingRecsMap.containsKey(dto.id())) {
+                Game game;
+
+                if(existingGamesMap.containsKey(dto.id())) {
+                    game = existingGamesMap.get(dto.id());
+                }
+                else {
+                    game = gameService.gameFromDto(dto);
+                    newGames.add(game);
+                }
+
                 recs.add(new Recommendation(
                     user,
-                    gameService.gameFromDto(dto)
+                    game
                 ));
             }
         }
+
+        //Save any new games
+        gameService.saveAllGames(newGames);
 
         return recs;
     }
