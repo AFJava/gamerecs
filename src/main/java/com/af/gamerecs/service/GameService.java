@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.dto.FeatureDto;
 import com.af.gamerecs.dto.IgdbGameDto;
+import com.af.gamerecs.dto.ImageDto;
 import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.entities.FeatureType;
 import com.af.gamerecs.entities.Game;
@@ -38,13 +39,23 @@ public class GameService {
     */
 
     public Game gameFromDto(IgdbGameDto game) {
-        LocalDate releaseDate = Instant.ofEpochSecond(game.first_release_date())
-            .atZone(ZoneOffset.UTC)
-            .toLocalDate();
+        LocalDate releaseDate = null;
+        
+        if (game.first_release_date() != null) {
+            releaseDate = Instant.ofEpochSecond(game.first_release_date())
+                .atZone(ZoneOffset.UTC)
+                .toLocalDate();
+        }
+
+        String imageId = null;
+
+        if(game.cover() != null) {
+            imageId = game.cover().image_id();
+        }
 
         return new Game(game.id(),
                         game.name(),
-                        game.cover().image_id(),
+                        imageId,
                         releaseDate,
                         parseFeatures(franchiseNames(game),
                             game.involved_companies(),
