@@ -22,8 +22,8 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
         select rec
         from Recommendation rec
         where rec.user.id = :userId
-        and rec.rank is not null
-        order by rec.rank
+        and rec.score is not null
+        order by rec.score
             """)
     public List<Recommendation> findAllActiveRecommendations(Long userId);
 
@@ -31,8 +31,8 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
         select rec
         from Recommendation rec
         where rec.user.id = :userId
-        and rec.rank is not null
-        order by rec.rank
+        and rec.score is not null
+        order by rec.score
             """)
     public Page<Recommendation> findAllActiveRecommendations(Long userId, Pageable pageable);
 
@@ -42,7 +42,7 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
         join UserGame ug
             on ug.user.id = rec.user.id
             and ug.game.igdbId = rec.game.igdbId
-        where rec.rank is not null
+        where rec.score is not null
             and rec.user.id = :userId
     """)
     public List<Long> findAddedIgdbIds(Long userId);

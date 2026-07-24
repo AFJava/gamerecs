@@ -33,7 +33,7 @@ public class Recommendation {
     private Double pressure;
 
     //Not part of current recommendation batch if null
-    private Integer rank;
+    private Double score;
 
     public Recommendation() {
         pressure = 0.0;
@@ -65,8 +65,8 @@ public class Recommendation {
         return pressure;
     }
 
-    public Integer getRank() {
-        return rank;
+    public double getScore() {
+        return score;
     }
 
     public void updatePressure() {
@@ -78,7 +78,7 @@ public class Recommendation {
         pressure = pressure * Math.pow(0.5, elapsed.toMinutes() / 1440) + 50;
     }
 
-    public void setRank(Integer rank) {
-        this.rank = rank;
+    public void setScore(Double score) {
+        this.score = score;
     }
 }
