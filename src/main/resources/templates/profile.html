@@ -85,6 +85,7 @@
                     <button th:if="${! sharedIgdbIds.contains(rec.game.igdbId)}" type="button" class="rate-button" th:data-igdb-id="${rec.game.igdbId}" th:data-game-name="${rec.game.name}">Rate and add to profile</button>
                 </div>
             </div>
+            <a href = "profile/recommended?page=1">All Recommended Games</a>
         </div>
     </main>
     

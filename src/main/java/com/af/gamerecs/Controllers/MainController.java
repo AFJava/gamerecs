@@ -170,6 +170,33 @@ public class MainController {
         
         return "search";
     }
+
+    @GetMapping("/users/{id}/profile/recommended")
+    public String recommended(Model model,
+                            Authentication authentication,
+                            @PathVariable Long id,
+                            @RequestParam int page) {
+        Page<Recommendation> recs = recommendationService.getPaginatedActiveRecommendations(id, PageRequest.of(page - 1, pageSize));
+        model.addAttribute("recs", recs.getContent());
+
+        HashSet<Long> sharedIgdbIds = new HashSet<>(recommendationService.getAddedIgdbIds(id));
+        model.addAttribute("sharedIgdbIds", sharedIgdbIds);
+
+        int totalPages = recs.getTotalPages();
+
+        int startPage = Math.max(1, page - 2);
+        int endPage = Math.min(totalPages, page + 2);
+
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("showFirstPage", startPage > 1);
+        model.addAttribute("showLastPage", endPage < totalPages);
+        model.addAttribute("showLeftEllipsis", startPage > 2);
+        model.addAttribute("showRightEllipsis", endPage < totalPages - 1);
+
+        return "recommended";
+    }
 }
 
 
