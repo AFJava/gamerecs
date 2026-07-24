@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.entities.Feature;
@@ -36,6 +38,10 @@ public class RecommendationService {
 
     public List<Recommendation> getActiveRecommendations(Long userId) {
         return recommendationRepository.findAllActiveRecommendations(userId);
+    }
+
+    public Page<Recommendation> getPaginatedActiveRecommendations(Long userId, Pageable pageable) {
+        return recommendationRepository.findAllActiveRecommendations(userId, pageable);
     }
 
     public List<Long> getAddedIgdbIds(Long userId) {

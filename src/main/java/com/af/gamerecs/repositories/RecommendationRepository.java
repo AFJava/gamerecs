@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.af.gamerecs.entities.Recommendation;
 
@@ -24,6 +26,15 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
         order by rec.rank
             """)
     public List<Recommendation> findAllActiveRecommendations(Long userId);
+
+    @Query("""
+        select rec
+        from Recommendation rec
+        where rec.user.id = :userId
+        and rec.rank is not null
+        order by rec.rank
+            """)
+    public Page<Recommendation> findAllActiveRecommendations(Long userId, Pageable pageable);
 
     @Query("""
         select rec.game.igdbId
