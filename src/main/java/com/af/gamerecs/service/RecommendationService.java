@@ -52,11 +52,13 @@ public class RecommendationService {
         clearCurrentBatch(user.getId());
         
         List<Recommendation> recs = parseRecommendations(user, gameDtos);
-        recs.sort(Comparator.comparing(rec -> scoreRecommendation(rec, preferences)));
 
         for(int i = 0; i < recs.size(); i++) {
-            recs.get(i).setRank(i);
+            Recommendation rec = recs.get(i);
+            rec.setScore(scoreRecommendation(rec, preferences));
         }
+
+        recs.sort(Comparator.comparing(rec -> rec.getScore()));
         
         return recommendationRepository.saveAll(recs);
     }
@@ -153,7 +155,7 @@ public class RecommendationService {
         List<Recommendation> currentBatch = getActiveRecommendations(userId);
 
         for(Recommendation rec : currentBatch) {
-            rec.setRank(null);
+            rec.setScore(null);
         }
     }
 }
