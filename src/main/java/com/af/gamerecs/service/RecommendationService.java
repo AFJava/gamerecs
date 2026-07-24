@@ -2,6 +2,7 @@ package com.af.gamerecs.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,11 +21,13 @@ import com.af.gamerecs.repositories.RecommendationRepository;
 @Service
 public class RecommendationService {
     public final RecommendationRepository recommendationRepository;
+    public final UserGameService userGameService;
     public final GameService gameService;
 
-    public RecommendationService(RecommendationRepository recommendationRepository, GameService gameService) {
-        this.gameService = gameService;
+    public RecommendationService(RecommendationRepository recommendationRepository, UserGameService userGameService, GameService gameService) {
         this.recommendationRepository = recommendationRepository;
+        this.gameService = gameService;
+        this.userGameService = userGameService;
     }
 
     public List<Recommendation> getExistingRecommendations(Long userId, List<Long> igdbIds) {
@@ -72,43 +75,48 @@ public class RecommendationService {
                 game -> game
             ));
         
+        HashSet<Long> addedIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(user.getId(), igdbIds));
+
         List<Game> newGames = new ArrayList<>();
         
         for(IgdbGameDto dto : gameDtos) {
-            //If rec exists, the associated game must also exist already
-            if(! existingRecsMap.containsKey(dto.id())) {
-                Game game;
+            //If already added, remove from recommendation pool
+            if(! addedIgdbIds.contains(dto.id())) {
+                //If rec exists, the associated game must also exist already
+                if(! existingRecsMap.containsKey(dto.id())) {
+                    Game game;
 
-                if(existingGamesMap.containsKey(dto.id())) {
-                    game = existingGamesMap.get(dto.id());
+                    if(existingGamesMap.containsKey(dto.id())) {
+                        game = existingGamesMap.get(dto.id());
 
-                    /* 
-                    if(game != null) {
-                        System.out.println("Existing game " + game.getName());
+                        /* 
+                        if(game != null) {
+                            System.out.println("Existing game " + game.getName());
+                        }
+                        else {
+                            System.out.println("Existing game is null");
+                        }
+                        */
                     }
                     else {
-                        System.out.println("Existing game is null");
-                    }
-                    */
-                }
-                else {
-                    game = gameService.gameFromDto(dto);
-                    newGames.add(game);
+                        game = gameService.gameFromDto(dto);
+                        newGames.add(game);
 
-                    /* 
-                    if(game != null) {
-                        System.out.println("New game " + game.getName());
+                        /* 
+                        if(game != null) {
+                            System.out.println("New game " + game.getName());
+                        }
+                        else {
+                            System.out.println("New game is null");
+                        }
+                        */
                     }
-                    else {
-                        System.out.println("New game is null");
-                    }
-                    */
-                }
 
-                recs.add(new Recommendation(
-                    user,
-                    game
-                ));
+                    recs.add(new Recommendation(
+                        user,
+                        game
+                    ));
+                }
             }
         }
 
