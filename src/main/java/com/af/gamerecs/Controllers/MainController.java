@@ -62,28 +62,26 @@ public class MainController {
         Long userId = user.getId();
         
         //Add profile cards for each game added
-        List<UserGame> userGames = userGameService.getUserGames(userId);
+        Page<UserGame> userGames = userGameService.getPaginatedUserGames(userId, PageRequest.of(0, 5));
 
         //Check if game has already been added by comparing IGDB id
         //HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
         //model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
 
         //Check if userGames is longer than 5; if so, take first 5 for display and add button        
-        if(userGames.size() > 5) {
-            userGames = userGames.subList(0, 5);
+        if(userGames.hasNext()) {
             model.addAttribute("expandAdded", true); //If not added, expandAdded = null (false for th:if)
         }
         
-        model.addAttribute("userGames", userGames);
+        model.addAttribute("userGames", userGames.getContent());
 
-        List<Recommendation> recs = recommendationService.getActiveRecommendations(userId);
+        Page<Recommendation> recs = recommendationService.getPaginatedActiveRecommendations(userId, PageRequest.of(0, 5));
 
-        if(recs.size() > 5) {
-            recs = recs.subList(0, 5);
+        if(recs.hasNext()) {
             model.addAttribute("expandRec", true);
         }
 
-        model.addAttribute("recs", recs);
+        model.addAttribute("recs", recs.getContent());
 
         HashSet<Long> sharedIgdbIds = new HashSet<>(recommendationService.getAddedIgdbIds(userId));
         model.addAttribute("sharedIgdbIds", sharedIgdbIds);
