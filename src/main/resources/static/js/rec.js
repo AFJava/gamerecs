@@ -1,14 +1,13 @@
+const newRecButton = document.querySelector(".new-rec-button");
+
+newRecButton.addEventListener("click", async () => {
+    await rec();
+
+    window.location.href = window.location.pathname + "/recommended?page=1";
+});
+
 async function rec() {
-    //Backend handles retrieval of added games and all rec logic
     const response = await fetch(
         "/games/rec"
     )
-    
-    const recs = await response.json()
-
-    console.log(recs);
-
-    //Display recommendations
 }
-
-window.rec = rec;

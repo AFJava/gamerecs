@@ -74,17 +74,6 @@ public class MainController {
         }
         
         model.addAttribute("userGames", userGames.getContent());
-
-        Page<Recommendation> recs = recommendationService.getPaginatedActiveRecommendations(userId, PageRequest.of(0, 5));
-
-        if(recs.hasNext()) {
-            model.addAttribute("expandRec", true);
-        }
-
-        model.addAttribute("recs", recs.getContent());
-
-        HashSet<Long> sharedIgdbIds = new HashSet<>(recommendationService.getAddedIgdbIds(userId));
-        model.addAttribute("sharedIgdbIds", sharedIgdbIds);
         
         return "profile";
     }
