@@ -170,16 +170,18 @@ async function search(page) {
     pages = Math.min(pages, 5);
     
     let searchNavItem = document.createElement("p");
+    searchNavItem.classList.add("page-indicator");
     searchNavItem.textContent = "Page: ";
     searchNavDiv.appendChild(searchNavItem);
 
     for(let i = 1; i <= pages; i++) {
         if(i === page) {
             searchNavItem = document.createElement("span");
+            searchNavItem.classList.add("page-nav-search-current");
         }
         else {
             searchNavItem = document.createElement("button");
-            searchNavItem.classList.add(); //TODO: Style later
+            searchNavItem.classList.add("page-nav-search");
 
             searchNavItem.addEventListener("click", () => {
                 setTimeout(() => search(i), 0);
@@ -195,7 +197,7 @@ async function search(page) {
 
     if(hasMoreResults) {
         searchNavItem = document.createElement("span");
-        searchNavItem.innerHTML = `<a href="/search?page=1&query=${encodeURIComponent(searchContent)}&filter-obscure=${filterObscureChecked}">More Results</a>`
+        searchNavItem.innerHTML = `<a class="button" href="/search?page=1&query=${encodeURIComponent(searchContent)}&filter-obscure=${filterObscureChecked}">More Results</a>`
         searchNavDiv.appendChild(searchNavItem)
     }
 }

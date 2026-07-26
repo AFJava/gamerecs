@@ -26,7 +26,7 @@ main {
     flex: 1;
 }
 
-p, a, h1, h2, .nav-item {
+p, a, h1, h2, button, span, .nav-item {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -42,6 +42,73 @@ h1 {
 
 .game-name, .game-added-msg, .game-rating, .no-games-msg {
     text-align: center;
+}
+
+.page-indicator {
+    color: black;
+}
+
+/* Form fields */
+input[type="text"], input[type="password"] {
+    height: 2rem;
+    border-radius: 0.5rem;
+    background-color: #565f76;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.login-button, .rate-button, .submit-rating, .rec-button, .page-nav-search {
+    height: 2rem;
+    border-radius: 1rem;
+    background-color: #565f76;
+
+    font-size: 14px;
+    color: black;
+
+    padding-block: 1px;
+    padding-inline: 10px;
+}
+
+.rate-button {
+    height: auto;
+    min-height: 2rem;
+}
+
+.page-nav-search-current {
+    font-size: 14px;
+    margin: 0 11px;
+}
+
+/* Links that look like buttons */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    
+    min-height: 2rem;
+
+    border-radius: 1rem;
+    border-width: 2px;
+    border-style: outset;
+    border-color: black;
+
+    background-color: #565f76;
+
+    padding-block: 1px;
+    padding-inline: 10px;
+
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    color: black;
+    
+    cursor: default;
+}
+
+.button:active {
+    border-style: inset;
+    
+    transform: translateY(1px);
 }
 
 /* Main navbar */
@@ -283,7 +350,7 @@ p#signuperr:empty {
 }
 
 .game-added-msg-container {
-    max-width: 150px;
+    max-width: 184.61px;
 }
 
 /* Expanded search */
@@ -325,14 +392,20 @@ p#signuperr:empty {
     background-color: gray; /* placeholder color */
 }
 
-.added-games, .rec-games, .search-results-expanded {
+.added-games-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.added-games, .search-results-expanded {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 70%;
     max-width: 10in;
     overflow-y: auto;
-    margin: 0 auto 2rem;
+    margin: 0 auto;
     padding: 5px;
     border-radius: 10px;
     background-color: #717c98;
@@ -346,12 +419,19 @@ p#signuperr:empty {
     object-fit: cover;
 }
 
+.added-nav-container {
+    margin-top: 1rem;
+}
+
 /* Profile recommendation actions */
 /* Also used on recommendation page */
 .rec-button-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
     height: 80%;
 }
 
@@ -359,19 +439,7 @@ p#signuperr:empty {
 .page-nav {
     display: flex;
     align-items: center;
+    margin-left: 1rem;
     gap: 1rem;
 }
 
-/* Buttons */
-input[type="text"], input[type="password"] {
-    height: 2rem;
-    border-radius: 0.5rem;
-    background-color: #565f76;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-button[type="submit"], button.rate-button {
-    height: 2rem;
-    border-radius: 1rem;
-    background-color: #565f76;
-}

@@ -44,7 +44,7 @@ async function rate(event) {
     rateInterface.innerHTML = `<p>Rate ${gameName} and add it to your profile:</p>
         <form method="post" class="rate-form">
             <span><input type="number" name="rating" min="1" max="10"> / 10</span>
-            <button type = "submit">Submit rating and add to profile</button>
+            <button type = "submit" class="submit-rating">Submit rating and add to profile</button>
         </form>`;
 
     //Append rating div
@@ -152,19 +152,14 @@ async function add(event) {
     gameDiv.appendChild(confirmation);
 
     //Check whether to display added game 
-    const profileGameDiv = document.querySelector(".added-games");
+    const profileGameDivContainer = document.querySelector(".added-games-container");
 
     //If on profile page
-    if (profileGameDiv !== null) {
-        //If adding while maximum games (5) have been displayed
-        if (profileGameDiv.childElementCount == 5) {
-            const expandAdded = document.createElement("div");
+    if (profileGameDivContainer !== null) {
+        const profileGameDiv = profileGameDivContainer.querySelector(".added-games");
+        let expandAdded = profileGameDivContainer.querySelector(".added-nav-container");
 
-            expandAdded.innerHTML = '<a href="profile/added?page=1">All added games</a>';
-
-            profileGameDiv.appendChild(expandAdded);
-        }
-        else if (profileGameDiv.childElementCount < 5) {
+        if (profileGameDiv.childElementCount < 5) {
             //Use JS to display newly added game without refresh (use Thymeleaf for games previously added)
             const profileCard = document.createElement("div");
             profileCard.classList.add("profile-card");
@@ -173,6 +168,14 @@ async function add(event) {
                 <p class="game-rating">Rating: ${rating} / 10</p>`;
 
             profileGameDiv.appendChild(profileCard);
+        } //Otherwise add the new button (if not already rendered)
+        else if (expandAdded === null) {
+            expandAdded = document.createElement("div");
+            expandAdded.classList.add("added-nav-container");
+
+            expandAdded.innerHTML = '<a href="profile/added?page=1" class="button">All added games</a>';
+
+            profileGameDivContainer.appendChild(expandAdded);
         }
     }
 }

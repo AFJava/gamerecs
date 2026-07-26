@@ -39,14 +39,16 @@
         </div>
 
         <div class="page-nav" th:if="${totalPages > 1}">
-            <a th:if="${showFirstPage}"
+            <p class="page-indicator">Page: </p>
+            
+            <a class="page-nav-item button" th:if="${showFirstPage}"
                 th:href="@{/users/{id}/profile/added(id=${id}, page=1)}">
                     1
             </a>
 
             <span th:if="${showLeftEllipsis}">...</span>
 
-            <a th:each="p : ${#numbers.sequence(startPage, endPage)}"
+            <a class="page-nav-item button" th:each="p : ${#numbers.sequence(startPage, endPage)}"
                 th:href="@{/users/{id}/profile/added(id=${id}, page=${p})}"
                 th:text="${p}"
                 th:classappend="${p == page} ? ' active'">
@@ -54,7 +56,7 @@
 
             <span th:if="${showRightEllipsis}">...</span>
 
-            <a th:if="${showLastPage}"
+            <a class="page-nav-item button" th:if="${showLastPage}"
                 th:href="@{/users/{id}/profile/added(id=${id}, page=${totalPages})}"
                 th:text="${totalPages}">
             </a>

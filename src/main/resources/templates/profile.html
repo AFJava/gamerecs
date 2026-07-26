@@ -53,29 +53,32 @@
     </header>
     
     <main>
-        <h1>My Games</h1>
-
         <!--Note that both userGames and recs use Game objects for display, so syntax is different from search, which uses dtos-->
-        <div class="added-games">
-            <p class="no-games-msg" th:if="${userGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
+        <div class="added-games-container">
+            <h1>My Games</h1>
+            
+            <div class="added-games">
+                <p class="no-games-msg" th:if="${userGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
 
-            <div th:each="userGame : ${userGames}" class="profile-card">
-                <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${userGame.game.imageId} + '.jpg'">
-                <h2 class="game-name" th:text="${userGame.game.name}"></h2>
-                <p class="game-rating" th:text="|Rating: ${userGame.rating} / 10|"></p>
+                <div th:each="userGame : ${userGames}" class="profile-card">
+                    <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${userGame.game.imageId} + '.jpg'">
+                    <h2 class="game-name" th:text="${userGame.game.name}"></h2>
+                    <p class="game-rating" th:text="|Rating: ${userGame.rating} / 10|"></p>
+                </div>
             </div>
+            
 
-            <div th:if="${expandAdded}" class="">
-                <a href="profile/added?page=1">All added games</a>
+            <div th:if="${expandAdded}" class="added-nav-container">
+                <a href="profile/added?page=1" class="button">All added games</a>
             </div>
         </div>
 
         <h1>Recommended Games</h1>
         
-        <div class="rec-games">
+        <div class="rec-button-container">
             <p class="no-games-msg" th:if="${userGames.empty}">Add games using the searchbar to get recommendations!</p>
-            <button th:if="${! userGames.empty}" class="new-rec-button">Get New Recommendations</button>
-            <a th:if="${! userGames.empty}" href="profile/recommended?page=1">All Recommended Games</a>
+            <button th:if="${! userGames.empty}" class="rec-button">Get New Recommendations</button>
+            <a th:if="${! userGames.empty}" href="profile/recommended?page=1" class="button">All Recommended Games</a>
         </div>
     </main>
     

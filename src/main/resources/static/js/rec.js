@@ -1,4 +1,4 @@
-const newRecButton = document.querySelector(".new-rec-button");
+const newRecButton = document.querySelector(".rec-button");
 
 newRecButton.addEventListener("click", async () => {
     await rec();
