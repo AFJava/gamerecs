@@ -40,7 +40,7 @@ h1 {
     text-align: center;
 }
 
-.game-name, .game-added-msg, .game-rating, .no-games-msg {
+.game-name, .game-added-msg, .game-favorited-msg, .game-rating, .no-games-msg {
     text-align: center;
 }
 
@@ -341,6 +341,10 @@ p#signuperr:empty {
     background-color: #717c98;
 }
 
+.rec-item {
+    grid-template-rows: 1.5in auto;
+}
+
 .search-summary, .rec-summary {
     grid-row: span 1;
     display: flex;
@@ -349,8 +353,23 @@ p#signuperr:empty {
     padding: 0 1rem;
 }
 
-.game-added-msg-container {
+.rec-action-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-added-msg-container, .game-added-msg {
     max-width: 184.61px;
+}
+
+.game-favorited-msg-container, .game-favorited-msg {
+    max-width: 136.78px;
+}
+
+.game-added-msg, .game-favorited-msg {
+    margin: 0;
 }
 
 /* Expanded search */
