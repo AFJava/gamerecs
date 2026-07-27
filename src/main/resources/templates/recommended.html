@@ -48,12 +48,10 @@
                         </span>
                         <button th:if="${! sharedIgdbIds.contains(rec.game.igdbId)}" type="button" class="rate-button" th:data-igdb-id="${rec.game.igdbId}" th:data-game-name="${rec.game.name}">Rate and add to profile</button>
 
-                        <button type="button" class="fav-button" th:data-igdb-id="${rec.game.igdbId}">Mark as favorite</button>
-                        <!--
-                        <span class="game-added-msg-container">
-                            <p class="game-added-msg">This game has already been added to your profile.</p>
+                        <button th:if="${! favoritedIgdbIds.contains(rec.game.igdbId)}" type="button" class="fav-button" th:data-igdb-id="${rec.game.igdbId}">Mark as favorite</button>
+                        <span th:if="${favoritedIgdbIds.contains(rec.game.igdbId)}" class="game-added-msg-container">
+                            <p class="game-added-msg">This game has already been favorited.</p>
                         </span>
-                        -->
                     </div>
                 </div>
             </div>

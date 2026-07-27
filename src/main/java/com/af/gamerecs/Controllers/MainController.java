@@ -173,6 +173,9 @@ public class MainController {
         HashSet<Long> sharedIgdbIds = new HashSet<>(recommendationService.getAddedIgdbIds(id));
         model.addAttribute("sharedIgdbIds", sharedIgdbIds);
 
+        HashSet<Long> favoritedIgbdIds = new HashSet<>(recommendationService.getFavoritedIgdbIds(id));
+        model.addAttribute("favoritedIgdbIds", favoritedIgbdIds);
+
         int totalPages = recs.getTotalPages();
 
         int startPage = Math.max(1, page - 2);
