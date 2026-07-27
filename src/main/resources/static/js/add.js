@@ -56,8 +56,14 @@ async function add(event) {
 
     event.preventDefault();
 
-    console.log("Navigation halted");
+    if(document.querySelector('script[src="profile.js"]') !== null) {
+        removeMessages();
+    }
 
+    //Get CSRF
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    
     //Get data for db fields, get rateInterface + rateButton for deletion
     const rateInterface = event.target.closest(".rate");
     const igdbId = rateInterface.dataset.igdbId;
@@ -65,12 +71,27 @@ async function add(event) {
     const rateInput = document.querySelector('input[name="rating"]');
     const rating = rateInput.value;
 
-    const game = resultsMap.get(Number(igdbId));
+    if(document.querySelector('script[src="/js/search.js"]')) {
+        sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating);
+    }
 
-    //Get CSRF
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    console.log("POST sent");
 
+    //Deprecated id matching
+    //window.userGamesIgdbIds.add(Number(igdbId));
+    //console.log(window.userGamesIgdbIds);
+
+    addConfirmationMesssages(rateInterface, igdbId);
+
+    //If on profile, also render the game (or add button)
+    if(document.querySelector('script[src="profile.js"]') !== null) {
+        renderAdded(summaryDiv, igdbId);
+    }
+}
+
+async function sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating) {
+    const game = resultsMap.get(Number(igdbId))
+    
     const response = await fetch(
         "/games/add",
         {
@@ -88,23 +109,11 @@ async function add(event) {
             })
         }
     )
-    
-    //Add igdbId to set so next search correctly displays confirmation message
+
     addedGamesIgdbIds.add(Number(igdbId));
+}
 
-    console.log("POST sent");
-
-    //Deprecated id matching
-    //window.userGamesIgdbIds.add(Number(igdbId));
-    //console.log(window.userGamesIgdbIds);
-
-    //Remove all messages displayed when no games are added, if any
-    const noGamesMsgs = document.querySelectorAll(".no-games-msg");
-
-    if (noGamesMsgs !== null) {
-        noGamesMsgs.forEach(msg => msg.remove());
-    }
-
+function addConfirmationMesssages(rateInterface, igdbId) {
     //Replace rate button and rating interface with confirmation messages
     const rateButton = document.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
     rateButton.remove();
@@ -115,9 +124,9 @@ async function add(event) {
 
     gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>';
 
-    //Append to summary div in place of button
-    const summaryDiv = document.querySelector(`.search-summary[data-igdb-id = "${igdbId}"], .rec-summary[data-igdb-id = "${igdbId}"]`);
-    summaryDiv.appendChild(gameAddedMsgContainer);
+    //Append to div in place of button
+    const actionDiv = document.querySelector(`.search-summary[data-igdb-id = "${igdbId}"], .rec-action-container[data-igdb-id = "${igdbId}"]`);
+    actionDiv.appendChild(gameAddedMsgContainer);
 
     const confirmation = document.createElement("div");
     confirmation.classList.add("confirmation");
@@ -125,13 +134,8 @@ async function add(event) {
     const gameName = rateButton.dataset.gameName;
     confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
 
-    //Append confirmation messages to correct gameDiv
-    const gameDiv = summaryDiv.closest(".search-item");
+    //Append confirmation message to correct gameDiv
+    const gameDiv = actionDiv.closest(".search-item, .rec-item");
 
     gameDiv.appendChild(confirmation);
-
-    //If on profile, also render the game (or add button)
-    if(document.querySelector('script[src="profile.js"]') !== null) {
-        renderAdded(summaryDiv, igdbId);
-    }
 }

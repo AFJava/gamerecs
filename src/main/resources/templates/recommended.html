@@ -42,7 +42,7 @@
 
                     <h2 class="game-name" th:text="${rec.game.name}"></h2>
 
-                    <div class="rec-action-container">
+                    <div class="rec-action-container" th:data-igdb-id="${rec.game.igdbId}">
                         <span th:if="${sharedIgdbIds.contains(rec.game.igdbId)}" class="game-added-msg-container">
                             <p class="game-added-msg">This game has already been added to your profile.</p>
                         </span>

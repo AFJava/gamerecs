@@ -1,3 +1,12 @@
+//Remove all messages displayed when no games are added, if any
+function removeMessages() {
+    const noGamesMsgs = document.querySelectorAll(".no-games-msg");
+
+    if (noGamesMsgs !== null) {
+        noGamesMsgs.forEach(msg => msg.remove());
+    }
+}
+
 function renderAdded(summaryDiv, igdbId) {
     const gamePreview = summaryDiv.querySelector(`.game-preview-search`);
     console.log(gamePreview);
