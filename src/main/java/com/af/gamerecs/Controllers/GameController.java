@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.dto.SearchResponse;
+import com.af.gamerecs.dto.FeatureDto;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.entities.User;
@@ -132,6 +133,19 @@ public class GameController {
         */
         
         //System.out.println(topMatches);
+
+        return "";
+    }
+
+    @PostMapping("/favorite")
+    public String fav(Authentication authentication, @RequestBody FeatureDto gameIdContainer) {
+        Object principal = authentication.getPrincipal();
+        User user = currentUserService.userFromPrincipal(principal);
+
+        Recommendation rec = recommendationService.getRecommendation(user.getId(), gameIdContainer.id());
+        rec.setFavorited(true);
+
+        recommendationService.saveRecommendation(rec);
 
         return "";
     }
