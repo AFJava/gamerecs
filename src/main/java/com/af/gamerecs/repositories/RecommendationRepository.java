@@ -14,6 +14,14 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
         select rec
         from Recommendation rec
         where rec.user.id = :userId
+        and rec.game.igdbId = :igdbId
+    """)
+    public Recommendation findRecommendation(Long userId, Long igdbId);
+
+    @Query("""
+        select rec
+        from Recommendation rec
+        where rec.user.id = :userId
         and rec.game.igdbId in :igdbIds
     """)
     public List<Recommendation> findAllMatchingUserRecommendations(Long userId, List<Long> igdbIds);

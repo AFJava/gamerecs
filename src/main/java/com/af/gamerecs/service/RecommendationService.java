@@ -44,6 +44,10 @@ public class RecommendationService {
         return recommendationRepository.findAllActiveRecommendations(userId, pageable);
     }
 
+    public Recommendation getRecommendation(Long userId, Long igdbId) {
+        return recommendationRepository.findRecommendation(userId, igdbId);
+    }
+
     public List<Long> getAddedIgdbIds(Long userId) {
         return recommendationRepository.findAddedIgdbIds(userId);
     }
