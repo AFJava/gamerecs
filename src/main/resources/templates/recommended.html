@@ -35,7 +35,7 @@
         <h1>My Recommended Games</h1>
 
         <div class="rec-games">
-            <div th:each="rec : ${recs}" class="rec-item">
+            <div th:each="rec : ${recs}" class="rec-item" th:data-igdb-id="${rec.game.igdbId}" th:data-game-name="${rec.game.name}">
                 <div class="rec-summary" th:data-igdb-id="${rec.game.igdbId}">
                     <img th:if="${rec.game.imageId != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${rec.game.imageId}.jpg|" class="game-preview-search">
                     <img th:if="${rec.game.imageId == null}" src="/assets/Image_not_found.png" class="game-preview-search">
@@ -46,7 +46,7 @@
                         <span th:if="${sharedIgdbIds.contains(rec.game.igdbId)}" class="game-added-msg-container">
                             <p class="game-added-msg">This game has already been added to your profile.</p>
                         </span>
-                        <button th:if="${! sharedIgdbIds.contains(rec.game.igdbId)}" type="button" class="rate-button" th:data-igdb-id="${rec.game.igdbId}" th:data-game-name="${rec.game.name}">Rate and add to profile</button>
+                        <button th:if="${! sharedIgdbIds.contains(rec.game.igdbId)}" type="button" class="rate-button" th:data-igdb-id="${rec.game.igdbId}">Rate and add to profile</button>
 
                         <button th:if="${! favoritedIgdbIds.contains(rec.game.igdbId)}" type="button" class="fav-button" th:data-igdb-id="${rec.game.igdbId}">Mark as favorite</button>
                         <span th:if="${favoritedIgdbIds.contains(rec.game.igdbId)}" class="game-favorited-msg-container">

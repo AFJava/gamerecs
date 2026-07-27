@@ -11,10 +11,17 @@ if(expandedResultsDiv !== null) {
 
 async function rate(event) {
     console.log("Button clicked");
+    
+    //Check whether to build interface div
+    const gameDiv = event.target.closest(".search-item, .rec-item");
+    const igdbId = gameDiv.dataset.igdbId;
+    const gameName = gameDiv.dataset.gameName;
+    
+    const makeInterface = prepareRatingInterface(igdbId);
 
-    const rateButton = event.target;
-    const gameName = rateButton.dataset.gameName;
-    const igdbId = rateButton.dataset.igdbId;
+    if(! makeInterface) {
+        return;
+    }
 
     //Build interface div
     const rateInterface = document.createElement("div");
@@ -27,17 +34,6 @@ async function rate(event) {
             <span><input type="number" name="rating" min="1" max="10"> / 10</span>
             <button type = "submit" class="submit-rating">Submit rating and add to profile</button>
         </form>`;
-
-    //Append rating div
-    const gameDiv = event.target.closest(".search-item, .rec-item");
-
-    //Check if there is an existing rating interface
-    const current = document.querySelector(".rate");
-
-    //If so, check if it is for the same game; replace if not
-    if (current !== null && current.dataset.igdbId != String(igdbId)) {
-        current.remove();    
-    }
     
     gameDiv.appendChild(rateInterface);
 
@@ -45,6 +41,23 @@ async function rate(event) {
     const form = document.querySelector('.rate-form');
 
     form.addEventListener("submit", add);
+}
+
+//Return whether to create/append interface
+//Remove existing rating interface IF it is not the same as the current
+function prepareRatingInterface(igdbId) {
+    const current = document.querySelector(".rate");
+
+    if (current !== null) {
+        if(current.dataset.igdbId != String(igdbId)) {
+            current.remove();
+        }
+        else {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 async function add(event) {

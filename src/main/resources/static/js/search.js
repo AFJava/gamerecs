@@ -139,6 +139,7 @@ async function search(page) {
 
         gameDiv.classList.add("search-item");
         gameDiv.dataset.igdbId = `${igdbId}`; //Same id used for button
+        gameDiv.dataset.gameName = `${game.name}`;
 
         const searchSummary = document.createElement("div");
         searchSummary.classList.add("search-summary");
@@ -159,7 +160,7 @@ async function search(page) {
         //Select confirmation message or rate & add button depending on whether game has been added
         const actionHTML = addedGamesIgdbIds.has(Number(igdbId))
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
-            : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" data-game-name = "${game.name}">Rate and add to profile</button>`
+            : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" >Rate and add to profile</button>`
         
         searchSummary.innerHTML = 
             `<img data-image-id=${imageId} src = ${imageURL} class = "game-preview-search">
