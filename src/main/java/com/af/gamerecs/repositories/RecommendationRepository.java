@@ -54,4 +54,13 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
             and rec.user.id = :userId
     """)
     public List<Long> findAddedIgdbIds(Long userId);
+
+    @Query("""
+        select rec.game.igdbId
+        from Recommendation rec
+        where rec.favorited = true
+            and rec.user.id = :userId
+            and rec.score is not null     
+    """)
+    public List<Long> findFavoritedIgdbIds(Long userId);
 }

@@ -51,6 +51,10 @@ public class RecommendationService {
     public List<Long> getAddedIgdbIds(Long userId) {
         return recommendationRepository.findAddedIgdbIds(userId);
     }
+    
+    public List<Long> getFavoritedIgdbIds(Long userId) {
+        return recommendationRepository.findFavoritedIgdbIds(userId);
+    }
 
     public Recommendation saveRecommendation(Recommendation rec) {
         return recommendationRepository.save(rec);
