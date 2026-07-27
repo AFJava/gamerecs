@@ -52,6 +52,10 @@ public class RecommendationService {
         return recommendationRepository.findAddedIgdbIds(userId);
     }
 
+    public Recommendation saveRecommendation(Recommendation rec) {
+        return recommendationRepository.save(rec);
+    }
+
     public List<Recommendation> sortRecommendations(User user, List<IgdbGameDto> gameDtos, List<UserPreference> preferences) {
         clearCurrentBatch(user.getId());
         
