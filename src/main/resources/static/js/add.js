@@ -1,9 +1,11 @@
 //Check whether a button was clicked within the search results div
-resultsDiv.addEventListener("click", (event) => {
-    if (event.target.classList.contains("rate-button")) {
-        rate(event);
-    }
-});
+if(resultsDiv !== null) {
+    resultsDiv.addEventListener("click", (event) => {
+        if (event.target.classList.contains("rate-button")) {
+            rate(event);
+        }
+    });
+}
 
 //If expandedResultsDiv exists, apply same listner to it
 const expandedResultsDiv = document.querySelector(".search-results-expanded");
