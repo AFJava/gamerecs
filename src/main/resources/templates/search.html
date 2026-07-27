@@ -81,11 +81,19 @@
 
             <span th:if="${showLeftEllipsis}">...</span>
 
-            <a class="page-nav-item button" th:each="p : ${#numbers.sequence(startPage, endPage)}"
-                th:href="@{/search(query=${query}, filter-obscure=${filterObscure}, page=${p})}"
-                th:text="${p}"
-                th:classappend="${p == page} ? ' active'">
-            </a>
+            <th:block th:each="p : ${#numbers.sequence(startPage, endPage)}">
+                <span th:if="${p == page}"
+                    class="page-nav-current"
+                    th:text="${p}">
+                </span>
+                
+                <a th:if="${p != page}"
+                    class="page-nav-item button"
+                    th:href="@{/search(query=${query}, filter-obscure=${filterObscure}, page=${p})}"
+                    th:text="${p}"
+                    th:classappend="${p == page} ? ' active'">
+                </a>
+            </th:block>
 
             <span th:if="${showRightEllipsis}">...</span>
 

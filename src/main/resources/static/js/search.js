@@ -177,11 +177,11 @@ async function search(page) {
     for(let i = 1; i <= pages; i++) {
         if(i === page) {
             searchNavItem = document.createElement("span");
-            searchNavItem.classList.add("page-nav-search-current");
+            searchNavItem.classList.add("page-nav-current");
         }
         else {
             searchNavItem = document.createElement("button");
-            searchNavItem.classList.add("page-nav-search");
+            searchNavItem.classList.add("page-nav-item-search");
 
             searchNavItem.addEventListener("click", () => {
                 setTimeout(() => search(i), 0);

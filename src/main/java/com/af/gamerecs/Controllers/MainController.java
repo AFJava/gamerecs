@@ -96,6 +96,7 @@ public class MainController {
 
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("startPage", startPage);
+        model.addAttribute("page", page);
         model.addAttribute("endPage", endPage);
         model.addAttribute("showFirstPage", startPage > 1);
         model.addAttribute("showLastPage", endPage < totalPages);
@@ -149,6 +150,7 @@ public class MainController {
 
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("startPage", startPage);
+        model.addAttribute("page", page);
         model.addAttribute("endPage", endPage);
         model.addAttribute("showFirstPage", startPage > 1);
         model.addAttribute("showLastPage", endPage < totalPages);
@@ -178,6 +180,7 @@ public class MainController {
 
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("startPage", startPage);
+        model.addAttribute("page", page);
         model.addAttribute("endPage", endPage);
         model.addAttribute("showFirstPage", startPage > 1);
         model.addAttribute("showLastPage", endPage < totalPages);
