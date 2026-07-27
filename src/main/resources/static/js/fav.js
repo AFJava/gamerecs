@@ -1,5 +1,7 @@
 document.addEventListener("click", (event) => {
-    fav(event)
+    if (event.target.classList.contains("fav-button")) {
+        fav(event)
+    }
 });
 
 async function fav(event) {
