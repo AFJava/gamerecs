@@ -77,7 +77,11 @@ async function add(event) {
     const rating = rateInput.value;
 
     if(document.querySelector('script[src="/js/search.js"]')) {
-        sendAddRequestSearch();
+        sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating);
+    }
+
+    if(document.querySelector(".rec-games")) {
+        sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating);
     }
 
     console.log("POST sent");
@@ -117,7 +121,7 @@ async function add(event) {
     }
 }
 
-async function sendAddRequestSearch() {
+async function sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating) {
     const game = resultsMap.get(Number(igdbId))
     
     const response = await fetch(
@@ -139,4 +143,24 @@ async function sendAddRequestSearch() {
     )
 
     addedGamesIgdbIds.add(Number(igdbId));
+}
+
+async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
+    const response = await fetch(
+        "/games/add",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+                [csrfHeader]: csrfToken
+            },
+
+            body: JSON.stringify({
+                igdbId: igdbId,
+                rating: rating,
+                game: null
+            })
+        }
+    )
 }
