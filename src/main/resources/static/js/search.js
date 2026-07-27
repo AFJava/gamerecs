@@ -19,6 +19,12 @@ let totalPages = 0;
 let debounceTimeout;
 let debounceTime = 1000; //in ms (SET TO 1 SECOND FOR DEVELOPMENT)
 
+resultsDiv.addEventListener("click", (event) => {
+    if (event.target.classList.contains("rate-button")) {
+        rate(event);
+    }
+});
+
 filterObscureButton.addEventListener("change", () => {
     clearTimeout(debounceTimeout);
 

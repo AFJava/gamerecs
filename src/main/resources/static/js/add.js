@@ -1,27 +1,8 @@
-//Check whether a button was clicked within the search results div
-if(resultsDiv !== null) {
-    resultsDiv.addEventListener("click", (event) => {
-        if (event.target.classList.contains("rate-button")) {
-            rate(event);
-        }
-    });
-}
-
 //If expandedResultsDiv exists, apply same listner to it
 const expandedResultsDiv = document.querySelector(".search-results-expanded");
 
 if(expandedResultsDiv !== null) {
     expandedResultsDiv.addEventListener("click", (event) => {
-        if (event.target.classList.contains("rate-button")) {
-            rate(event);
-        }
-    });
-}
-
-const recDiv = document.querySelector(".rec-games");
-
-if(recDiv !== null) {
-    recDiv.addEventListener("click", (event) => {
         if (event.target.classList.contains("rate-button")) {
             rate(event);
         }
@@ -144,40 +125,13 @@ async function add(event) {
     const gameName = rateButton.dataset.gameName;
     confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
 
-    const gamePreview = summaryDiv.querySelector(".game-preview-search");
-    const imageId = gamePreview.dataset.imageId;
-    const imageSrc = "https://images.igdb.com/igdb/image/upload/t_1080p/" + imageId + ".jpg";
-
     //Append confirmation messages to correct gameDiv
-    const gameDiv = document.querySelector(`.search-item[data-igdb-id = "${igdbId}"]`);
+    const gameDiv = summaryDiv.closest(".search-item");
 
     gameDiv.appendChild(confirmation);
 
-    //Check whether to display added game 
-    const profileGameDivContainer = document.querySelector(".added-games-container");
-
-    //If on profile page
-    if (profileGameDivContainer !== null) {
-        const profileGameDiv = profileGameDivContainer.querySelector(".added-games");
-        let expandAdded = profileGameDivContainer.querySelector(".added-nav-container");
-
-        if (profileGameDiv.childElementCount < 5) {
-            //Use JS to display newly added game without refresh (use Thymeleaf for games previously added)
-            const profileCard = document.createElement("div");
-            profileCard.classList.add("profile-card");
-            profileCard.innerHTML = `<img src = ${imageSrc} class = "game-preview">
-                <h2 class = "game-name">${gameName}</h2>
-                <p class="game-rating">Rating: ${rating} / 10</p>`;
-
-            profileGameDiv.appendChild(profileCard);
-        } //Otherwise add the new button (if not already rendered)
-        else if (expandAdded === null) {
-            expandAdded = document.createElement("div");
-            expandAdded.classList.add("added-nav-container");
-
-            expandAdded.innerHTML = '<a href="profile/added?page=1" class="button">All added games</a>';
-
-            profileGameDivContainer.appendChild(expandAdded);
-        }
+    //If on profile, also render the game (or add button)
+    if(document.querySelector('script[src="profile.js"]') !== null) {
+        renderAdded(summaryDiv, igdbId);
     }
 }

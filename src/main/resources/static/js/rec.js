@@ -1,3 +1,13 @@
+const recDiv = document.querySelector(".rec-games");
+
+if(recDiv !== null) {
+    recDiv.addEventListener("click", (event) => {
+        if (event.target.classList.contains("rate-button")) {
+            rate(event);
+        }
+    });
+}
+
 const newRecButton = document.querySelector(".rec-button");
 
 newRecButton.addEventListener("click", async () => {
