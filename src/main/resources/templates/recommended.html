@@ -39,11 +39,22 @@
                 <div class="rec-summary" th:data-igdb-id="${rec.game.igdbId}">
                     <img th:if="${rec.game.imageId != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${rec.game.imageId}.jpg|" class="game-preview-search">
                     <img th:if="${rec.game.imageId == null}" src="/assets/Image_not_found.png" class="game-preview-search">
+
                     <h2 class="game-name" th:text="${rec.game.name}"></h2>
-                    <span th:if="${sharedIgdbIds.contains(rec.game.igdbId)}" class="game-added-msg-container">
-                        <p class="game-added-msg">This game has already been added to your profile.</p>
-                    </span>
-                    <button th:if="${! sharedIgdbIds.contains(rec.game.igdbId)}" type="button" class="rate-button" th:data-igdb-id="${rec.game.igdbId}" th:data-game-name="${rec.game.name}">Rate and add to profile</button>
+
+                    <div class="rec-action-container">
+                        <span th:if="${sharedIgdbIds.contains(rec.game.igdbId)}" class="game-added-msg-container">
+                            <p class="game-added-msg">This game has already been added to your profile.</p>
+                        </span>
+                        <button th:if="${! sharedIgdbIds.contains(rec.game.igdbId)}" type="button" class="rate-button" th:data-igdb-id="${rec.game.igdbId}" th:data-game-name="${rec.game.name}">Rate and add to profile</button>
+
+                        <button type="button" class="fav-button" th:data-igdb-id="${rec.game.igdbId}">Mark as favorite</button>
+                        <!--
+                        <span class="game-added-msg-container">
+                            <p class="game-added-msg">This game has already been added to your profile.</p>
+                        </span>
+                        -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,5 +98,6 @@
 </body>
 
 <script src="/js/rec.js"></script>
+<script src="/js/fav.js"></script>
 
 </html>

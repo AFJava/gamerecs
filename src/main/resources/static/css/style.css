@@ -56,7 +56,7 @@ input[type="text"], input[type="password"] {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.login-button, .rate-button, .submit-rating, .rec-button, .page-nav-item-search {
+.login-button, .rate-button, .fav-button, .submit-rating, .rec-button, .page-nav-item-search {
     height: 2rem;
     border-radius: 1rem;
     background-color: #565f76;
@@ -68,7 +68,7 @@ input[type="text"], input[type="password"] {
     padding-inline: 10px;
 }
 
-.rate-button {
+.rate-button, .fav-button {
     height: auto;
     min-height: 2rem;
 }
