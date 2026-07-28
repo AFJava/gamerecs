@@ -1,4 +1,4 @@
-const recDiv = document.querySelector(".rec-games");
+const recDiv = document.getElementById("rec-games");
 
 if(recDiv !== null) {
     recDiv.addEventListener("click", (event) => {
@@ -8,7 +8,8 @@ if(recDiv !== null) {
     });
 }
 
-const newRecButton = document.querySelector(".rec-button");
+const recButtonContainer = document.getElementById("rec-button-container");
+const newRecButton = recButtonContainer.querySelector(".rec-button");
 
 if(newRecButton !== null) {
     newRecButton.addEventListener("click", async () => {

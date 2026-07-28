@@ -34,7 +34,7 @@
     <main>
         <h1>My Recommended Games</h1>
 
-        <div class="rec-games">
+        <div class="rec-games" id="rec-games">
             <div th:each="rec : ${recs}" class="rec-item" th:data-igdb-id="${rec.game.igdbId}" th:data-game-name="${rec.game.name}">
                 <div class="rec-summary" th:data-igdb-id="${rec.game.igdbId}">
                     <img th:if="${rec.game.imageId != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${rec.game.imageId}.jpg|" class="game-preview-search">
