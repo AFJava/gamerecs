@@ -89,7 +89,9 @@ async function add(event) {
     //Deprecated id matching
     //window.userGamesIgdbIds.add(Number(igdbId));
     //console.log(window.userGamesIgdbIds);
-
+    //Append confirmation messages to correct gameDiv
+    const gameDiv = event.target.closest(".search-item, .rec-item");
+    
     //Replace rate button and rating interface with confirmation messages
     const rateButton = document.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
     rateButton.remove();
@@ -107,17 +109,16 @@ async function add(event) {
     const confirmation = document.createElement("div");
     confirmation.classList.add("confirmation");
 
-    const gameName = rateButton.dataset.gameName;
+    const gameName = gameDiv.dataset.gameName;
     confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
-
-    //Append confirmation messages to correct gameDiv
-    const gameDiv = summaryDiv.closest(".search-item, .rec-item");
 
     gameDiv.appendChild(confirmation);
 
     //If on profile, also render the game (or add button)
-    if(document.querySelector('script[src="profile.js"]') !== null) {
-        renderAdded(summaryDiv, igdbId);
+    if(document.querySelector('script[src="/js/profile.js"]') !== null) {
+        console.log("On profile");
+
+        renderAdded(summaryDiv, igdbId, gameName, rating);
     }
 }
 

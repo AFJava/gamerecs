@@ -7,7 +7,7 @@ function removeMessages() {
     }
 }
 
-function renderAdded(summaryDiv, igdbId) {
+function renderAdded(summaryDiv, igdbId, gameName, rating) {
     const gamePreview = summaryDiv.querySelector(`.game-preview-search`);
     console.log(gamePreview);
 
