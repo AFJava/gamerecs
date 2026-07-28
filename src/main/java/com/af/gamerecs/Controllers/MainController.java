@@ -46,7 +46,21 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model, Authentication authentication) {
+        boolean authenticated = false;
+
+        if(authentication != null) {
+            authenticated = true;
+
+            Object principal = authentication.getPrincipal();
+            User user = currentUserService.userFromPrincipal(principal);
+            Long userId = user.getId();
+
+            model.addAttribute("id", userId);
+        }
+
+        model.addAttribute("authenticated", authenticated);
+
         return "index";
     }
     
