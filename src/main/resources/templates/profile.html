@@ -54,7 +54,7 @@
     
     <main>
         <!--Note that both userGames and recs use Game objects for display, so syntax is different from search, which uses dtos-->
-        <div class="added-games-container">
+        <div class="added-games-container" id="added-games-container">
             <h1>My Games</h1>
             
             <div class="added-games">
@@ -81,7 +81,7 @@
 
         <h1>Recommended Games</h1>
         
-        <div class="rec-button-container">
+        <div class="rec-button-container" id="rec-button-container">
             <p class="no-games-msg" th:if="${userGames.empty}">Add games using the searchbar to get recommendations!</p>
             <button th:if="${! userGames.empty}" class="rec-button">Get New Recommendations</button>
             <a th:if="${! userGames.empty}" href="profile/recommended?page=1" class="button">All Recommended Games</a>

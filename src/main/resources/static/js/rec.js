@@ -10,11 +10,13 @@ if(recDiv !== null) {
 
 const newRecButton = document.querySelector(".rec-button");
 
-newRecButton.addEventListener("click", async () => {
-    await rec();
+if(newRecButton !== null) {
+    newRecButton.addEventListener("click", async () => {
+        await rec();
 
-    window.location.href = window.location.pathname + "/recommended?page=1";
-});
+        window.location.href = window.location.pathname + "/recommended?page=1";
+    });
+}
 
 async function rec() {
     const response = await fetch(

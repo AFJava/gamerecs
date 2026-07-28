@@ -1,9 +1,19 @@
-//Remove all messages displayed when no games are added, if any
-function removeDefaultMessages() {
-    const noGamesMsgs = document.querySelectorAll(".no-games-msg");
+function setUpProfile(addedGamesContainer, recButtonContainer) {
+    let recButton = recButtonContainer.querySelector(".rec-button");
 
-    if (noGamesMsgs !== null) {
-        noGamesMsgs.forEach(msg => msg.remove());
+    //If true, this is the first added game, so also remove all default messages
+    if(recButton === null) {
+        let noGamesMsg = addedGamesContainer.querySelector(".no-games-msg");
+        noGamesMsg.remove();
+
+        noGamesMsg = recButtonContainer.querySelector(".no-games-msg");
+        noGamesMsg.remove();
+
+        recButton = document.createElement("button");
+        recButton.classList.add("rec-button");
+        recButton.innerText = "Get New Recommendations";
+
+        recButtonContainer.appendChild(recButton);
     }
 }
 

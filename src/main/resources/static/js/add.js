@@ -100,11 +100,15 @@ async function add(event) {
 
     appendConfirmationMessages(gameDiv, summaryDiv, igdbId, gameName);
 
-    //If on profile, also render the game (or add button)
-    if(document.querySelector('script[src="/js/profile.js"]') !== null) {
+    //If addedGamesContianer exists, current page is profile (does not exist even in /added)
+    const addedGamesContainer = document.getElementById("added-games-container");
+    const recButtonContainer = document.getElementById("rec-button-container");
+
+    //If on profile, render game and set up recommendations as well
+    if(addedGamesContainer !== null) {
         console.log("On profile");
 
-        removeDefaultMessages();
+        setUpProfile(addedGamesContainer, recButtonContainer);
         renderAdded(summaryDiv, igdbId, gameName, rating);
     }
 }
