@@ -1,5 +1,5 @@
 //Remove all messages displayed when no games are added, if any
-function removeMessages() {
+function removeDefaultMessages() {
     const noGamesMsgs = document.querySelectorAll(".no-games-msg");
 
     if (noGamesMsgs !== null) {

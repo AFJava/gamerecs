@@ -63,6 +63,8 @@ function prepareRatingInterface(igdbId) {
 async function add(event) {
     console.log("Submitted form");
 
+    //Append confirmation messages to correct gameDiv
+    
     event.preventDefault();
 
     //Get CSRF
@@ -70,10 +72,13 @@ async function add(event) {
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
     
     //Get data for db fields, get rateInterface + rateButton for deletion
-    const rateInterface = event.target.closest(".rate");
-    const igdbId = rateInterface.dataset.igdbId;
+    const gameDiv = event.target.closest(".search-item, .rec-item");
+    const igdbId = gameDiv.dataset.igdbId;
+    const gameName = gameDiv.dataset.gameName;
+    
+    
 
-    const rateInput = document.querySelector('input[name="rating"]');
+    const rateInput = gameDiv.querySelector('input[name="rating"]');
     const rating = rateInput.value;
 
     if(document.querySelector('script[src="/js/search.js"]')) {
@@ -89,35 +94,17 @@ async function add(event) {
     //Deprecated id matching
     //window.userGamesIgdbIds.add(Number(igdbId));
     //console.log(window.userGamesIgdbIds);
-    //Append confirmation messages to correct gameDiv
-    const gameDiv = event.target.closest(".search-item, .rec-item");
     
-    //Replace rate button and rating interface with confirmation messages
-    const rateButton = document.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
-    rateButton.remove();
-    rateInterface.remove();
+    const summaryDiv = gameDiv.querySelector(`.search-summary[data-igdb-id = "${igdbId}"],
+        .rec-action-container[data-igdb-id = "${igdbId}"]`);
 
-    const gameAddedMsgContainer = document.createElement("span");
-    gameAddedMsgContainer.classList.add("game-added-msg-container");
-
-    gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>';
-
-    //Append to summary div in place of button
-    const summaryDiv = document.querySelector(`.search-summary[data-igdb-id = "${igdbId}"], .rec-action-container[data-igdb-id = "${igdbId}"]`);
-    summaryDiv.appendChild(gameAddedMsgContainer);
-
-    const confirmation = document.createElement("div");
-    confirmation.classList.add("confirmation");
-
-    const gameName = gameDiv.dataset.gameName;
-    confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
-
-    gameDiv.appendChild(confirmation);
+    appendConfirmationMessages(gameDiv, summaryDiv, igdbId, gameName);
 
     //If on profile, also render the game (or add button)
     if(document.querySelector('script[src="/js/profile.js"]') !== null) {
         console.log("On profile");
 
+        removeDefaultMessages();
         renderAdded(summaryDiv, igdbId, gameName, rating);
     }
 }
@@ -164,4 +151,27 @@ async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
             })
         }
     )
+}
+
+//Replace rate button, interface with confirmation messages
+function appendConfirmationMessages(gameDiv, summaryDiv, igdbId, gameName) {
+    const rateInterface = gameDiv.querySelector(".rate");
+    
+    const rateButton = document.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
+    rateButton.remove();
+    rateInterface.remove();
+
+    const gameAddedMsgContainer = document.createElement("span");
+    gameAddedMsgContainer.classList.add("game-added-msg-container");
+
+    gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>';
+    
+    summaryDiv.appendChild(gameAddedMsgContainer);
+
+    const confirmation = document.createElement("div");
+    confirmation.classList.add("confirmation");
+
+    confirmation.innerHTML = `<p>${gameName} was added to your profile.</p>`;
+
+    gameDiv.appendChild(confirmation);
 }
