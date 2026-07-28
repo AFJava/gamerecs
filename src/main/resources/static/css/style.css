@@ -417,7 +417,7 @@ p#signuperr:empty {
     align-items: center;
 }
 
-.added-games, .search-results-expanded {
+.added-games, .rec-button-container, .search-results-expanded {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -445,13 +445,9 @@ p#signuperr:empty {
 /* Profile recommendation actions */
 /* Also used on recommendation page */
 .rec-button-container {
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
     margin-bottom: 1.5rem;
     gap: 0.5rem;
-    height: 80%;
 }
 
 /* Page nav */
