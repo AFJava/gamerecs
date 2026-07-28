@@ -411,6 +411,7 @@ p#signuperr:empty {
     align-items: center;
 }
 
+/* Default for all game lists*/
 .added-games, .favorite-games, .rec-button-container, .added-games-expanded, .search-results-expanded, .rec-games {
     display: flex;
     flex-direction: column;
@@ -434,6 +435,10 @@ p#signuperr:empty {
 
 .added-nav-container {
     margin-top: 1rem;
+}
+
+.info-msg {
+    margin: 1em 1rem;
 }
 
 /* Expanded pages */
