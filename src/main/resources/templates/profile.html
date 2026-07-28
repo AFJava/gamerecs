@@ -58,6 +58,7 @@
             <h1>My Games</h1>
             
             <div class="added-games">
+                <p class="info-msg">Add any games that you played to your profile. Features of each added game will be considered (based on your rating of that game) when generating recommendations. </p>
                 <p class="no-games-msg" th:if="${userGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
 
                 <div th:each="userGame : ${userGames}" class="profile-card">
@@ -75,14 +76,18 @@
 
         <h1>Saved Recommendations</h1>
 
-        <div class="favorite">
-            <p>placeholder</p>
+        <div class="favorite-games">
+            <p class="info-msg">
+                Favorited games are intended to be games that you have not yet played.
+                This may include games that you plan to play soon, recommendations that you liked, etc. <br><br>
+                Favorited games will also be considered for recommendations, but will be treated as an added game with an average (5/10) rating.
+            </p>
         </div>
 
         <h1>Recommended Games</h1>
         
         <div class="rec-button-container" id="rec-button-container">
-            <p class="no-games-msg" th:if="${userGames.empty}">Add games using the searchbar to get recommendations!</p>
+            <p class="no-games-msg" th:if="${userGames.empty}">Add games using the searchbar to start generating recommendations.</p>
             <button th:if="${! userGames.empty}" class="rec-button">Get New Recommendations</button>
             <a th:if="${hasRecs}" href="profile/recommended?page=1" class="button">All Recommended Games</a>
         </div>

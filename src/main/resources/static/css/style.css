@@ -40,7 +40,7 @@ h1 {
     text-align: center;
 }
 
-.game-name, .game-added-msg, .game-favorited-msg, .game-rating, .no-games-msg {
+.game-name, .game-added-msg, .game-favorited-msg, .game-rating, .no-games-msg, .info-msg {
     text-align: center;
 }
 
@@ -417,7 +417,7 @@ p#signuperr:empty {
     align-items: center;
 }
 
-.added-games, .rec-button-container, .search-results-expanded {
+.added-games, .favorite-games, .rec-button-container, .search-results-expanded {
     display: flex;
     flex-direction: column;
     align-items: center;
