@@ -57,7 +57,7 @@
 
         <div class="search-results-expanded">
             <div class="results-list">
-                <div th:each="game : ${games}" class="search-item expanded" th:data-igdb-id="${game.id}" th:data-game-name="${game.name}">
+                <div th:each="game : ${games}" class="search-item-expanded" th:data-igdb-id="${game.id}" th:data-game-name="${game.name}">
                     <div class="search-summary" th:data-igdb-id="${game.id}">
                         <img th:if="${game.cover != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg|" class="game-preview-search">
                         <img th:if="${game.cover == null}" src="/assets/Image_not_found.png" class="game-preview-search">

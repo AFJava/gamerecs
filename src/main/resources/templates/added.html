@@ -30,7 +30,7 @@
     <main>
         <h1>My Games</h1>
 
-        <div class="added-games">
+        <div class="added-games-expanded">
             <div th:each="userGame : ${userGames}" class="profile-card">
                 <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${userGame.game.imageId} + '.jpg'">
                 <h2 class="game-name" th:text="${userGame.game.name}"></h2>
