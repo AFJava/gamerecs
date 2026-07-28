@@ -82,13 +82,19 @@ public class MainController {
         //HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
         //model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
 
-        //Check if userGames is longer than 5; if so, take first 5 for display and add button        
+        //Check if userGames is longer than 5; if so, take first 5 for display and add button
         if(userGames.hasNext()) {
             model.addAttribute("expandAdded", true); //If not added, expandAdded = null (false for th:if)
         }
         
         model.addAttribute("userGames", userGames.getContent());
+
+        Page<Recommendation> recs = recommendationService.getPaginatedActiveRecommendations(userId, PageRequest.of(0, 5));
         
+        if(recs.getTotalElements() != 0) {
+            model.addAttribute("hasRecs", true);
+        }
+
         return "profile";
     }
 

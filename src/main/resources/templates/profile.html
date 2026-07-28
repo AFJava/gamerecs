@@ -84,7 +84,7 @@
         <div class="rec-button-container" id="rec-button-container">
             <p class="no-games-msg" th:if="${userGames.empty}">Add games using the searchbar to get recommendations!</p>
             <button th:if="${! userGames.empty}" class="rec-button">Get New Recommendations</button>
-            <a th:if="${! userGames.empty}" href="profile/recommended?page=1" class="button">All Recommended Games</a>
+            <a th:if="${hasRecs}" href="profile/recommended?page=1" class="button">All Recommended Games</a>
         </div>
     </main>
     
