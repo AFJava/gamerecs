@@ -23,6 +23,9 @@ resultsDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("rate-button")) {
         rate(event);
     }
+    if (event.target.classList.contains("fav-button")) {
+        fav(event);
+    }
 });
 
 filterObscureButton.addEventListener("change", () => {
@@ -158,15 +161,22 @@ async function search(page) {
         }
         
         //Select confirmation message or rate & add button depending on whether game has been added
-        const actionHTML = addedGamesIgdbIds.has(Number(igdbId))
+        const actionDiv = document.createElement("div");
+        actionDiv.classList.add("game-action-container");
+
+        const addedHTML = addedGamesIgdbIds.has(Number(igdbId))
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
             : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" >Rate and add to profile</button>`
-        
-        searchSummary.innerHTML = 
-            `<img data-image-id=${imageId} src = ${imageURL} class = "game-preview-search">
-            <h2 class = "game-name">${game.name}</h2>
-            ${actionHTML}`;
 
+        const favoriteHTML = `<button type="button" class="fav-button" data-igdb-id = "${igdbId}" >Add to favorites</button>`;
+        
+        actionDiv.innerHTML = `${addedHTML}
+            ${favoriteHTML}`;
+        
+        searchSummary.innerHTML = `<img data-image-id=${imageId} src = ${imageURL} class = "game-preview-search">
+            <h2 class = "game-name">${game.name}</h2>`;
+
+        searchSummary.appendChild(actionDiv);
         gameDiv.appendChild(searchSummary);
         resultsList.appendChild(gameDiv);
     });
