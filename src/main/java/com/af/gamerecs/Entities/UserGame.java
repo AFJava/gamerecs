@@ -26,11 +26,14 @@ public class UserGame {
 
     private int rating;
 
-    public UserGame() {
+    private boolean favorited;
 
+    public UserGame() {
+        favorited = false;
     }
 
     public UserGame(User user, Game game, int rating) {
+        favorited = false;
         this.user = user;
         this.game = game;
         this.rating = rating;
@@ -50,5 +53,13 @@ public class UserGame {
 
     public float getRating() {
         return rating;
+    }
+
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(boolean status) {
+        favorited = status;
     }
 }

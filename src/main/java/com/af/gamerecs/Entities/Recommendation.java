@@ -35,16 +35,12 @@ public class Recommendation {
     //Not part of current recommendation batch if null
     private Double score;
 
-    private boolean favorited;
-
     public Recommendation() {
         pressure = 0.0;
-        favorited = false;
     }
 
     public Recommendation(User user, Game game) {
         pressure = 0.0;
-        favorited = false;
         this.user = user;
         this.game = game;
     }
@@ -73,10 +69,6 @@ public class Recommendation {
         return score;
     }
 
-    public boolean isFavorited() {
-        return favorited;
-    }
-
     public void updatePressure() {
         LocalDateTime now = LocalDateTime.now();
 
@@ -88,9 +80,5 @@ public class Recommendation {
 
     public void setScore(Double score) {
         this.score = score;
-    }
-
-    public void setFavorited(boolean status) {
-        favorited = status;
     }
 }
