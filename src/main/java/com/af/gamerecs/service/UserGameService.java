@@ -2,6 +2,7 @@ package com.af.gamerecs.service;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,24 +21,40 @@ public class UserGameService {
         this.userGameRepository = userGameRepository;
     }
 
-    public void saveToProfile(User user, Game game, Integer rating) throws IllegalArgumentException {
+    public void saveToProfile(User user, Game game, Integer rating) {
         Long userId = user.getId();
         
-        //Do not save if game has already been added (has same userId and rawgId)
-        if(userGameRepository.existsByUserIdAndGame_IgdbId(userId, game.getIgdbId())) {
-            throw new IllegalArgumentException("Game Already Saved");
+        UserGame userGame = getUserGame(userId, game.getIgdbId());
+        
+        //If game already exists in repository, it was previously favorited; set rating, favorited and overwrite
+        if(userGame != null) {
+            userGame.setFavorited(false);
+            userGame.setRating(rating);
+            userGameRepository.save(userGame);
+
+            return;
         }
         
-        UserGame userGame = new UserGame(user, game, rating);
-        userGameRepository.save(userGame);
+        //Otherwise make new UserGame and save
+        userGameRepository.save(new UserGame(user, game, rating));
+    }
+
+    public UserGame getUserGame(Long userId, Long igdbId) {
+        Optional<UserGame> userGameContainer = userGameRepository.findByUserIdAndGame_IgdbId(userId, igdbId);
+
+        if(userGameContainer.isEmpty()) {
+            return null;
+        }
+
+        return userGameContainer.get();
     }
 
     public List<UserGame> getUserGames(Long userId) {
-        return userGameRepository.findByUserId(userId);
+        return userGameRepository.findAllByUserId(userId);
     }
     
     public Page<UserGame> getPaginatedUserGames(Long userId, Pageable pageable) {
-        return userGameRepository.findByUserId(userId, pageable);
+        return userGameRepository.findAllByUserId(userId, pageable);
     }
 
     public List<Long> getIgdbIds(List<UserGame> userGames) {

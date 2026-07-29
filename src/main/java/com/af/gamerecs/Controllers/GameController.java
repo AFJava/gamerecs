@@ -18,6 +18,7 @@ import com.af.gamerecs.dto.IdDto;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.entities.User;
+import com.af.gamerecs.entities.UserGame;
 import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.service.CompanyReferenceService;
 import com.af.gamerecs.service.CurrentUserService;
@@ -143,12 +144,11 @@ public class GameController {
         User user = currentUserService.userFromPrincipal(principal);
 
         //System.out.println(gameIdContainer.id());
-        /* 
+        /* */
         Recommendation rec = recommendationService.getRecommendation(user.getId(), gameIdContainer.id());
-        rec.setFavorited(true);
 
-        recommendationService.saveRecommendation(rec);
-        */
+        userGameService.saveToProfile(user, rec.getGame(), 5);
+        
         return "";
     }
 }

@@ -1,6 +1,7 @@
 package com.af.gamerecs.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,8 +12,9 @@ import com.af.gamerecs.entities.UserGame;
 
 public interface UserGameRepository extends JpaRepository<UserGame, Integer> {
     boolean existsByUserIdAndGame_IgdbId(Long userId, Long IgdbId);
-    List<UserGame> findByUserId(Long userId);
-    Page<UserGame> findByUserId(Long userId, Pageable pageable);
+    Optional<UserGame> findByUserIdAndGame_IgdbId(Long userId, Long igdbId);
+    List<UserGame> findAllByUserId(Long userId);
+    Page<UserGame> findAllByUserId(Long userId, Pageable pageable);
 
     //Check whether IGDB IDs from search results match any from UserGames
     @Query("""

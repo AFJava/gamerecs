@@ -59,6 +59,10 @@ public class UserGame {
         return favorited;
     }
 
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     public void setFavorited(boolean status) {
         favorited = status;
     }
