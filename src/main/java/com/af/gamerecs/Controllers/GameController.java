@@ -143,12 +143,12 @@ public class GameController {
         User user = currentUserService.userFromPrincipal(principal);
 
         //System.out.println(gameIdContainer.id());
-
+        /* 
         Recommendation rec = recommendationService.getRecommendation(user.getId(), gameIdContainer.id());
         rec.setFavorited(true);
 
         recommendationService.saveRecommendation(rec);
-
+        */
         return "";
     }
 }
