@@ -23,9 +23,6 @@ resultsDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("rate-button")) {
         rate(event);
     }
-    if (event.target.classList.contains("fav-button")) {
-        fav(event);
-    }
 });
 
 filterObscureButton.addEventListener("change", () => {
