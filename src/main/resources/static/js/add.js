@@ -75,8 +75,6 @@ async function add(event) {
     const gameDiv = event.target.closest(".search-item, .rec-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
-    
-    
 
     const rateInput = gameDiv.querySelector('input[name="rating"]');
     const rating = rateInput.value;
@@ -94,11 +92,8 @@ async function add(event) {
     //Deprecated id matching
     //window.userGamesIgdbIds.add(Number(igdbId));
     //console.log(window.userGamesIgdbIds);
-    
-    const summaryDiv = gameDiv.querySelector(`.search-summary[data-igdb-id = "${igdbId}"],
-        .rec-action-container[data-igdb-id = "${igdbId}"]`);
 
-    appendConfirmationMessages(gameDiv, summaryDiv, igdbId, gameName);
+    appendConfirmationMessages(gameDiv, igdbId, gameName);
 
     //If addedGamesContianer exists, current page is profile (does not exist even in /added)
     const addedGamesContainer = document.getElementById("added-games-container");
@@ -109,7 +104,7 @@ async function add(event) {
         console.log("On profile");
 
         setUpProfile(addedGamesContainer, recButtonContainer);
-        renderAdded(summaryDiv, igdbId, gameName, rating);
+        renderAdded(gameDiv, igdbId, gameName, rating);
     }
 }
 
@@ -158,10 +153,11 @@ async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
 }
 
 //Replace rate button, interface with confirmation messages
-function appendConfirmationMessages(gameDiv, summaryDiv, igdbId, gameName) {
+function appendConfirmationMessages(gameDiv, igdbId, gameName) {
+    const actionDiv = gameDiv.querySelector(`.game-action-container[data-igdb-id = "${igdbId}"]`);
+    const rateButton = gameDiv.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
     const rateInterface = gameDiv.querySelector(".rate");
     
-    const rateButton = document.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
     rateButton.remove();
     rateInterface.remove();
 
@@ -170,7 +166,7 @@ function appendConfirmationMessages(gameDiv, summaryDiv, igdbId, gameName) {
 
     gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>';
     
-    summaryDiv.appendChild(gameAddedMsgContainer);
+    actionDiv.appendChild(gameAddedMsgContainer);
 
     const confirmation = document.createElement("div");
     confirmation.classList.add("confirmation");

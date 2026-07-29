@@ -24,8 +24,8 @@ function setUpProfile(addedGamesContainer, recButtonContainer) {
     }
 }
 
-function renderAdded(summaryDiv, igdbId, gameName, rating) {
-    const gamePreview = summaryDiv.querySelector(`.game-preview-search`);
+function renderAdded(gameDiv, igdbId, gameName, rating) {
+    const gamePreview = gameDiv.querySelector(`.game-preview-search`);
     console.log(gamePreview);
 
     const imageId = gamePreview.dataset.imageId;
