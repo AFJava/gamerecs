@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.dto.SearchResponse;
-import com.af.gamerecs.dto.IdDto;
+import com.af.gamerecs.dto.FavGameRequest;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.entities.User;
@@ -44,6 +44,7 @@ public class GameController {
     public final RecommendationService recommendationService;
     public int numFeaturesMatched = 5; //Number of features to be used in initial IGDB request for recommended games
     public int numFeaturesMatchedScore = 100; //Number of features to be used when scoring, sorting recommended games
+    public int favGameRating = 5; //Rating given to all favorited games by default
 
     public GameController(UserGameService userGameService,
                         CurrentUserService currentUserService,
@@ -96,12 +97,12 @@ public class GameController {
 
         Long igdbId = saveGameRequest.igdbId();
         Integer rating = saveGameRequest.rating();
-        IgdbGameDto game = saveGameRequest.game();
+        IgdbGameDto gameDto = saveGameRequest.game();
 
-        Game g = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(game)));
+        Game game = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(gameDto)));
 
-        userGameService.saveToProfile(user, g, rating);
-        userPreferenceService.updatePreferenceFromGame(user, g, rating);
+        userGameService.saveToProfile(user, game, rating);
+        userPreferenceService.updatePreferenceFromGame(user, game, rating);
         
         return "";
     }
@@ -139,15 +140,18 @@ public class GameController {
     }
 
     @PostMapping("/favorite")
-    public String fav(Authentication authentication, @RequestBody IdDto gameIdContainer) {
+    public String fav(Authentication authentication, @RequestBody FavGameRequest favGameRequest) {
         Object principal = authentication.getPrincipal();
         User user = currentUserService.userFromPrincipal(principal);
 
         //System.out.println(gameIdContainer.id());
         /* */
-        Recommendation rec = recommendationService.getRecommendation(user.getId(), gameIdContainer.id());
+        Long igdbId = favGameRequest.igdbId();
+        IgdbGameDto gameDto = favGameRequest.game();
+        Game game = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(gameDto)));
 
-        userGameService.saveToProfile(user, rec.getGame(), 5);
+        userGameService.saveToProfile(user, game, favGameRating);
+        userPreferenceService.updatePreferenceFromGame(user, game, favGameRating);
         
         return "";
     }
