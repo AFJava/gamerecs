@@ -15,17 +15,17 @@ async function fav(event) {
     
     appendFavoritedConfirmationMessage(gameDiv, igdbId);
 
-    if(document.querySelector('script[src="/js/search.js"]')) {
+    if(document.getElementById("search-script")) {
         console.log("Search ver executed");
         
         sendFavRequestSearch(csrfHeader, csrfToken, igdbId);
 
-        if(document.getElementById("added-games-container") !== null) {
+        if(document.getElementById("profile-script") !== null) {
             renderAdded(gameDiv, null);
         }
     }
 
-    if(document.querySelector(".rec-games")) {
+    if(document.getElementById("rec-games")) {
         console.log("This one executed too");
         sendFavRequestRec(csrfHeader, csrfToken, igdbId);
     }

@@ -79,11 +79,11 @@ async function add(event) {
     const rateInput = gameDiv.querySelector('input[name="rating"]');
     const rating = rateInput.value;
 
-    if(document.querySelector('script[src="/js/search.js"]')) {
+    if(document.getElementById("search-script")) {
         sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating);
     }
 
-    if(document.querySelector(".rec-games")) {
+    if(document.getElementById("rec-games")) {
         sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating);
     }
 
