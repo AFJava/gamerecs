@@ -107,7 +107,8 @@ async function search(page) {
         //console.log("request sent");
 
         //Cache query, results and store displayed page in games
-        addedGamesIgdbIds = new Set(responseData.addedGamesIgdbIds)
+        addedGamesIgdbIds = new Set(responseData.addedGamesIgdbIds);
+        favoritedGamesIgdbIds = new Set(responseData.favoritedGamesIgdbIds);
         lastSearchQuery = searchContent;
         lastSearchResult = responseData.games;
         lastSearchFilterChecked = filterObscureChecked;
@@ -165,7 +166,9 @@ async function search(page) {
             ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
             : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" >Rate and add to profile</button>`
 
-        const favoriteHTML = `<button type="button" class="fav-button" data-igdb-id = "${igdbId}" >Add to favorites</button>`;
+        const favoriteHTML = favoritedGamesIgdbIds.has(Number(igdbId)) 
+            ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been favorited.</p></span>`
+            : `<button type="button" class="fav-button" data-igdb-id = "${igdbId}" >Add to favorites</button>`;
         
         actionDiv.innerHTML = `${addedHTML}
             ${favoriteHTML}`;
