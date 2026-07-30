@@ -13,8 +13,22 @@ import com.af.gamerecs.entities.UserGame;
 public interface UserGameRepository extends JpaRepository<UserGame, Integer> {
     boolean existsByUserIdAndGame_IgdbId(Long userId, Long IgdbId);
     Optional<UserGame> findByUserIdAndGame_IgdbId(Long userId, Long igdbId);
-    List<UserGame> findAllByUserId(Long userId);
-    Page<UserGame> findAllByUserId(Long userId, Pageable pageable);
+
+    @Query("""
+        select ug
+        from UserGame ug
+        where ug.user.id = :userId
+          and not ug.favorited
+    """)
+    List<UserGame> findAllAddedByUserId(Long userId);
+
+    @Query("""
+        select ug
+        from UserGame ug
+        where ug.user.id = :userId
+          and not ug.favorited
+    """)
+    Page<UserGame> findAllAddedByUserId(Long userId, Pageable pageable);
 
     //Check whether IGDB IDs from search results match any from UserGames
     @Query("""

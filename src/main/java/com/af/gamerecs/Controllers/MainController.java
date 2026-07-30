@@ -76,7 +76,7 @@ public class MainController {
         Long userId = user.getId();
         
         //Add profile cards for each game added
-        Page<UserGame> userGames = userGameService.getPaginatedUserGames(userId, PageRequest.of(0, 5));
+        Page<UserGame> userGames = userGameService.getPaginatedAddedGames(userId, PageRequest.of(0, 5));
 
         //Check if game has already been added by comparing IGDB id
         //HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
@@ -103,7 +103,7 @@ public class MainController {
                         Authentication authentication,
                         @PathVariable Long id,
                         @RequestParam int page) {
-        Page<UserGame> userGamesPage = userGameService.getPaginatedUserGames(id, PageRequest.of(page - 1, pageSize));
+        Page<UserGame> userGamesPage = userGameService.getPaginatedAddedGames(id, PageRequest.of(page - 1, pageSize));
 
         //GetContent() returns List<UserGame>
         model.addAttribute("userGames", userGamesPage.getContent());
@@ -197,7 +197,7 @@ public class MainController {
         HashSet<Long> favoritedIgbdIds = new HashSet<>(recommendationService.getFavoritedIgdbIds(id));
         model.addAttribute("favoritedIgdbIds", favoritedIgbdIds);
         */
-       
+
         int totalPages = recs.getTotalPages();
 
         int startPage = Math.max(1, page - 2);

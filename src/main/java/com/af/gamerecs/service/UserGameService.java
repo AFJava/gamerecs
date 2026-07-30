@@ -48,12 +48,12 @@ public class UserGameService {
         return userGameContainer.get();
     }
 
-    public List<UserGame> getUserGames(Long userId) {
-        return userGameRepository.findAllByUserId(userId);
+    public List<UserGame> getAddedGames(Long userId) {
+        return userGameRepository.findAllAddedByUserId(userId);
     }
     
-    public Page<UserGame> getPaginatedUserGames(Long userId, Pageable pageable) {
-        return userGameRepository.findAllByUserId(userId, pageable);
+    public Page<UserGame> getPaginatedAddedGames(Long userId, Pageable pageable) {
+        return userGameRepository.findAllAddedByUserId(userId, pageable);
     }
 
     public List<Long> getIgdbIds(List<UserGame> userGames) {
