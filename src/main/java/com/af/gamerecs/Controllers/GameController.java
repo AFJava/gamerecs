@@ -1,6 +1,7 @@
 package com.af.gamerecs.controllers;
 
 import java.util.List;
+import java.util.Set;
 import java.util.HashSet;
 
 import org.springframework.security.core.Authentication;
@@ -82,9 +83,10 @@ public class GameController {
             .map(IgdbGameDto::id)
             .toList();
 
-        HashSet<Long> addedGamesIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(userId, gameIgdbIds));
+        Set<Long> addedGamesIgdbIds = userGameService.getAddedIgdbIds(userId, gameIgdbIds);
+        Set<Long> favoritedGamesIgdbIds = userGameService.getFavoritedIgdbIds(userId, gameIgdbIds);
 
-        SearchResponse response = new SearchResponse(games, addedGamesIgdbIds);
+        SearchResponse response = new SearchResponse(games, addedGamesIgdbIds, favoritedGamesIgdbIds);
 
         return response;
     }
