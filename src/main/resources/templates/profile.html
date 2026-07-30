@@ -59,36 +59,47 @@
             
             <div class="added-games">
                 <p class="info-msg">Add any games that you played to your profile. Features of each added game will be considered (based on your rating of that game) when generating recommendations. </p>
-                <p class="no-games-msg" th:if="${userGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
+                <p class="no-games-msg" th:if="${addedGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
 
-                <div th:each="userGame : ${userGames}" class="profile-card">
-                    <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${userGame.game.imageId} + '.jpg'">
-                    <h2 class="game-name" th:text="${userGame.game.name}"></h2>
-                    <p class="game-rating" th:text="|Rating: ${userGame.rating} / 10|"></p>
+                <div th:each="addedGame : ${addedGames}" class="profile-card">
+                    <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${addedGame.game.imageId} + '.jpg'">
+                    <h2 class="game-name" th:text="${addedGame.game.name}"></h2>
+                    <p class="game-rating" th:text="|Rating: ${addedGame.rating} / 10|"></p>
                 </div>
             </div>
             
-
             <div th:if="${expandAdded}" class="added-nav-container">
                 <a href="profile/added?page=1" class="button">All added games</a>
             </div>
         </div>
 
-        <h1>Saved Recommendations</h1>
+        <div class="favorited-games-container" id="favorited-games-container">
+            <h1>Favorited Games</h1>
 
-        <div class="favorite-games">
-            <p class="info-msg">
-                Favorited games are intended to be games that you have not yet played.
-                This may include games that you plan to play soon, recommendations that you liked, etc. <br><br>
-                Favorited games will also be considered for recommendations, but will be treated as an added game with an average (5/10) rating.
-            </p>
+            <div class="favorited-games">
+                <p class="info-msg">
+                    Favorited games are intended to be games that you have not yet played.
+                    This may include games that you plan to play soon, recommendations that you liked, etc. <br><br>
+                    Favorited games will also be considered for recommendations, but will be treated as an added game with an average (5/10) rating.
+                </p>
+                
+                <div th:each="favoritedGame : ${favoritedGames}" class="profile-card">
+                    <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${favoritedGame.game.imageId} + '.jpg'">
+                    <h2 class="game-name" th:text="${favoritedGame.game.name}"></h2>
+                    <p class="game-rating" th:text="|Rating: ${favoritedGame.rating} / 10|"></p>
+                </div>
+            </div>
+
+            <div th:if="${expandFavorites}" class="favorited-nav-container">
+                <a href="profile/favorites?page=1" class="button">All favorited games</a>
+            </div>
         </div>
 
         <h1>Recommended Games</h1>
         
         <div class="rec-button-container" id="rec-button-container">
-            <p class="no-games-msg" th:if="${userGames.empty}">Add games using the searchbar to start generating recommendations.</p>
-            <button th:if="${! userGames.empty}" class="rec-button">Get New Recommendations</button>
+            <p class="no-games-msg" th:if="${addedGames.empty}">Add games using the searchbar to start generating recommendations.</p>
+            <button th:if="${! addedGames.empty}" class="rec-button">Get New Recommendations</button>
             <a th:if="${hasRecs}" href="profile/recommended?page=1" class="button">All Recommended Games</a>
         </div>
     </main>

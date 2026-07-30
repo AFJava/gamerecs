@@ -405,14 +405,14 @@ p#signuperr:empty {
     background-color: gray; /* placeholder color */
 }
 
-.added-games-container {
+.added-games-container, .favorited-games-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 /* Default for all game lists*/
-.added-games, .favorite-games, .rec-button-container, .added-games-expanded, .search-results-expanded, .rec-games {
+.added-games, .favorited-games, .rec-button-container, .added-games-expanded, .search-results-expanded, .rec-games {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -433,7 +433,7 @@ p#signuperr:empty {
     object-fit: cover;
 }
 
-.added-nav-container {
+.added-nav-container, .favorited-nav-container {
     margin-top: 1rem;
 }
 

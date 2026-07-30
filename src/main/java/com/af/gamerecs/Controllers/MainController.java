@@ -75,22 +75,22 @@ public class MainController {
         User user = currentUserService.userFromPrincipal(principal);
         Long userId = user.getId();
         
-        //Add profile cards for each game added
-        Page<UserGame> userGames = userGameService.getPaginatedAddedGames(userId, PageRequest.of(0, 5));
-
-        //Check if game has already been added by comparing IGDB id
-        //HashSet<Long> userGamesIgdbIds = new HashSet<>(userGameService.getIgdbIds(userGames));
-        //model.addAttribute("userGamesIgdbIds", userGamesIgdbIds);
-
-        //Check if userGames is longer than 5; if so, take first 5 for display and add button
-        if(userGames.hasNext()) {
+        //Add profile cards for each game added/favorited
+        Page<UserGame> addedGames = userGameService.getPaginatedAddedGames(userId, PageRequest.of(0, 5));
+        if(addedGames.hasNext()) {
             model.addAttribute("expandAdded", true); //If not added, expandAdded = null (false for th:if)
         }
         
-        model.addAttribute("userGames", userGames.getContent());
+        model.addAttribute("addedGames", addedGames.getContent());
+
+        Page<UserGame> favs = userGameService.getPaginatedFavoritedGames(userId, PageRequest.of(0, 5));
+        if(favs.hasNext()) {
+            model.addAttribute("expandFavorites", true);
+        }
+
+        model.addAttribute("favoritedGames", favs.getContent());
 
         Page<Recommendation> recs = recommendationService.getPaginatedActiveRecommendations(userId, PageRequest.of(0, 5));
-        
         if(recs.getTotalElements() != 0) {
             model.addAttribute("hasRecs", true);
         }
