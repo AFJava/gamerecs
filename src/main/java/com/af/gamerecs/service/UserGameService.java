@@ -56,6 +56,14 @@ public class UserGameService {
         return userGameRepository.findAllAddedByUserId(userId, pageable);
     }
 
+    public List<UserGame> getFavoritedGames(Long userId) {
+        return userGameRepository.findAllFavoritedByUserId(userId);
+    }
+    
+    public Page<UserGame> getPaginatedFavoritedGames(Long userId, Pageable pageable) {
+        return userGameRepository.findAllFavoritedByUserId(userId, pageable);
+    }
+
     public List<Long> getIgdbIds(List<UserGame> userGames) {
         List<Long> igdbIds = new ArrayList<>();
         

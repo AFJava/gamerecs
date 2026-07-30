@@ -30,6 +30,22 @@ public interface UserGameRepository extends JpaRepository<UserGame, Integer> {
     """)
     Page<UserGame> findAllAddedByUserId(Long userId, Pageable pageable);
 
+    @Query("""
+        select ug
+        from UserGame ug
+        where ug.user.id = :userId
+          and ug.favorited
+    """)
+    List<UserGame> findAllFavoritedByUserId(Long userId);
+
+    @Query("""
+        select ug
+        from UserGame ug
+        where ug.user.id = :userId
+          and ug.favorited
+    """)
+    Page<UserGame> findAllFavoritedByUserId(Long userId, Pageable pageable);
+
     //Check whether IGDB IDs from search results match any from UserGames
     @Query("""
     select ug.game.igdbId
