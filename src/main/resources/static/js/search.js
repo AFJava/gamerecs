@@ -161,17 +161,23 @@ async function search(page) {
         //Select confirmation message or rate & add button depending on whether game has been added
         const actionDiv = document.createElement("div");
         actionDiv.classList.add("game-action-container");
-
-        const addedHTML = addedGamesIgdbIds.has(Number(igdbId))
-            ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
-            : `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" >Rate and add to profile</button>`
-
-        const favoriteHTML = favoritedGamesIgdbIds.has(Number(igdbId)) 
-            ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been favorited.</p></span>`
-            : `<button type="button" class="fav-button" data-igdb-id = "${igdbId}" >Add to favorites</button>`;
         
-        actionDiv.innerHTML = `${addedHTML}
-            ${favoriteHTML}`;
+        let addedHTML;
+        let favoriteHTML; 
+        
+        if(addedGamesIgdbIds.has(Number(igdbId))) {
+            addedHTML = `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been added to your profile.</p></span>`
+            actionDiv.innerHTML = `${addedHTML}`;
+        } else {
+            addedHTML = `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" >Rate and add to profile</button>`
+            
+            const favoriteHTML = favoritedGamesIgdbIds.has(Number(igdbId)) 
+                ? `<span class="game-added-msg-container"><p class = "game-added-msg">This game has already been favorited.</p></span>`
+                : `<button type="button" class="fav-button" data-igdb-id = "${igdbId}" >Add to favorites</button>`;
+            
+            actionDiv.innerHTML = `${addedHTML}
+                ${favoriteHTML}`;
+        }
         
         searchSummary.innerHTML = `<img data-image-id=${imageId} src = ${imageURL} class = "game-preview-search">
             <h2 class = "game-name">${game.name}</h2>`;
