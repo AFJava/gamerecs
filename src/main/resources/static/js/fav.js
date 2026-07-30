@@ -46,7 +46,7 @@ function appendFavoritedConfirmationMessage(gameDiv, igdbId) {
 }
 
 async function sendFavRequestSearch(csrfHeader, csrfToken, igdbId) {
-    const game = resultsMap.get(Number(igdbId))
+    const game = getGame(igdbId);
     
     const response = await fetch(
         "/games/favorite",

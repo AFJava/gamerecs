@@ -109,7 +109,7 @@ async function add(event) {
 }
 
 async function sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating) {
-    const game = resultsMap.get(Number(igdbId))
+    const game = getGame(igdbId);
     
     const response = await fetch(
         "/games/add",

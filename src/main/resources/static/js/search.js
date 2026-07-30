@@ -224,3 +224,14 @@ async function search(page) {
         searchNavDiv.appendChild(searchNavItem)
     }
 }
+
+function getGame(igdbId) {
+    let game = resultsMap.get(Number(igdbId))
+
+    if(game === undefined) {
+        //console.log("Game not found; searching cached results")
+        game = expandedResultsMap.get(Number(igdbId));
+    }
+
+    return game;
+}
