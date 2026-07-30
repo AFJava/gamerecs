@@ -51,7 +51,7 @@ public class UserGame {
         return game;
     }
 
-    public float getRating() {
+    public int getRating() {
         return rating;
     }
 

@@ -21,22 +21,21 @@ public class UserGameService {
         this.userGameRepository = userGameRepository;
     }
 
-    public void saveToProfile(User user, Game game, Integer rating) {
-        Long userId = user.getId();
+    public void saveToProfile(UserGame userGame) {
+        Long userId = userGame.getUser().getId();
         
-        UserGame userGame = getUserGame(userId, game.getIgdbId());
+        UserGame existingUserGame = getUserGame(userId, userGame.getGame().getIgdbId());
         
-        //If game already exists in repository, it was previously favorited; set rating, favorited and overwrite
-        if(userGame != null) {
-            userGame.setFavorited(false);
-            userGame.setRating(rating);
-            userGameRepository.save(userGame);
+        //If game already exists in repository, it was previously favorited; set rating, favorited
+        if(existingUserGame != null) {
+            existingUserGame.setFavorited(false);
+            existingUserGame.setRating(userGame.getRating());
 
-            return;
+            userGame = existingUserGame;
         }
         
         //Otherwise make new UserGame and save
-        userGameRepository.save(new UserGame(user, game, rating));
+        userGameRepository.save(userGame);
     }
 
     public UserGame getUserGame(Long userId, Long igdbId) {

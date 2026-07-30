@@ -101,7 +101,7 @@ public class GameController {
 
         Game game = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(gameDto)));
 
-        userGameService.saveToProfile(user, game, rating);
+        userGameService.saveToProfile(new UserGame(user, game, rating));
         userPreferenceService.updatePreferenceFromGame(user, game, rating);
         
         return "";
@@ -145,12 +145,15 @@ public class GameController {
         User user = currentUserService.userFromPrincipal(principal);
 
         //System.out.println(gameIdContainer.id());
-        /* */
+
         Long igdbId = favGameRequest.igdbId();
         IgdbGameDto gameDto = favGameRequest.game();
         Game game = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(gameDto)));
 
-        userGameService.saveToProfile(user, game, favGameRating);
+        UserGame userGame = new UserGame(user, game, favGameRating);
+        userGame.setFavorited(true);
+
+        userGameService.saveToProfile(userGame);
         userPreferenceService.updatePreferenceFromGame(user, game, favGameRating);
         
         return "";
