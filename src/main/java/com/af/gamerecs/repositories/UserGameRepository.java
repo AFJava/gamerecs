@@ -1,6 +1,7 @@
 package com.af.gamerecs.repositories;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -46,12 +47,22 @@ public interface UserGameRepository extends JpaRepository<UserGame, Integer> {
     """)
     Page<UserGame> findAllFavoritedByUserId(Long userId, Pageable pageable);
 
-    //Check whether IGDB IDs from search results match any from UserGames
+    //Check whether IGDB IDs from search results match any from added games
     @Query("""
     select ug.game.igdbId
     from UserGame ug
     where ug.user.id = :userId
       and ug.game.igdbId in :IgdbIds
+      and not ug.favorited
     """)
-    List<Long> findAddedIgdbIds(Long userId, List<Long> IgdbIds);
+    Set<Long> findAddedIgdbIds(Long userId, List<Long> IgdbIds);
+
+    @Query("""
+    select ug.game.igdbId
+    from UserGame ug
+    where ug.user.id = :userId
+      and ug.game.igdbId in :IgdbIds
+      and ug.favorited
+    """)
+    Set<Long> findFavoritedIgdbIds(Long userId, List<Long> IgdbIds);
 }

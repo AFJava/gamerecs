@@ -1,6 +1,7 @@
 package com.af.gamerecs.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -74,7 +75,11 @@ public class UserGameService {
         return igdbIds;
     }
     
-    public List<Long> getAddedIgdbIds(Long userId, List<Long> IgdbIds) {
+    public Set<Long> getAddedIgdbIds(Long userId, List<Long> IgdbIds) {
         return userGameRepository.findAddedIgdbIds(userId, IgdbIds);
+    }
+
+    public Set<Long> getFavoritedIgdbIds(Long userId, List<Long> IgdbIds) {
+        return userGameRepository.findFavoritedIgdbIds(userId, IgdbIds);
     }
 }
