@@ -1,5 +1,6 @@
 package com.af.gamerecs.controllers;
 
+import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 
@@ -141,7 +142,8 @@ public class MainController {
 
         model.addAttribute("games", games);
         
-        HashSet<Long> addedGamesIgdbIds = new HashSet<>();
+        Set<Long> addedGamesIgdbIds = new HashSet<>();
+        Set<Long> favoritedGamesIgdbIds = new HashSet<>();
         boolean authenticated = false;
 
         if(authentication != null) {
@@ -155,13 +157,15 @@ public class MainController {
                 .map(IgdbGameDto::id)
                 .toList();
             
-            addedGamesIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(userId, gameIgdbIds));
+            addedGamesIgdbIds = userGameService.getAddedIgdbIds(userId, gameIgdbIds);
+            favoritedGamesIgdbIds = userGameService.getFavoritedIgdbIds(userId, gameIgdbIds);
 
             model.addAttribute("id", userId);
         }
 
         model.addAttribute("authenticated", authenticated);
         model.addAttribute("addedGamesIgdbIds", addedGamesIgdbIds);
+        model.addAttribute("favoritedGamesIgdbIds", favoritedGamesIgdbIds);
 
         int totalPages = igdbService.numPages(query, pageSize, filterObscure);
 

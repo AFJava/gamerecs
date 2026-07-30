@@ -62,10 +62,18 @@
                         <img th:if="${game.cover != null}" th:src="|https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.image_id}.jpg|" class="game-preview-search">
                         <img th:if="${game.cover == null}" src="/assets/Image_not_found.png" class="game-preview-search">
                         <h2 class="game-name" th:text="${game.name}"></h2>
-                        <span th:if="${authenticated and addedGamesIgdbIds.contains(game.id)}" class="game-added-msg-container">
-                            <p class="game-added-msg">This game has already been added to your profile.</p>
-                        </span>
-                        <button th:if="${authenticated and ! addedGamesIgdbIds.contains(game.id)}" type="button" class="rate-button" th:data-igdb-id="${game.id}">Rate and add to profile</button>
+                        
+                        <div class="game-action-container" th:if="${authenticated}">
+                            <button th:if="${! addedGamesIgdbIds.contains(game.id)}" type="button" class="rate-button" th:data-igdb-id="${game.id}">Rate and add to profile</button>
+                            <span th:if="${addedGamesIgdbIds.contains(game.id)}" class="game-added-msg-container">
+                                <p class="game-added-msg">This game has already been added to your profile.</p>
+                            </span>
+                            
+                            <button th:if="${! favoritedGamesIgdbIds.contains(game.id) and ! addedGamesIgdbIds.contains(game.id)}" type="button" class="rate-button" th:data-igdb-id="${game.id}">Add to favorites</button>
+                            <span th:if="${favoritedGamesIgdbIds.contains(game.id) and ! addedGamesIgdbIds.contains(game.id)}" class="game-added-msg-container">
+                                <p class="game-added-msg">This game has already been favorited.</p>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
