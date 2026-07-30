@@ -69,6 +69,7 @@ input[type="text"], input[type="password"] {
 }
 
 .rate-button, .fav-button {
+    width: 100%; /* Fill the action container */
     height: auto;
     min-height: 2rem;
 }
@@ -361,6 +362,8 @@ p#signuperr:empty {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+
+    max-width: 184.61px;
 }
 
 .game-added-msg-container, .game-added-msg {
