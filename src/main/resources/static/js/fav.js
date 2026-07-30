@@ -5,27 +5,44 @@ document.addEventListener("click", (event) => {
 });
 
 async function fav(event) {
-    const favButton = event.target;
-    const igdbId = favButton.dataset.igdbId;
+    const gameDiv = event.target.closest(".search-item, .rec-item");
+    const igdbId = gameDiv.dataset.igdbId;
 
     console.log(igdbId);
 
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    
+    appendFavoritedConfirmationMessage(gameDiv, igdbId);
 
     if(document.querySelector('script[src="/js/search.js"]')) {
         console.log("Search ver executed");
         
-        const gameDiv = event.target.closest(".search-item, .rec-item");
-        
         sendFavRequestSearch(csrfHeader, csrfToken, igdbId);
-        renderAdded(gameDiv, null);
+
+        if(document.getElementById("added-games-container") !== null) {
+            renderAdded(gameDiv, null);
+        }
     }
 
     if(document.querySelector(".rec-games")) {
         console.log("This one executed too");
         sendFavRequestRec(csrfHeader, csrfToken, igdbId);
     }
+}
+
+function appendFavoritedConfirmationMessage(gameDiv, igdbId) {
+    const actionDiv = gameDiv.querySelector(".game-action-container");
+    const favButton = actionDiv.querySelector(".fav-button");
+
+    favButton.remove();
+
+    const gameAddedMsgContainer = document.createElement("span");
+    gameAddedMsgContainer.classList.add("game-added-msg-container");
+
+    gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been favorited.</p>';
+    
+    actionDiv.appendChild(gameAddedMsgContainer);
 }
 
 async function sendFavRequestSearch(csrfHeader, csrfToken, igdbId) {
@@ -48,7 +65,7 @@ async function sendFavRequestSearch(csrfHeader, csrfToken, igdbId) {
         }
     )
 
-    //favoritedGamesIgdbIds.add(Number(igdbId));
+    favoritedGamesIgdbIds.add(Number(igdbId));
 }
 
 async function sendFavRequestRec(csrfHeader, csrfToken, igdbId) {

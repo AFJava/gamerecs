@@ -155,10 +155,10 @@ async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
 //Replace rate button, interface with confirmation messages
 function appendAddedConfirmationMessages(gameDiv, igdbId, gameName) {
     const actionDiv = gameDiv.querySelector(`.game-action-container`);
-    const rateButton = gameDiv.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
     const rateInterface = gameDiv.querySelector(".rate");
     
-    rateButton.remove();
+    //When added, also remove any option to favorite
+    actionDiv.replaceChildren();
     rateInterface.remove();
 
     const gameAddedMsgContainer = document.createElement("span");
