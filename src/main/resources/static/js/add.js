@@ -93,7 +93,7 @@ async function add(event) {
     //window.userGamesIgdbIds.add(Number(igdbId));
     //console.log(window.userGamesIgdbIds);
 
-    appendConfirmationMessages(gameDiv, igdbId, gameName);
+    appendAddedConfirmationMessages(gameDiv, igdbId, gameName);
 
     //If addedGamesContianer exists, current page is profile (does not exist even in /added)
     const addedGamesContainer = document.getElementById("added-games-container");
@@ -104,7 +104,7 @@ async function add(event) {
         console.log("On profile");
 
         setUpProfile(addedGamesContainer, recButtonContainer);
-        renderAdded(gameDiv, igdbId, gameName, rating);
+        renderAdded(gameDiv, rating);
     }
 }
 
@@ -153,8 +153,8 @@ async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
 }
 
 //Replace rate button, interface with confirmation messages
-function appendConfirmationMessages(gameDiv, igdbId, gameName) {
-    const actionDiv = gameDiv.querySelector(`.game-action-container[data-igdb-id = "${igdbId}"]`);
+function appendAddedConfirmationMessages(gameDiv, igdbId, gameName) {
+    const actionDiv = gameDiv.querySelector(`.game-action-container`);
     const rateButton = gameDiv.querySelector(`.rate-button[data-igdb-id = "${igdbId}"]`);
     const rateInterface = gameDiv.querySelector(".rate");
     

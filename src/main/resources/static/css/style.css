@@ -433,7 +433,7 @@ p#signuperr:empty {
     object-fit: cover;
 }
 
-.added-nav-container, .favorited-nav-container {
+.expanded-nav-container {
     margin-top: 1rem;
 }
 

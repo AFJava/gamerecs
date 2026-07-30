@@ -15,7 +15,11 @@ async function fav(event) {
 
     if(document.querySelector('script[src="/js/search.js"]')) {
         console.log("Search ver executed");
+        
+        const gameDiv = event.target.closest(".search-item, .rec-item");
+        
         sendFavRequestSearch(csrfHeader, csrfToken, igdbId);
+        renderAdded(gameDiv, null);
     }
 
     if(document.querySelector(".rec-games")) {

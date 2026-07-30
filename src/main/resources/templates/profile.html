@@ -68,7 +68,7 @@
                 </div>
             </div>
             
-            <div th:if="${expandAdded}" class="added-nav-container">
+            <div th:if="${expandAdded}" class="expanded-nav-container">
                 <a href="profile/added?page=1" class="button">All added games</a>
             </div>
         </div>
@@ -86,11 +86,11 @@
                 <div th:each="favoritedGame : ${favoritedGames}" class="profile-card">
                     <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${favoritedGame.game.imageId} + '.jpg'">
                     <h2 class="game-name" th:text="${favoritedGame.game.name}"></h2>
-                    <p class="game-rating" th:text="|Rating: ${favoritedGame.rating} / 10|"></p>
+                    <p class="game-rating" th:text="Placeholder"></p>
                 </div>
             </div>
 
-            <div th:if="${expandFavorites}" class="favorited-nav-container">
+            <div th:if="${expandFavorites}" class="expanded-nav-container">
                 <a href="profile/favorites?page=1" class="button">All favorited games</a>
             </div>
         </div>
