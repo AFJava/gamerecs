@@ -1,7 +1,7 @@
-import { search, searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds } from "../service/search.js";
+import { search, searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds } from "../service/search.js";
 import { rate, sendAddRequestSearch, appendAddedConfirmationMessages } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
-import { fav } from "../service/fav.js";
+import { appendFavoritedConfirmationMessage, sendFavRequestSearch } from "../service/fav.js";
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -29,7 +29,23 @@ favoritedGamesDiv.addEventListener("click", (event) => {
 
 resultsDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("fav-button")) {
-        fav(event);
+        const gameDiv = event.target.closest(".search-item, .rec-item");
+        const igdbId = gameDiv.dataset.igdbId;
+
+        console.log(igdbId);
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+        const resultsMap = getResultsMap();
+        const game = resultsMap.get(Number(igdbId));
+
+        const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
+        favoritedGamesIgdbIds.add(Number(igdbId));
+
+        appendFavoritedConfirmationMessage(gameDiv, igdbId);
+        sendFavRequestSearch(csrfHeader, csrfToken, igdbId, game);
+        renderFavorited(gameDiv);
     }
 });
 
@@ -63,13 +79,13 @@ resultsDiv.addEventListener("submit", (event) => {
     const rating = rateInput.value;
 
     const resultsMap = getResultsMap();
-    const game = resultsMap.get(Number(igdbId))
+    const game = resultsMap.get(Number(igdbId));
+    
+    const addedGamesIgdbIds = getAddedGamesIgdbIds();
+    addedGamesIgdbIds.add(Number(igdbId));
 
     sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating, game);
     appendAddedConfirmationMessages(gameDiv, igdbId, gameName);
-
-    const addedGamesIgdbIds = getAddedGamesIgdbIds();
-    addedGamesIgdbIds.add(Number(igdbId));
 
     const addedGamesContainer = document.getElementById("added-games-container");
     const recButtonContainer = document.getElementById("rec-button-container");

@@ -44,7 +44,10 @@ export function searchDebounce() {
 export function searchDisplay(event) {
     //If user clicked off search results, remove from display; if clicked on, re-enable display
     //Avoid changing active status when clicking on filter button (reruns search anyways) or empty top-left grid cell
-    if( !(resultsDiv.contains(event.target) || searchbar.contains(event.target)) ) {
+    if( !(resultsDiv.contains(event.target) || searchbar.contains(event.target) || event.target.matches(".fav-button")) ) {
+        console.log(resultsDiv.contains(event.target));
+        console.log(searchbar.contains(event.target));
+        console.log(resultsDiv.isConnected);
         resultsDiv.classList.remove("active");
     } 
     else if(searchbar.contains(event.target)) {

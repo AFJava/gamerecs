@@ -1,31 +1,6 @@
-export async function fav(event) {
-    const gameDiv = event.target.closest(".search-item, .rec-item");
-    const igdbId = gameDiv.dataset.igdbId;
+//sendFavRequestRec(csrfHeader, csrfToken, igdbId);
 
-    console.log(igdbId);
-
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-    
-    appendFavoritedConfirmationMessage(gameDiv, igdbId);
-
-    if(document.getElementById("search-script")) {
-        console.log("Search ver executed");
-        
-        sendFavRequestSearch(csrfHeader, csrfToken, igdbId);
-
-        if(document.getElementById("profile-script") !== null) {
-            renderFavorited(gameDiv);
-        }
-    }
-
-    if(document.getElementById("rec-games")) {
-        console.log("This one executed too");
-        sendFavRequestRec(csrfHeader, csrfToken, igdbId);
-    }
-}
-
-function appendFavoritedConfirmationMessage(gameDiv, igdbId) {
+export function appendFavoritedConfirmationMessage(gameDiv, igdbId) {
     const actionDiv = gameDiv.querySelector(".game-action-container");
     const favButton = actionDiv.querySelector(".fav-button");
 
@@ -39,9 +14,7 @@ function appendFavoritedConfirmationMessage(gameDiv, igdbId) {
     actionDiv.appendChild(gameAddedMsgContainer);
 }
 
-async function sendFavRequestSearch(csrfHeader, csrfToken, igdbId) {
-    const game = getGame(igdbId);
-    
+export async function sendFavRequestSearch(csrfHeader, csrfToken, igdbId, game) {
     const response = await fetch(
         "/games/favorite",
         {
@@ -58,11 +31,9 @@ async function sendFavRequestSearch(csrfHeader, csrfToken, igdbId) {
             })
         }
     )
-
-    favoritedGamesIgdbIds.add(Number(igdbId));
 }
 
-async function sendFavRequestRec(csrfHeader, csrfToken, igdbId) {
+export async function sendFavRequestRec(csrfHeader, csrfToken, igdbId) {
     const response = await fetch(
         "/games/favorite",
         {
