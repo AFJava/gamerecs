@@ -1,7 +1,6 @@
 //console.log("JS loaded");
 
-//TODO: Style page nav buttons
-//Stop search in progress if another search begins
+//TODO: Stop search in progress if another search begins
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -11,56 +10,10 @@ const resultsList = document.querySelector(".results-list");
 const resultsMap = new Map();
 
 let addedGamesIgdbIds = new Set();
+let favoritedGamesIgdbIds = new Set();
 let lastSearchQuery = "";
 let lastSearchResult = [];
 let lastSearchFilterChecked;
-let totalPages = 0;
-
-let debounceTimeout;
-let debounceTime = 1000; //in ms (SET TO 1 SECOND FOR DEVELOPMENT)
-
-resultsDiv.addEventListener("click", (event) => {
-    if (event.target.classList.contains("rate-button")) {
-        rate(event);
-    }
-});
-
-filterObscureButton.addEventListener("change", () => {
-    clearTimeout(debounceTimeout);
-
-    search(1);
-})
-
-searchbar.addEventListener("input", () => {
-    //console.log("event triggered");
-
-    //Clear results immediately if empty
-    if(searchbar.value.length == 0) {
-        resultsList.replaceChildren();
-        searchNavDiv.replaceChildren();
-    }
-
-    //Only do an API search if user stops typing for 1 second
-    clearTimeout(debounceTimeout);
-
-    debounceTimeout = setTimeout(() => {
-        search(1);
-    }, debounceTime); 
-});
-
-//If user clicked off search results, remove from display; if clicked on, re-enable display
-document.addEventListener("click", (event) => {
-    //Avoid changing active status when clicking on filter button (reruns search anyways) or empty top-left grid cell
-    if( !(resultsDiv.contains(event.target) || searchbar.contains(event.target)) ) {
-        resultsDiv.classList.remove("active");
-        console.log(event.target);
-        console.log(resultsDiv.contains(event.target));
-        console.log(searchNavDiv.contains(event.target));
-    } 
-    else if(searchbar.contains(event.target)) {
-        resultsDiv.classList.add("active");
-    }
-});
 
 async function search(page) {
     console.log("search began");

@@ -1,12 +1,14 @@
-const recDiv = document.getElementById("rec-games");
+document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("fav-button")) {
+        fav(event)
+    }
+});
 
-if(recDiv !== null) {
-    recDiv.addEventListener("click", (event) => {
-        if (event.target.classList.contains("rate-button")) {
-            rate(event);
-        }
-    });
-}
+resultsDiv.addEventListener("click", (event) => {
+    if (event.target.classList.contains("rate-button")) {
+        rate(event);
+    }
+});
 
 const recButtonContainer = document.getElementById("rec-button-container");
 const newRecButton = recButtonContainer.querySelector(".rec-button");
@@ -17,10 +19,4 @@ if(newRecButton !== null) {
 
         window.location.href = window.location.pathname + "/recommended?page=1";
     });
-}
-
-async function rec() {
-    const response = await fetch(
-        "/games/rec"
-    )
 }

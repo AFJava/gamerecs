@@ -1,14 +1,3 @@
-//If expandedResultsDiv exists, apply same listner to it
-const expandedResultsDiv = document.querySelector(".search-results-expanded");
-
-if(expandedResultsDiv !== null) {
-    expandedResultsDiv.addEventListener("click", (event) => {
-        if (event.target.classList.contains("rate-button")) {
-            rate(event);
-        }
-    });
-}
-
 async function rate(event) {
     console.log("Button clicked");
     
@@ -62,8 +51,6 @@ function prepareRatingInterface(igdbId) {
 
 async function add(event) {
     console.log("Submitted form");
-
-    //Append confirmation messages to correct gameDiv
     
     event.preventDefault();
 
