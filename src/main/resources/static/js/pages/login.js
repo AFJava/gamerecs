@@ -1,27 +1,25 @@
 //Ensure that DOM Content loads before adding event listeners; otherwise event listeners may not function properly
-document.addEventListener("DOMContentLoaded", () => {
-    //const signupForm = document.querySelector(".signup form");
+//const signupForm = document.querySelector(".signup form");
 
-    //signupForm.addEventListener("submit", signup);
+//signupForm.addEventListener("submit", signup);
 
-    //Note these are HTML elements for real-time feedback
-    const passwordInput = document.getElementById("password");
-    const retypeInput = document.getElementById("retype");
-    const signupErr = document.getElementById("signuperr");
+//Note these are HTML elements for real-time feedback
+const passwordInput = document.getElementById("password");
+const retypeInput = document.getElementById("retype");
+const signupErr = document.getElementById("signuperr");
 
-    passwordInput.addEventListener("input", checkPasswords);
-    retypeInput.addEventListener("input", checkPasswords);
+passwordInput.addEventListener("input", checkPasswords);
+retypeInput.addEventListener("input", checkPasswords);
     
-    function checkPasswords() {
-        if(retypeInput.value === "") {
-            signupErr.textContent = "";
-        } else if(passwordInput.value !== retypeInput.value) {
-            signupErr.textContent = "Passwords do not match";
-        } else {
-            signupErr.textContent = "";
-        }
+function checkPasswords() {
+    if(retypeInput.value === "") {
+        signupErr.textContent = "";
+    } else if(passwordInput.value !== retypeInput.value) {
+        signupErr.textContent = "Passwords do not match";
+    } else {
+        signupErr.textContent = "";
     }
-});
+}
 
 /*
 async function signup(e) {
