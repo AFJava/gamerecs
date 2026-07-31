@@ -67,13 +67,11 @@ export async function sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game
 }
 
 //Replace rate button, interface with confirmation messages
-export function appendAddedConfirmationMessages(gameDiv, igdbId, gameName) {
+export function appendAddedConfirmationMessage(gameDiv) {
     const actionDiv = gameDiv.querySelector(`.game-action-container`);
-    const rateInterface = gameDiv.querySelector(".rate");
     
     //When added, also remove any option to favorite
     actionDiv.replaceChildren();
-    rateInterface.remove();
 
     const gameAddedMsgContainer = document.createElement("span");
     gameAddedMsgContainer.classList.add("game-added-msg-container");
@@ -81,6 +79,11 @@ export function appendAddedConfirmationMessages(gameDiv, igdbId, gameName) {
     gameAddedMsgContainer.innerHTML = '<p class = "game-added-msg">This game has already been added to your profile.</p>';
     
     actionDiv.appendChild(gameAddedMsgContainer);
+}
+
+export function appendRateConfirmationMessage(gameDiv, gameName) {
+    const rateInterface = gameDiv.querySelector(".rate");
+    rateInterface.remove();
 
     const confirmation = document.createElement("div");
     confirmation.classList.add("confirmation");

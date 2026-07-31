@@ -1,5 +1,5 @@
 import { search, searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds } from "../service/search.js";
-import { rate, sendAddRequest, appendAddedConfirmationMessages } from "../service/add.js";
+import { rate, sendAddRequest, appendAddedConfirmationMessage, appendRateConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
 import { appendFavoritedConfirmationMessage, sendFavRequest } from "../service/fav.js";
 
@@ -76,13 +76,25 @@ resultsDiv.addEventListener("submit", (event) => {
     addedGamesIgdbIds.add(Number(igdbId));
 
     sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
-    appendAddedConfirmationMessages(gameDiv, igdbId, gameName);
+    appendAddedConfirmationMessage(gameDiv);
+    appendRateConfirmationMessage(gameDiv, gameName);
 
     const addedGamesContainer = document.getElementById("added-games-container");
     const recButtonContainer = document.getElementById("rec-button-container");
 
     setUpProfile(addedGamesContainer, recButtonContainer);
     renderAdded(gameDiv, rating);
+
+    //If a favorited game was just added from the searchbar, check if it is displayed on the profile; if so, append message there as well
+    const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
+    
+    if(favoritedGamesIgdbIds.has(Number(igdbId))) {
+        const favoritedGameDiv = favoritedGamesDiv.querySelector(`.fav-item[data-igdb-id="${igdbId}"]`);
+
+        if(favoritedGameDiv !== null) {
+            appendAddedConfirmationMessage(favoritedGameDiv);
+        }
+    }
 });
 
 favoritedGamesDiv.addEventListener("submit", (event) => {
@@ -110,13 +122,25 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
     addedGamesIgdbIds.add(Number(igdbId));
 
     sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
-    appendAddedConfirmationMessages(gameDiv, igdbId, gameName);
+    appendAddedConfirmationMessage(gameDiv);
+    appendRateConfirmationMessage(gameDiv, gameName);
 
     const addedGamesContainer = document.getElementById("added-games-container");
     const recButtonContainer = document.getElementById("rec-button-container");
 
     setUpProfile(addedGamesContainer, recButtonContainer);
     renderAdded(gameDiv, rating);
+
+    //If a favorited game was just added from favorites list, check if it is displayed on the searchbar; if so, append message there as well
+    const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
+    
+    if(favoritedGamesIgdbIds.has(Number(igdbId))) {
+        const resultsGameDiv = resultsDiv.querySelector(`.search-item[data-igdb-id="${igdbId}"]`);
+
+        if(resultsGameDiv !== null) {
+            appendAddedConfirmationMessage(resultsGameDiv);
+        }
+    }
 });
 
 const newRecButton = document.getElementById("rec-button-container").querySelector(".rec-button");
