@@ -123,6 +123,7 @@ export async function search(page) {
     console.log(games); //DEBUG
 
     renderPage(games);
+    renderPageNav(page, searchContent, filterObscureChecked);
 }
 
 function renderPage(games) {
@@ -178,12 +179,10 @@ function renderPage(games) {
         searchSummary.appendChild(actionDiv);
         gameDiv.appendChild(searchSummary);
         resultsList.appendChild(gameDiv);
-
-        renderPageNav();
     });
 }
 
-function renderPageNav() {
+function renderPageNav(page, searchContent, filterObscureChecked) {
     let pages = Math.ceil(lastSearchResult.length / 5);
     let hasMoreResults = pages > 5;
     pages = Math.min(pages, 5);
@@ -219,6 +218,18 @@ function renderPageNav() {
         searchNavItem.innerHTML = `<a class="button" href="/search?page=1&query=${encodeURIComponent(searchContent)}&filter-obscure=${filterObscureChecked}">More Results</a>`
         searchNavDiv.appendChild(searchNavItem);
     }
+}
+
+export function getResultsMap() {
+    return resultsMap;
+}
+
+export function getAddedGamesIgdbIds() {
+    return addedGamesIgdbIds;
+}
+
+export function getFavoritedGamesIgdbIds() {
+    return favoritedGamesIgdbIds;
 }
 
 function getGame(igdbId) {

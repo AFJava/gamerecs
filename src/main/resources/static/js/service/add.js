@@ -1,4 +1,4 @@
-async function rate(event) {
+export async function rate(event) {
     console.log("Button clicked");
     
     //Check whether to build interface div
@@ -25,11 +25,6 @@ async function rate(event) {
         </form>`;
     
     gameDiv.appendChild(rateInterface);
-
-    //Add event listener to form to handle submission
-    const form = document.querySelector('.rate-form');
-
-    form.addEventListener("submit", add);
 }
 
 //Return whether to create/append interface
@@ -49,55 +44,9 @@ function prepareRatingInterface(igdbId) {
     return true;
 }
 
-async function add(event) {
-    console.log("Submitted form");
-    
-    event.preventDefault();
+//sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating);
 
-    //Get CSRF
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-    
-    //Get data for db fields, get rateInterface + rateButton for deletion
-    const gameDiv = event.target.closest(".search-item, .rec-item");
-    const igdbId = gameDiv.dataset.igdbId;
-    const gameName = gameDiv.dataset.gameName;
-
-    const rateInput = gameDiv.querySelector('input[name="rating"]');
-    const rating = rateInput.value;
-
-    if(document.getElementById("search-script")) {
-        sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating);
-    }
-
-    if(document.getElementById("rec-games")) {
-        sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating);
-    }
-
-    console.log("POST sent");
-
-    //Deprecated id matching
-    //window.userGamesIgdbIds.add(Number(igdbId));
-    //console.log(window.userGamesIgdbIds);
-
-    appendAddedConfirmationMessages(gameDiv, igdbId, gameName);
-
-    //If addedGamesContianer exists, current page is profile (does not exist even in /added)
-    const addedGamesContainer = document.getElementById("added-games-container");
-    const recButtonContainer = document.getElementById("rec-button-container");
-
-    //If on profile, render game and set up recommendations as well
-    if(addedGamesContainer !== null) {
-        console.log("On profile");
-
-        setUpProfile(addedGamesContainer, recButtonContainer);
-        renderAdded(gameDiv, rating);
-    }
-}
-
-async function sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating) {
-    const game = getGame(igdbId);
-    
+export async function sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating, game) {
     const response = await fetch(
         "/games/add",
         {
@@ -115,11 +64,9 @@ async function sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating) {
             })
         }
     )
-
-    addedGamesIgdbIds.add(Number(igdbId));
 }
 
-async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
+export async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
     const response = await fetch(
         "/games/add",
         {
@@ -140,7 +87,7 @@ async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
 }
 
 //Replace rate button, interface with confirmation messages
-function appendAddedConfirmationMessages(gameDiv, igdbId, gameName) {
+export function appendAddedConfirmationMessages(gameDiv, igdbId, gameName) {
     const actionDiv = gameDiv.querySelector(`.game-action-container`);
     const rateInterface = gameDiv.querySelector(".rate");
     

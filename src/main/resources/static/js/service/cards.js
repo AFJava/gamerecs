@@ -1,4 +1,4 @@
-function setUpProfile(addedGamesContainer, recButtonContainer) {
+export function setUpProfile(addedGamesContainer, recButtonContainer) {
     let recButton = recButtonContainer.querySelector(".rec-button");
 
     //If true, this is the first added game, so also remove all default messages
@@ -28,7 +28,7 @@ function setUpProfile(addedGamesContainer, recButtonContainer) {
  * gameDiv - the .search-item div for the game containing all relevant fields
  * rating - if null, this is a favorited game
  */
-function renderAdded(gameDiv, rating) {
+export function renderAdded(gameDiv, rating) {
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
 
@@ -65,7 +65,7 @@ function renderAdded(gameDiv, rating) {
     }
 }
 
-function renderFavorited(gameDiv) {
+export function renderFavorited(gameDiv) {
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
 

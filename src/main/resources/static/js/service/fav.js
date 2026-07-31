@@ -1,4 +1,4 @@
-async function fav(event) {
+export async function fav(event) {
     const gameDiv = event.target.closest(".search-item, .rec-item");
     const igdbId = gameDiv.dataset.igdbId;
 
