@@ -85,9 +85,11 @@ export function renderFavorited(gameDiv) {
         //Use JS to display newly added game without refresh (use Thymeleaf for games previously added)
         const favItem = document.createElement("div");
         favItem.classList.add("fav-item");
+        favItem.dataset.igdbId = igdbId;
+        favItem.dataset.gameName = gameName;
 
-        favItem.innerHTML = `<div class="profile-card" data-igdb-id="${igdbId}" data-game-name="${gameName}">
-            <img class="game-preview" src="${imageSrc}">
+        favItem.innerHTML = `<div class="profile-card">
+            <img class="game-preview" src="${imageSrc}" data-image-id="${imageId}">
             <h2 class="game-name">${gameName}</h2>
             <div class="game-action-container">
                 <button type="button" class="rate-button">Rate and add to profile</button>
