@@ -1,7 +1,7 @@
 import { search, searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds } from "../service/search.js";
-import { rate, sendAddRequestSearch, appendAddedConfirmationMessages } from "../service/add.js";
+import { rate, sendAddRequest, appendAddedConfirmationMessages } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
-import { appendFavoritedConfirmationMessage, sendFavRequestSearch } from "../service/fav.js";
+import { appendFavoritedConfirmationMessage, sendFavRequest } from "../service/fav.js";
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -44,7 +44,7 @@ resultsDiv.addEventListener("click", (event) => {
         favoritedGamesIgdbIds.add(Number(igdbId));
 
         appendFavoritedConfirmationMessage(gameDiv, igdbId);
-        sendFavRequestSearch(csrfHeader, csrfToken, igdbId, game);
+        sendFavRequest(csrfHeader, csrfToken, igdbId, game);
         renderFavorited(gameDiv);
     }
 });

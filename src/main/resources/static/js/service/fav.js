@@ -14,7 +14,7 @@ export function appendFavoritedConfirmationMessage(gameDiv, igdbId) {
     actionDiv.appendChild(gameAddedMsgContainer);
 }
 
-export async function sendFavRequestSearch(csrfHeader, csrfToken, igdbId, game) {
+export async function sendFavRequest(csrfHeader, csrfToken, igdbId, game) {
     const response = await fetch(
         "/games/favorite",
         {
@@ -28,25 +28,6 @@ export async function sendFavRequestSearch(csrfHeader, csrfToken, igdbId, game) 
             body: JSON.stringify({
                 igdbId: igdbId,
                 game: game
-            })
-        }
-    )
-}
-
-export async function sendFavRequestRec(csrfHeader, csrfToken, igdbId) {
-    const response = await fetch(
-        "/games/favorite",
-        {
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json",
-                [csrfHeader]: csrfToken
-            },
-
-            body: JSON.stringify({
-                igdbId: igdbId,
-                game: null
             })
         }
     )

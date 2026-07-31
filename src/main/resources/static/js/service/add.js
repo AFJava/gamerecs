@@ -46,7 +46,7 @@ function prepareRatingInterface(igdbId) {
 
 //sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating);
 
-export async function sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating, game) {
+export async function sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game) {
     const response = await fetch(
         "/games/add",
         {
@@ -61,26 +61,6 @@ export async function sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating
                 igdbId: igdbId,
                 rating: rating,
                 game: game
-            })
-        }
-    )
-}
-
-export async function sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating) {
-    const response = await fetch(
-        "/games/add",
-        {
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json",
-                [csrfHeader]: csrfToken
-            },
-
-            body: JSON.stringify({
-                igdbId: igdbId,
-                rating: rating,
-                game: null
             })
         }
     )
