@@ -22,6 +22,8 @@ resultsDiv.addEventListener("click", (event) => {
 });
 
 favoritedGamesDiv.addEventListener("click", (event) => {
+    console.log(favoritedGamesDiv);
+
     if (event.target.classList.contains("rate-button")) {
         rate(event);
     }
@@ -49,16 +51,6 @@ resultsDiv.addEventListener("click", (event) => {
     }
 });
 
-const newRecButton = document.getElementById("rec-button-container").querySelector(".rec-button");
-
-if(newRecButton !== null) {
-    newRecButton.addEventListener("click", async () => {
-        await rec();
-
-        window.location.href = window.location.pathname + "/recommended?page=1";
-    });
-}
-
 resultsDiv.addEventListener("submit", (event) => {
     event.preventDefault();
     
@@ -70,8 +62,7 @@ resultsDiv.addEventListener("submit", (event) => {
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
         
-    //Get data for db fields, get rateInterface + rateButton for deletion
-    const gameDiv = event.target.closest(".search-item, .rec-item");
+    const gameDiv = event.target.closest(".search-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
 
@@ -84,7 +75,7 @@ resultsDiv.addEventListener("submit", (event) => {
     const addedGamesIgdbIds = getAddedGamesIgdbIds();
     addedGamesIgdbIds.add(Number(igdbId));
 
-    sendAddRequestSearch(csrfHeader, csrfToken, igdbId, rating, game);
+    sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
     appendAddedConfirmationMessages(gameDiv, igdbId, gameName);
 
     const addedGamesContainer = document.getElementById("added-games-container");
@@ -93,3 +84,47 @@ resultsDiv.addEventListener("submit", (event) => {
     setUpProfile(addedGamesContainer, recButtonContainer);
     renderAdded(gameDiv, rating);
 });
+
+favoritedGamesDiv.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    if(! event.target.matches(".rate-form")) {
+        return;
+    }
+
+    //Get CSRF
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+        
+    const gameDiv = event.target.closest(".fav-item");
+    const igdbId = gameDiv.dataset.igdbId;
+    const gameName = gameDiv.dataset.gameName;
+
+    const rateInput = gameDiv.querySelector('input[name="rating"]');
+    const rating = rateInput.value;
+
+    const resultsMap = getResultsMap();
+    const game = resultsMap.get(Number(igdbId));
+    
+    const addedGamesIgdbIds = getAddedGamesIgdbIds();
+    addedGamesIgdbIds.add(Number(igdbId));
+
+    sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
+    appendAddedConfirmationMessages(gameDiv, igdbId, gameName);
+
+    const addedGamesContainer = document.getElementById("added-games-container");
+    const recButtonContainer = document.getElementById("rec-button-container");
+
+    setUpProfile(addedGamesContainer, recButtonContainer);
+    renderAdded(gameDiv, rating);
+});
+
+const newRecButton = document.getElementById("rec-button-container").querySelector(".rec-button");
+
+if(newRecButton !== null) {
+    newRecButton.addEventListener("click", async () => {
+        await rec();
+
+        window.location.href = window.location.pathname + "/recommended?page=1";
+    });
+}

@@ -2,7 +2,7 @@ export async function rate(event) {
     console.log("Button clicked");
     
     //Check whether to build interface div
-    const gameDiv = event.target.closest(".search-item, .rec-item");
+    const gameDiv = event.target.closest(".search-item, .rec-item, .fav-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
     

@@ -84,9 +84,9 @@
                 </p>
                 
 
-                <div th:each="favoritedGame : ${favoritedGames}" class="fav-item">
-                    <div class="profile-card" th:data-igdb-id="${favoritedGame.game.igdbId}" th:data-game-name="${favoritedGame.game.name}">
-                        <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${favoritedGame.game.imageId} + '.jpg'">
+                <div th:each="favoritedGame : ${favoritedGames}" class="fav-item" th:data-igdb-id="${favoritedGame.game.igdbId}" th:data-game-name="${favoritedGame.game.name}">
+                    <div class="profile-card">
+                        <img class="game-preview" th:data-image-id="${favoritedGame.game.imageId}" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${favoritedGame.game.imageId} + '.jpg'">
                         <h2 class="game-name" th:text="${favoritedGame.game.name}"></h2>
                         <div class="game-action-container">
                             <button type="button" class="rate-button">Rate and add to profile</button>

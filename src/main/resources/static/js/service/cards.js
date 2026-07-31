@@ -32,7 +32,7 @@ export function renderAdded(gameDiv, rating) {
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
 
-    const gamePreview = gameDiv.querySelector(`.game-preview-search`);
+    const gamePreview = gameDiv.querySelector(`.game-preview-search, .game-preview`);
     console.log(gamePreview);
 
     const imageId = gamePreview.dataset.imageId;
