@@ -21,7 +21,7 @@ async function fav(event) {
         sendFavRequestSearch(csrfHeader, csrfToken, igdbId);
 
         if(document.getElementById("profile-script") !== null) {
-            renderAdded(gameDiv, null);
+            renderFavorited(gameDiv);
         }
     }
 

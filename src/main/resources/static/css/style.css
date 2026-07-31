@@ -399,6 +399,7 @@ p#signuperr:empty {
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: 1.5in auto;
+    place-items: center;
     width: 100%;
     border-radius: 5px;
     background-color: gray; /* placeholder color */
@@ -422,6 +423,13 @@ p#signuperr:empty {
     padding: 5px;
     border-radius: 10px;
     background-color: #717c98;
+}
+
+.fav-item {
+    display: grid;
+    grid-template-rows: 2in auto;
+    place-items: center;
+    width: 100%;
 }
 
 .game-preview {

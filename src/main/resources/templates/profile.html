@@ -83,10 +83,15 @@
                     Favorited games will also be considered for recommendations, but will be treated as an added game with an average (5/10) rating.
                 </p>
                 
-                <div th:each="favoritedGame : ${favoritedGames}" class="profile-card">
-                    <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${favoritedGame.game.imageId} + '.jpg'">
-                    <h2 class="game-name" th:text="${favoritedGame.game.name}"></h2>
-                    <p class="game-rating" th:text="Placeholder"></p>
+
+                <div th:each="favoritedGame : ${favoritedGames}" class="fav-item">
+                    <div class="profile-card" th:data-igdb-id="${favoritedGame.game.igdbId}" th:data-game-name="${favoritedGame.game.name}">
+                        <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${favoritedGame.game.imageId} + '.jpg'">
+                        <h2 class="game-name" th:text="${favoritedGame.game.name}"></h2>
+                        <div class="game-action-container">
+                            <button type="button" class="rate-button">Rate and add to profile</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
