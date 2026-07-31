@@ -9,13 +9,50 @@ const searchNavDiv = document.querySelector(".page-nav");
 const resultsList = document.querySelector(".results-list");
 const resultsMap = new Map();
 
+let debounceTimeout;
+let debounceTime = 1000; //in ms (SET TO 1 SECOND FOR DEVELOPMENT)
+
 let addedGamesIgdbIds = new Set();
 let favoritedGamesIgdbIds = new Set();
 let lastSearchQuery = "";
 let lastSearchResult = [];
 let lastSearchFilterChecked;
 
-async function search(page) {
+export function filterDebounce() {
+    clearTimeout(debounceTimeout);
+
+    search(1);
+}
+
+export function searchDebounce() {
+    //console.log("event triggered");
+
+    //Clear results immediately if empty
+    if(searchbar.value.length == 0) {
+        resultsList.replaceChildren();
+        searchNavDiv.replaceChildren();
+    }
+
+    //Only do an API search if user stops typing for 1 second
+    clearTimeout(debounceTimeout);
+
+    debounceTimeout = setTimeout(() => {
+        search(1);
+    }, debounceTime);
+}
+
+export function searchDisplay(event) {
+    //If user clicked off search results, remove from display; if clicked on, re-enable display
+    //Avoid changing active status when clicking on filter button (reruns search anyways) or empty top-left grid cell
+    if( !(resultsDiv.contains(event.target) || searchbar.contains(event.target)) ) {
+        resultsDiv.classList.remove("active");
+    } 
+    else if(searchbar.contains(event.target)) {
+        resultsDiv.classList.add("active");
+    }
+}
+
+export async function search(page) {
     console.log("search began");
 
     resultsMap.clear();
@@ -85,7 +122,10 @@ async function search(page) {
 
     console.log(games); //DEBUG
 
-    //Display page
+    renderPage(games);
+}
+
+function renderPage(games) {
     games.forEach(game => {
         const gameDiv = document.createElement("div");
 
@@ -138,9 +178,12 @@ async function search(page) {
         searchSummary.appendChild(actionDiv);
         gameDiv.appendChild(searchSummary);
         resultsList.appendChild(gameDiv);
-    });
 
-    //Display page nav
+        renderPageNav();
+    });
+}
+
+function renderPageNav() {
     let pages = Math.ceil(lastSearchResult.length / 5);
     let hasMoreResults = pages > 5;
     pages = Math.min(pages, 5);
@@ -174,7 +217,7 @@ async function search(page) {
     if(hasMoreResults) {
         searchNavItem = document.createElement("span");
         searchNavItem.innerHTML = `<a class="button" href="/search?page=1&query=${encodeURIComponent(searchContent)}&filter-obscure=${filterObscureChecked}">More Results</a>`
-        searchNavDiv.appendChild(searchNavItem)
+        searchNavDiv.appendChild(searchNavItem);
     }
 }
 
