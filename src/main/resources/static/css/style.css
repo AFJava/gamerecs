@@ -366,15 +366,11 @@ p#signuperr:empty {
     max-width: 184.61px;
 }
 
-.game-added-msg-container, .game-added-msg {
-    max-width: 184.61px;
+.game-added-msg-container {
+    width: 100%;
 }
 
-.game-favorited-msg-container, .game-favorited-msg {
-    max-width: 136.78px;
-}
-
-.game-added-msg, .game-favorited-msg {
+.game-added-msg {
     margin: 0;
 }
 
