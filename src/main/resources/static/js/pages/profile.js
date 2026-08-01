@@ -5,7 +5,6 @@ import { appendFavoritedConfirmationMessage, sendFavRequest } from "../service/f
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
-const expandedResultsDiv = document.querySelector(".search-results-expanded");
 const filterObscureButton = document.getElementById("filter-obscure");
 const favoritedGamesDiv = document.getElementById("favorited-games-container").querySelector(".favorited-games");
 

@@ -55,7 +55,7 @@
     <main>
         <h1 th:text="|Search results for &quot;${query}&quot;|"></h1>
 
-        <div class="search-results-expanded">
+        <div class="search-results-expanded" id="search-results-expanded">
             <div class="results-list">
                 <div th:each="game : ${games}" class="search-item search-item-expanded" th:data-igdb-id="${game.id}" th:data-game-name="${game.name}">
                     <div class="search-summary" th:data-igdb-id="${game.id}">
@@ -117,7 +117,6 @@
     </footer>
 </body>
 
-<script src="/js/search.js" id="search-script"></script>
 <script th:inline="javascript" type="text/javascript" id="expanded-search-script">
     const games = /*[[${games}]]*/ [];
 
@@ -129,7 +128,6 @@
         expandedResultsMap.set(Number(game.id), game);
     });
 </script>
-<script src="/js/add.js" id="add-script"></script>
-<script src="/js/fav.js" id="fav-script"></script>
+<script type="module" src="/js/pages/search.js"></script>
 
 </html>
