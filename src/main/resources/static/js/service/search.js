@@ -224,14 +224,10 @@ function renderPageNav(page, searchContent, filterObscureChecked) {
 }
 
 export function appendAddedMessageOther(otherDiv, otherItemName, igdbId) {
-    const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
-    
-    if(favoritedGamesIgdbIds.has(Number(igdbId))) {
-        const resultsGameDiv = otherDiv.querySelector(`.${otherItemName}[data-igdb-id="${igdbId}"]`);
+    const resultsGameDiv = otherDiv.querySelector(`.${otherItemName}[data-igdb-id="${igdbId}"]`);
 
-        if(resultsGameDiv !== null) {
-            appendAddedConfirmationMessage(resultsGameDiv);
-        }
+    if(resultsGameDiv !== null) {
+        appendAddedConfirmationMessage(resultsGameDiv);
     }
 }
 
