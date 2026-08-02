@@ -67,6 +67,7 @@ resultsDiv.addEventListener("submit", (event) => {
     const game = resultsMap.get(Number(igdbId));
     
     add(gameDiv, igdbId, gameName, rating, game);
+    appendAddedMessageOther(expandedResultsDiv, "search-item-expanded", igdbId)
 });
 
 expandedResultsDiv.addEventListener("submit", (event) => {
@@ -85,4 +86,5 @@ expandedResultsDiv.addEventListener("submit", (event) => {
     const game = expandedResultsMap.get(Number(igdbId));
     
     add(gameDiv, igdbId, gameName, rating, game);
+    appendAddedMessageOther(resultsDiv, "search-item", igdbId);
 });
