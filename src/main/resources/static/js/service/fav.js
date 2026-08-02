@@ -11,7 +11,7 @@ export async function fav(gameDiv, igdbId, game) {
     sendFavRequest(csrfHeader, csrfToken, igdbId, game);
 }
 
-export function appendFavoritedConfirmationMessage(gameDiv, igdbId) {
+export function appendFavoritedConfirmationMessage(gameDiv) {
     const actionDiv = gameDiv.querySelector(".game-action-container");
     const favButton = actionDiv.querySelector(".fav-button");
 

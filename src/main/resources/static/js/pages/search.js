@@ -1,4 +1,4 @@
-import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther } from "../service/search.js";
+import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther, appendFavoritedMessageOther } from "../service/search.js";
 import { rate, add } from "../service/add.js";
 import { fav } from "../service/fav.js";
 
@@ -36,6 +36,7 @@ resultsDiv.addEventListener("click", (event) => {
         const game = resultsMap.get(Number(igdbId));
 
         fav(gameDiv, igdbId, game);
+        appendFavoritedMessageOther(expandedResultsDiv, "search-item-expanded", igdbId);
     }
 });
 
@@ -48,6 +49,7 @@ expandedResultsDiv.addEventListener("click", (event) => {
         const game = expandedResultsMap.get(Number(igdbId));
 
         fav(gameDiv, igdbId, game);
+        appendFavoritedMessageOther(resultsDiv, "search-item", igdbId);
     }
 });
 

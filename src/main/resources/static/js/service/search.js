@@ -1,4 +1,5 @@
 import { appendAddedConfirmationMessage } from "./add.js";
+import { appendFavoritedConfirmationMessage } from "./fav.js";
 
 //TODO: Stop search in progress if another search begins
 
@@ -228,6 +229,14 @@ export function appendAddedMessageOther(otherDiv, otherItemName, igdbId) {
 
     if(resultsGameDiv !== null) {
         appendAddedConfirmationMessage(resultsGameDiv);
+    }
+}
+
+export function appendFavoritedMessageOther(otherDiv, otherItemName, igdbId) {
+    const resultsGameDiv = otherDiv.querySelector(`.${otherItemName}[data-igdb-id="${igdbId}"]`);
+
+    if(resultsGameDiv !== null) {
+        appendFavoritedConfirmationMessage(resultsGameDiv);
     }
 }
 
