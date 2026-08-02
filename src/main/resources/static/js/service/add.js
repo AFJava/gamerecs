@@ -1,10 +1,9 @@
 import { getAddedGamesIgdbIds } from "./search.js";
 
-export async function rate(event) {
+export async function rate(gameDiv) {
     console.log("Button clicked");
     
     //Check whether to build interface div
-    const gameDiv = event.target.closest(".search-item, .rec-item, .fav-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
     

@@ -16,7 +16,8 @@ document.addEventListener("click", searchDisplay);
 
 resultsDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("rate-button")) {
-        rate(event);
+        const gameDiv = event.target.closest(".search-item");
+        rate(gameDiv);
     }
 });
 
@@ -24,7 +25,8 @@ favoritedGamesDiv.addEventListener("click", (event) => {
     console.log(favoritedGamesDiv);
 
     if (event.target.classList.contains("rate-button")) {
-        rate(event);
+        const gameDiv = event.target.closest(".fav-item");
+        rate(gameDiv);
     }
 });
 
