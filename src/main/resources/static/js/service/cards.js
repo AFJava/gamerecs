@@ -50,8 +50,13 @@ export function renderAdded(gameDiv, rating) {
         profileCard.classList.add("profile-card");
         
         profileCard.innerHTML = `<img src = ${imageSrc} class = "game-preview">
-        <h2 class = "game-name">${gameName}</h2>
-        <p class="game-rating">Rating: ${rating} / 10</p>`;
+        <div class="game-info-container">
+            <h2 class = "game-name">${gameName}</h2>
+            <p class="game-rating">Rating: ${rating} / 10</p>
+        </div>
+        <div class="game-action-container-profile">
+            <button type="button" class="remove-button">Remove game from profile</button>
+        </div>`;
 
         profileGameDiv.appendChild(profileCard);
     } //Otherwise add the new button (if not already rendered)
@@ -90,9 +95,12 @@ export function renderFavorited(gameDiv) {
 
         favItem.innerHTML = `<div class="profile-card">
             <img class="game-preview" src="${imageSrc}" data-image-id="${imageId}">
-            <h2 class="game-name">${gameName}</h2>
-            <div class="game-action-container">
+            <div class="game-info-container">
+                <h2 class="game-name">${gameName}</h2>
+            </div>
+            <div class="game-action-container-profile">
                 <button type="button" class="rate-button">Rate and add to profile</button>
+                <button type="button" class="remove-button">Remove game from profile</button>
             </div>
         </div>`
 

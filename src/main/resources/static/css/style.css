@@ -56,7 +56,7 @@ input[type="text"], input[type="password"] {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.login-button, .rate-button, .fav-button, .submit-rating, .rec-button, .page-nav-item-search {
+.login-button, .rate-button, .fav-button, .submit-rating, .rec-button, .page-nav-item-search, .remove-button {
     height: 2rem;
     border-radius: 1rem;
     background-color: #565f76;
@@ -349,7 +349,7 @@ p#signuperr:empty {
     background-color: #717c98;
 }
 
-.search-summary, .rec-summary {
+.game-display {
     grid-row: span 1;
     display: flex;
     align-items: center;
@@ -426,7 +426,7 @@ p#signuperr:empty {
     background-color: #717c98;
 }
 
-.fav-item {
+.fav-item, .added-item {
     display: grid;
     grid-template-rows: 2in auto;
     place-items: center;
@@ -439,6 +439,19 @@ p#signuperr:empty {
     width: 100%;
     aspect-ratio: 3 / 4;
     object-fit: cover;
+}
+
+.game-action-container-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.game-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .expanded-nav-container {

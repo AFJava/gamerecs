@@ -141,7 +141,7 @@ function renderPage(games) {
         gameDiv.dataset.gameName = `${game.name}`;
 
         const searchSummary = document.createElement("div");
-        searchSummary.classList.add("search-summary");
+        searchSummary.classList.add("game-display");
         searchSummary.dataset.igdbId = `${igdbId}`;
         resultsMap.set(Number(igdbId), game);
 
