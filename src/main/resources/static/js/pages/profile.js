@@ -1,7 +1,7 @@
 import { search, searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds } from "../service/search.js";
 import { rate, sendAddRequest, appendAddedConfirmationMessage, appendRateConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
-import { appendFavoritedConfirmationMessage, sendFavRequest } from "../service/fav.js";
+import { fav } from "../service/fav.js";
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -32,20 +32,11 @@ resultsDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("fav-button")) {
         const gameDiv = event.target.closest(".search-item, .rec-item");
         const igdbId = gameDiv.dataset.igdbId;
-
-        console.log(igdbId);
-
-        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-
+        
         const resultsMap = getResultsMap();
         const game = resultsMap.get(Number(igdbId));
-
-        const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
-        favoritedGamesIgdbIds.add(Number(igdbId));
-
-        appendFavoritedConfirmationMessage(gameDiv, igdbId);
-        sendFavRequest(csrfHeader, csrfToken, igdbId, game);
+    
+        fav(gameDiv, igdbId, game);
         renderFavorited(gameDiv);
     }
 });

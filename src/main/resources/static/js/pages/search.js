@@ -1,6 +1,6 @@
 import { search, searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds } from "../service/search.js";
 import { rate, sendAddRequest, appendAddedConfirmationMessage, appendRateConfirmationMessage } from "../service/add.js";
-import { appendFavoritedConfirmationMessage, sendFavRequest } from "../service/fav.js";
+import { fav } from "../service/fav.js";
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -27,43 +27,25 @@ expandedResultsDiv.addEventListener("click", (event) => {
 
 resultsDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("fav-button")) {
-        const gameDiv = event.target.closest(".search-item, .rec-item");
+        const gameDiv = event.target.closest(".search-item");
         const igdbId = gameDiv.dataset.igdbId;
-
-        console.log(igdbId);
-
-        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
         const resultsMap = getResultsMap();
         const game = resultsMap.get(Number(igdbId));
 
-        const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
-        favoritedGamesIgdbIds.add(Number(igdbId));
-
-        appendFavoritedConfirmationMessage(gameDiv, igdbId);
-        sendFavRequest(csrfHeader, csrfToken, igdbId, game);
+        fav(gameDiv, igdbId, game);
     }
 });
 
 expandedResultsDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("fav-button")) {
-        const gameDiv = event.target.closest(".search-item, .rec-item");
+        const gameDiv = event.target.closest(".search-item-expanded");
         const igdbId = gameDiv.dataset.igdbId;
-
-        console.log(igdbId);
-
-        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
         //Use expandedResultsMap instead when not on searchbar
         const game = expandedResultsMap.get(Number(igdbId));
 
-        const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
-        favoritedGamesIgdbIds.add(Number(igdbId));
-
-        appendFavoritedConfirmationMessage(gameDiv, igdbId);
-        sendFavRequest(csrfHeader, csrfToken, igdbId, game);
+        fav(gameDiv, igdbId, game);
     }
 });
 
@@ -107,7 +89,7 @@ expandedResultsDiv.addEventListener("submit", (event) => {
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
         
-    const gameDiv = event.target.closest(".search-item");
+    const gameDiv = event.target.closest(".search-item-expanded");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
 
