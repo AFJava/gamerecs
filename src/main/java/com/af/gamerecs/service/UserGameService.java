@@ -39,6 +39,10 @@ public class UserGameService {
         userGameRepository.save(userGame);
     }
 
+    public void removeUserGame(Long userId, Long igdbId) {
+        userGameRepository.deleteByUserIdAndGame_IgdbId(userId, igdbId);
+    }
+
     public UserGame getUserGame(Long userId, Long igdbId) {
         Optional<UserGame> userGameContainer = userGameRepository.findByUserIdAndGame_IgdbId(userId, igdbId);
 

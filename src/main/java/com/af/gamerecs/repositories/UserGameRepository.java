@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.af.gamerecs.entities.UserGame;
 
 public interface UserGameRepository extends JpaRepository<UserGame, Integer> {
-    boolean existsByUserIdAndGame_IgdbId(Long userId, Long IgdbId);
+    void deleteByUserIdAndGame_IgdbId(Long userId, Long IgdbId);
     Optional<UserGame> findByUserIdAndGame_IgdbId(Long userId, Long igdbId);
 
     @Query("""
