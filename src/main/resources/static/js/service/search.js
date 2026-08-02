@@ -1,4 +1,4 @@
-//console.log("JS loaded");
+import { appendAddedConfirmationMessage } from "./add.js";
 
 //TODO: Stop search in progress if another search begins
 
@@ -220,6 +220,18 @@ function renderPageNav(page, searchContent, filterObscureChecked) {
         searchNavItem = document.createElement("span");
         searchNavItem.innerHTML = `<a class="button" href="/search?page=1&query=${encodeURIComponent(searchContent)}&filter-obscure=${filterObscureChecked}">More Results</a>`
         searchNavDiv.appendChild(searchNavItem);
+    }
+}
+
+export function appendAddedMessageOther(otherDiv, otherItemName, igdbId) {
+    const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
+    
+    if(favoritedGamesIgdbIds.has(Number(igdbId))) {
+        const resultsGameDiv = otherDiv.querySelector(`.${otherItemName}[data-igdb-id="${igdbId}"]`);
+
+        if(resultsGameDiv !== null) {
+            appendAddedConfirmationMessage(resultsGameDiv);
+        }
     }
 }
 

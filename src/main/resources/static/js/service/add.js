@@ -1,3 +1,5 @@
+import { getAddedGamesIgdbIds } from "./search.js";
+
 export async function rate(event) {
     console.log("Button clicked");
     
@@ -44,7 +46,18 @@ function prepareRatingInterface(igdbId) {
     return true;
 }
 
-//sendAddRequestRec(csrfHeader, csrfToken, igdbId, rating);
+export async function add(gameDiv, igdbId, gameName, rating, game) {
+    //Get CSRF
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    
+    const addedGamesIgdbIds = getAddedGamesIgdbIds();
+    addedGamesIgdbIds.add(Number(igdbId));
+
+    sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
+    appendAddedConfirmationMessage(gameDiv);
+    appendRateConfirmationMessage(gameDiv, gameName);
+}
 
 export async function sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game) {
     const response = await fetch(

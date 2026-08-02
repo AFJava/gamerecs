@@ -1,5 +1,5 @@
-import { search, searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds } from "../service/search.js";
-import { rate, sendAddRequest, appendAddedConfirmationMessage, appendRateConfirmationMessage } from "../service/add.js";
+import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther } from "../service/search.js";
+import { rate, add } from "../service/add.js";
 import { fav } from "../service/fav.js";
 
 const searchbar = document.querySelector(".searchbar");
@@ -56,26 +56,15 @@ resultsDiv.addEventListener("submit", (event) => {
         return;
     }
 
-    //Get CSRF
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-        
     const gameDiv = event.target.closest(".search-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
-
-    const rateInput = gameDiv.querySelector('input[name="rating"]');
-    const rating = rateInput.value;
-
+    const rating = event.target.elements.rating.value;
+    
     const resultsMap = getResultsMap();
     const game = resultsMap.get(Number(igdbId));
     
-    const addedGamesIgdbIds = getAddedGamesIgdbIds();
-    addedGamesIgdbIds.add(Number(igdbId));
-
-    sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
-    appendAddedConfirmationMessage(gameDiv);
-    appendRateConfirmationMessage(gameDiv, gameName);
+    add(gameDiv, igdbId, gameName, rating, game);
 });
 
 expandedResultsDiv.addEventListener("submit", (event) => {
@@ -85,24 +74,13 @@ expandedResultsDiv.addEventListener("submit", (event) => {
         return;
     }
 
-    //Get CSRF
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-        
     const gameDiv = event.target.closest(".search-item-expanded");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
-
-    const rateInput = gameDiv.querySelector('input[name="rating"]');
-    const rating = rateInput.value;
-
+    const rating = event.target.elements.rating.value;
+    
     //Use expandedResultsMap instead when not on searchbar
     const game = expandedResultsMap.get(Number(igdbId));
     
-    const addedGamesIgdbIds = getAddedGamesIgdbIds();
-    addedGamesIgdbIds.add(Number(igdbId));
-
-    sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
-    appendAddedConfirmationMessage(gameDiv);
-    appendRateConfirmationMessage(gameDiv, gameName);
+    add(gameDiv, igdbId, gameName, rating, game);
 });

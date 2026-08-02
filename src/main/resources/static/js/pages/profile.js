@@ -1,5 +1,5 @@
-import { search, searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds } from "../service/search.js";
-import { rate, sendAddRequest, appendAddedConfirmationMessage, appendRateConfirmationMessage } from "../service/add.js";
+import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther } from "../service/search.js";
+import { rate, add, appendAddedConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
 import { fav } from "../service/fav.js";
 
@@ -30,7 +30,7 @@ favoritedGamesDiv.addEventListener("click", (event) => {
 
 resultsDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("fav-button")) {
-        const gameDiv = event.target.closest(".search-item, .rec-item");
+        const gameDiv = event.target.closest(".search-item");
         const igdbId = gameDiv.dataset.igdbId;
         
         const resultsMap = getResultsMap();
@@ -47,27 +47,16 @@ resultsDiv.addEventListener("submit", (event) => {
     if(! event.target.matches(".rate-form")) {
         return;
     }
-
-    //Get CSRF
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
         
     const gameDiv = event.target.closest(".search-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
-
-    const rateInput = gameDiv.querySelector('input[name="rating"]');
-    const rating = rateInput.value;
-
+    const rating = event.target.elements.rating.value;
+    
     const resultsMap = getResultsMap();
     const game = resultsMap.get(Number(igdbId));
     
-    const addedGamesIgdbIds = getAddedGamesIgdbIds();
-    addedGamesIgdbIds.add(Number(igdbId));
-
-    sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
-    appendAddedConfirmationMessage(gameDiv);
-    appendRateConfirmationMessage(gameDiv, gameName);
+    add(gameDiv, igdbId, gameName, rating, game);
 
     const addedGamesContainer = document.getElementById("added-games-container");
     const recButtonContainer = document.getElementById("rec-button-container");
@@ -76,15 +65,7 @@ resultsDiv.addEventListener("submit", (event) => {
     renderAdded(gameDiv, rating);
 
     //If a favorited game was just added from the searchbar, check if it is displayed on the profile; if so, append message there as well
-    const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
-    
-    if(favoritedGamesIgdbIds.has(Number(igdbId))) {
-        const favoritedGameDiv = favoritedGamesDiv.querySelector(`.fav-item[data-igdb-id="${igdbId}"]`);
-
-        if(favoritedGameDiv !== null) {
-            appendAddedConfirmationMessage(favoritedGameDiv);
-        }
-    }
+    appendAddedMessageOther(favoritedGamesDiv, "fav-item", igdbId)
 });
 
 favoritedGamesDiv.addEventListener("submit", (event) => {
@@ -94,26 +75,15 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
         return;
     }
 
-    //Get CSRF
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-        
     const gameDiv = event.target.closest(".fav-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
-
-    const rateInput = gameDiv.querySelector('input[name="rating"]');
-    const rating = rateInput.value;
-
+    const rating = event.target.elements.rating.value;
+    
     const resultsMap = getResultsMap();
     const game = resultsMap.get(Number(igdbId));
     
-    const addedGamesIgdbIds = getAddedGamesIgdbIds();
-    addedGamesIgdbIds.add(Number(igdbId));
-
-    sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
-    appendAddedConfirmationMessage(gameDiv);
-    appendRateConfirmationMessage(gameDiv, gameName);
+    add(gameDiv, igdbId, gameName, rating, game);
 
     const addedGamesContainer = document.getElementById("added-games-container");
     const recButtonContainer = document.getElementById("rec-button-container");
@@ -122,15 +92,7 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
     renderAdded(gameDiv, rating);
 
     //If a favorited game was just added from favorites list, check if it is displayed on the searchbar; if so, append message there as well
-    const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
-    
-    if(favoritedGamesIgdbIds.has(Number(igdbId))) {
-        const resultsGameDiv = resultsDiv.querySelector(`.search-item[data-igdb-id="${igdbId}"]`);
-
-        if(resultsGameDiv !== null) {
-            appendAddedConfirmationMessage(resultsGameDiv);
-        }
-    }
+    appendAddedMessageOther(resultsDiv, "search-item", igdbId)
 });
 
 const newRecButton = document.getElementById("rec-button-container").querySelector(".rec-button");
