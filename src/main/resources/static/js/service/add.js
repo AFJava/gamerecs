@@ -7,7 +7,7 @@ export async function rate(gameDiv) {
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
     
-    const makeInterface = prepareRatingInterface(igdbId);
+    const makeInterface = prepareRatingInterface(gameDiv.parentElement, igdbId);
 
     if(! makeInterface) {
         return;
@@ -29,9 +29,12 @@ export async function rate(gameDiv) {
 }
 
 //Return whether to create/append interface
-//Remove existing rating interface IF it is not the same as the current
-function prepareRatingInterface(igdbId) {
-    const current = document.querySelector(".rate");
+//Remove existing rating interface if it is in the same container AND not attached to the same game
+function prepareRatingInterface(containerDiv, igdbId) {
+    const current = containerDiv.querySelector(".rate");
+
+    console.log(containerDiv);
+    console.log(current);
 
     if (current !== null) {
         if(current.dataset.igdbId != String(igdbId)) {
