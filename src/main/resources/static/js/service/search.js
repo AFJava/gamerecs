@@ -240,6 +240,19 @@ export function appendFavoritedMessageOther(otherDiv, otherItemName, igdbId) {
     }
 }
 
+export function resetGameActionsOther(otherDiv, otherItemName, igdbId) {
+    const resultsGameDiv = otherDiv.querySelector(`.${otherItemName}[data-igdb-id="${igdbId}"]`);
+
+    if(resultsGameDiv !== null) {
+        const actionDiv = resultsGameDiv.querySelector(".game-action-container");
+        actionDiv.replaceChildren();
+
+        //To generalize, use same code from renderPage above
+        actionDiv.innerHTML = `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" >Rate and add to profile</button>
+        <button type="button" class="fav-button" data-igdb-id = "${igdbId}" >Add to favorites</button>`;
+    }
+}
+
 export function getResultsMap() {
     return resultsMap;
 }
