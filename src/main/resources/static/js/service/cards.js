@@ -46,19 +46,23 @@ export function renderAdded(gameDiv, rating) {
     //Check whether to display added game; note that gameDiv includes one info message
     if (profileGameDiv.childElementCount < 6) {
         //Use JS to display newly added game without refresh (use Thymeleaf for games previously added)
-        const profileCard = document.createElement("div");
-        profileCard.classList.add("profile-card");
+        const addedItem = document.createElement("div");
+        addedItem.classList.add("added-item");
+        addedItem.dataset.igdbId = igdbId;
+        addedItem.dataset.gameName = gameName;
         
-        profileCard.innerHTML = `<img src = ${imageSrc} class = "game-preview">
-        <div class="game-info-container">
-            <h2 class = "game-name">${gameName}</h2>
-            <p class="game-rating">Rating: ${rating} / 10</p>
-        </div>
-        <div class="game-action-container-profile">
-            <button type="button" class="removal-button">Remove game from profile</button>
+        addedItem.innerHTML = `<div class="profile-card">
+            <img src = ${imageSrc} class = "game-preview">
+            <div class="game-info-container">
+                <h2 class = "game-name">${gameName}</h2>
+                <p class="game-rating">Rating: ${rating} / 10</p>
+            </div>
+            <div class="game-action-container-profile">
+                <button type="button" class="removal-button">Remove game from profile</button>
+            </div>
         </div>`;
 
-        profileGameDiv.appendChild(profileCard);
+        profileGameDiv.appendChild(addedItem);
     } //Otherwise add the new button (if not already rendered)
     else if (expandAdded === null) {
         expandAdded = document.createElement("div");
@@ -100,7 +104,7 @@ export function renderFavorited(gameDiv) {
             </div>
             <div class="game-action-container-profile">
                 <button type="button" class="rate-button">Rate and add to profile</button>
-                <button type="button" class="removal-button">Remove game from profile</button>
+                <button type="button" class="removal-button">Remove game from favorites</button>
             </div>
         </div>`
 
