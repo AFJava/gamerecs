@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
@@ -39,6 +40,7 @@ public class UserGameService {
         userGameRepository.save(userGame);
     }
 
+    @Transactional
     public void removeUserGame(Long userId, Long igdbId) {
         userGameRepository.deleteByUserIdAndGame_IgdbId(userId, igdbId);
     }
