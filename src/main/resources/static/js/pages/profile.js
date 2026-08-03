@@ -1,4 +1,4 @@
-import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther } from "../service/search.js";
+import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds, resetGameActionsOther } from "../service/search.js";
 import { rate, add, appendAddedConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
 import { fav } from "../service/fav.js";
@@ -118,8 +118,15 @@ addedGamesDiv.addEventListener("submit", (event) => {
     }
     
     const gameDiv = event.target.closest(".added-item");
+    const igdbId = gameDiv.dataset.igdbId;
+    const gameName = gameDiv.dataset.gameName;
 
-    remove(gameDiv);
+    remove(gameDiv, igdbId, gameName, "profile");
+
+    const addedGamesIgdbIds = getAddedGamesIgdbIds();
+    addedGamesIgdbIds.delete(Number(igdbId));
+
+    resetGameActionsOther(resultsDiv, "search-item", igdbId);
 });
 
 favoritedGamesDiv.addEventListener("submit", (event) => {
@@ -130,8 +137,15 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
     }
 
     const gameDiv = event.target.closest(".fav-item");
+    const igdbId = gameDiv.dataset.igdbId;
+    const gameName = gameDiv.dataset.gameName;
 
-    remove(gameDiv);
+    remove(gameDiv, igdbId, gameName, "favorites");
+
+    const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
+    favoritedGamesIgdbIds.delete(Number(igdbId));
+
+    resetGameActionsOther(resultsDiv, "search-item", igdbId);
 });
 
 /* Maybe put cancel remove here
