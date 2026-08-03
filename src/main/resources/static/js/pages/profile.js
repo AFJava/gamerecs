@@ -2,12 +2,13 @@ import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAdd
 import { rate, add, appendAddedConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
 import { fav } from "../service/fav.js";
+import { confirmRemove, remove } from "../service/remove.js";
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
 const favoritedGamesDiv = document.getElementById("favorited-games-container").querySelector(".favorited-games");
-
+const addedGamesDiv = document.getElementById("added-games-container").querySelector(".added-games");
 filterObscureButton.addEventListener("change", filterDebounce);
 
 searchbar.addEventListener("input", searchDebounce);
@@ -96,6 +97,52 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
     //If a favorited game was just added from favorites list, check if it is displayed on the searchbar; if so, append message there as well
     appendAddedMessageOther(resultsDiv, "search-item", igdbId)
 });
+
+addedGamesDiv.addEventListener("click", (event) => {
+    if(event.target.classList.contains("removal-button")) {
+        confirmRemove(event.target.closest(".added-item"), "profile");
+    }
+});
+
+favoritedGamesDiv.addEventListener("click", (event) => {
+    if(event.target.classList.contains("removal-button")) {
+        confirmRemove(event.target.closest(".fav-item"), "favorites");
+    }
+});
+
+addedGamesDiv.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    if(! event.target.matches(".removal-form")) {
+        return;
+    }
+    
+    const gameDiv = event.target.closest(".added-item");
+
+    remove(gameDiv);
+});
+
+favoritedGamesDiv.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    if(! event.target.matches(".removal-form")) {
+        return;
+    }
+
+    const gameDiv = event.target.closest(".fav-item");
+
+    remove(gameDiv);
+});
+
+/* Maybe put cancel remove here
+addedGamesDiv.addEventListener("click", (event) => {
+
+});
+
+favoritedGamesDiv.addEventListener("click", (event) => {
+
+});
+*/
 
 const newRecButton = document.getElementById("rec-button-container").querySelector(".rec-button");
 

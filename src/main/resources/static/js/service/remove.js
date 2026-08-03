@@ -16,15 +16,19 @@ export function confirmRemove(gameDiv, location) {
 
     removalInterface.innerHTML = `<p>Really remove ${gameName} from your ${location}?</p>
         <form method="post" class="removal-form">
-            <button type="button" class="removal-button">No</button>
-            <button type="submit" class="removal-button">Yes</button>
+            <button type="button" class="removal-button-cancel">No</button>
+            <button type="submit" class="removal-button-confirm">Yes</button>
         </form>`;
     
     gameDiv.appendChild(removalInterface);
+
+    //This may have to move to pages
+    removalInterface.querySelector(".removal-button-cancel").addEventListener("click", () => {
+        abortRemove(removalInterface);
+    });
 }
 
-//Return whether to create/append interface
-//Remove existing rating interface if it is in the same container AND not attached to the same game
+//Consider making this a more general function to work with both rate, removal interfaces
 function prepareRemovalInterface(containerDiv, igdbId) {
     const current = containerDiv.querySelector(".removal-interface");
 
@@ -62,6 +66,6 @@ export async function remove(gameDiv) {
     )
 }
 
-export async function abortRemove(interface) {
-    interface.remove();
+export async function abortRemove(confirmInterface) {
+    confirmInterface.remove();
 }

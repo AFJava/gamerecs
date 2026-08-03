@@ -55,7 +55,7 @@ export function renderAdded(gameDiv, rating) {
             <p class="game-rating">Rating: ${rating} / 10</p>
         </div>
         <div class="game-action-container-profile">
-            <button type="button" class="remove-button">Remove game from profile</button>
+            <button type="button" class="removal-button">Remove game from profile</button>
         </div>`;
 
         profileGameDiv.appendChild(profileCard);
@@ -100,7 +100,7 @@ export function renderFavorited(gameDiv) {
             </div>
             <div class="game-action-container-profile">
                 <button type="button" class="rate-button">Rate and add to profile</button>
-                <button type="button" class="remove-button">Remove game from profile</button>
+                <button type="button" class="removal-button">Remove game from profile</button>
             </div>
         </div>`
 
