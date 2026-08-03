@@ -47,9 +47,14 @@ function prepareRemovalInterface(containerDiv, igdbId) {
     return true;
 }
 
-export async function remove(gameDiv) {
-    const igdbId = gameDiv.dataset.igdbId;
+export async function remove(gameDiv, igdbId, gameName, location) {
+    sendRemoveRequest(igdbId);
+    
+    appendRemovedConfirmationMessage(gameDiv, location)
+    appendRemovedInterfaceConfirmationMessage(gameDiv, gameName, location)
+}
 
+async function sendRemoveRequest(igdbId) {
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
@@ -63,9 +68,36 @@ export async function remove(gameDiv) {
                 [csrfHeader]: csrfToken
             }
         }
-    )
+    );
 }
 
-export async function abortRemove(confirmInterface) {
+async function abortRemove(confirmInterface) {
     confirmInterface.remove();
+}
+
+//Replace rate button, interface with confirmation messages
+function appendRemovedConfirmationMessage(gameDiv, location) {
+    const actionDiv = gameDiv.querySelector(`.game-action-container-profile`);
+    
+    //When added, also remove any option to favorite
+    actionDiv.replaceChildren();
+
+    const gameAddedMsgContainer = document.createElement("span");
+    gameAddedMsgContainer.classList.add("game-added-msg-container");
+
+    gameAddedMsgContainer.innerHTML = `<p class = "game-added-msg">This game has already been removed from your ${location}.</p>`;
+    
+    actionDiv.appendChild(gameAddedMsgContainer);
+}
+
+function appendRemovedInterfaceConfirmationMessage(gameDiv, gameName, location) {
+    const removalInterface = gameDiv.querySelector(".removal-interface");
+    removalInterface.remove();
+
+    const confirmation = document.createElement("div");
+    confirmation.classList.add("confirmation");
+
+    confirmation.innerHTML = `<p>${gameName} was removed from your ${location}.</p>`;
+
+    gameDiv.appendChild(confirmation);
 }
