@@ -95,7 +95,8 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
     renderAdded(gameDiv, rating);
 
     //If a favorited game was just added from favorites list, check if it is displayed on the searchbar; if so, append message there as well
-    appendAddedMessageOther(resultsDiv, "search-item", igdbId)
+    appendAddedMessageOther(resultsDiv, "search-item", igdbId);
+    gameDiv.remove();
 });
 
 addedGamesDiv.addEventListener("click", (event) => {
