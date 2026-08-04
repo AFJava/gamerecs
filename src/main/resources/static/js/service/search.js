@@ -240,12 +240,19 @@ export function appendFavoritedMessageOther(otherDiv, otherItemName, igdbId) {
     }
 }
 
+//Currently only used when removing games to reset actions for games also in the searchbar
 export function resetGameActionsOther(otherDiv, otherItemName, igdbId) {
     const resultsGameDiv = otherDiv.querySelector(`.${otherItemName}[data-igdb-id="${igdbId}"]`);
 
     if(resultsGameDiv !== null) {
         const actionDiv = resultsGameDiv.querySelector(".game-action-container");
         actionDiv.replaceChildren();
+        
+        const confirmationDiv = resultsGameDiv.querySelector(".confirmation");
+
+        if(confirmationDiv !== null) {
+            confirmationDiv.remove();
+        }
 
         //To generalize, use same code from renderPage above
         actionDiv.innerHTML = `<button type="button" class="rate-button" data-igdb-id = "${igdbId}" >Rate and add to profile</button>
