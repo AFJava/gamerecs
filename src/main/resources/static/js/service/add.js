@@ -1,6 +1,6 @@
 import { getAddedGamesIgdbIds } from "./search.js";
 
-export async function rate(gameDiv) {
+export function rate(gameDiv) {
     console.log("Button clicked");
     
     //Check whether to build interface div
@@ -49,19 +49,18 @@ function prepareRatingInterface(containerDiv, igdbId) {
 }
 
 export async function add(gameDiv, igdbId, gameName, rating, game) {
-    //Get CSRF
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-    
     const addedGamesIgdbIds = getAddedGamesIgdbIds();
     addedGamesIgdbIds.add(Number(igdbId));
 
-    sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game);
+    sendAddRequest(igdbId, rating, game);
     appendAddedConfirmationMessage(gameDiv);
     appendRateConfirmationMessage(gameDiv, gameName);
 }
 
-export async function sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game) {
+export async function sendAddRequest(igdbId, rating, game) {
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    
     const response = await fetch(
         "/games/add",
         {
@@ -83,7 +82,7 @@ export async function sendAddRequest(csrfHeader, csrfToken, igdbId, rating, game
 
 //Replace rate button, interface with confirmation messages
 export function appendAddedConfirmationMessage(gameDiv) {
-    const actionDiv = gameDiv.querySelector(`.game-action-container`);
+    const actionDiv = gameDiv.querySelector(`.game-action-container, .game-action-container-profile`);
     
     //When added, also remove any option to favorite
     actionDiv.replaceChildren();

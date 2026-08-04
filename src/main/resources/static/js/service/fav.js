@@ -1,14 +1,11 @@
 import { getFavoritedGamesIgdbIds } from "./search.js";
 
 export async function fav(gameDiv, igdbId, game) {
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-
     const favoritedGamesIgdbIds = getFavoritedGamesIgdbIds();
     favoritedGamesIgdbIds.add(Number(igdbId));
 
     appendFavoritedConfirmationMessage(gameDiv, igdbId);
-    sendFavRequest(csrfHeader, csrfToken, igdbId, game);
+    sendFavRequest(igdbId, game);
 }
 
 export function appendFavoritedConfirmationMessage(gameDiv) {
@@ -25,7 +22,10 @@ export function appendFavoritedConfirmationMessage(gameDiv) {
     actionDiv.appendChild(gameAddedMsgContainer);
 }
 
-export async function sendFavRequest(csrfHeader, csrfToken, igdbId, game) {
+export async function sendFavRequest(igdbId, game) {
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    
     const response = await fetch(
         "/games/favorite",
         {
