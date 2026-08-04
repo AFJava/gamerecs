@@ -1,5 +1,5 @@
 import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds, resetGameActionsOther } from "../service/search.js";
-import { rate, add, appendAddedConfirmationMessage } from "../service/add.js";
+import { rate, add, sendAddRequest, appendAddedConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
 import { fav } from "../service/fav.js";
 import { confirmRemove, remove } from "../service/remove.js";
@@ -80,13 +80,13 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
 
     const gameDiv = event.target.closest(".fav-item");
     const igdbId = gameDiv.dataset.igdbId;
-    const gameName = gameDiv.dataset.gameName;
     const rating = event.target.elements.rating.value;
     
     const resultsMap = getResultsMap();
     const game = resultsMap.get(Number(igdbId));
     
-    add(gameDiv, igdbId, gameName, rating, game);
+    //No need to do extra rendering, just remove gameDiv and send request
+    sendAddRequest(igdbId, rating, game);
 
     const addedGamesContainer = document.getElementById("added-games-container");
     const recButtonContainer = document.getElementById("rec-button-container");
