@@ -3,12 +3,15 @@ import { rate, add, sendAddRequest, appendAddedConfirmationMessage } from "../se
 import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
 import { fav } from "../service/fav.js";
 import { confirmRemove, remove } from "../service/remove.js";
+import { rec } from "../service/rec.js"
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
 const favoritedGamesDiv = document.getElementById("favorited-games-container").querySelector(".favorited-games");
 const addedGamesDiv = document.getElementById("added-games-container").querySelector(".added-games");
+const recButtonContainer = document.getElementById("rec-button-container");
+
 filterObscureButton.addEventListener("change", filterDebounce);
 
 searchbar.addEventListener("input", searchDebounce);
@@ -159,12 +162,10 @@ favoritedGamesDiv.addEventListener("click", (event) => {
 });
 */
 
-const newRecButton = document.getElementById("rec-button-container").querySelector(".rec-button");
-
-if(newRecButton !== null) {
-    newRecButton.addEventListener("click", async () => {
+recButtonContainer.addEventListener("click", async (event) => {
+    if(event.target.classList.contains("rec-button")) {
         await rec();
 
         window.location.href = window.location.pathname + "/recommended?page=1";
-    });
-}
+    }
+});

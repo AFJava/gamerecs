@@ -14,13 +14,6 @@ export function setUpProfile(addedGamesContainer, recButtonContainer) {
         recButton.innerText = "Get New Recommendations";
 
         recButtonContainer.appendChild(recButton);
-
-        //Also needs event listener upon first being added (otherwise handled in rec.js)
-        recButton.addEventListener("click", async () => {
-            await rec();
-
-            window.location.href = window.location.pathname + "/recommended?page=1";
-        });
     }
 }
 
