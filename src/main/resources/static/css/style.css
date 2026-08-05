@@ -161,6 +161,7 @@ footer {
     flex-direction: column;
     align-items: center;
     background-color: gray; /* placeholder color */
+    margin-top: 2rem;
 }
 
 .igdb-disclaimer {
