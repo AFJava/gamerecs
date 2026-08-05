@@ -194,13 +194,13 @@ public class MainController {
         Page<Recommendation> recs = recommendationService.getPaginatedActiveRecommendations(id, PageRequest.of(page - 1, pageSize));
         model.addAttribute("recs", recs.getContent());
 
-        HashSet<Long> sharedIgdbIds = new HashSet<>(recommendationService.getAddedIgdbIds(id));
-        model.addAttribute("sharedIgdbIds", sharedIgdbIds);
+        HashSet<Long> addedGamesIgdbIds = new HashSet<>(recommendationService.getAddedIgdbIds(id));
+        model.addAttribute("addedGamesIgdbIds", addedGamesIgdbIds);
 
-        /* 
+        /* */
         HashSet<Long> favoritedIgbdIds = new HashSet<>(recommendationService.getFavoritedIgdbIds(id));
         model.addAttribute("favoritedIgdbIds", favoritedIgbdIds);
-        */
+        
 
         int totalPages = recs.getTotalPages();
 

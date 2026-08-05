@@ -1,15 +1,45 @@
+import { rate, add } from "../service/add.js";
+import { fav } from "../service/fav.js";
+import { rec } from "../service/rec.js"
+
+const recButtonContainer = document.getElementById("rec-button-container");
+const newRecButton = recButtonContainer.querySelector(".rec-button");
 const recDiv = document.getElementById("rec-games");
 
 recDiv.addEventListener("click", (event) => {
     if (event.target.classList.contains("rate-button")) {
-        rate(event);
+        const gameDiv = event.target.closest(".rec-item");
+        rate(gameDiv);
     }
 });
 
-const newRecButton = recButtonContainer.querySelector(".rec-button");
+recDiv.addEventListener("click", (event) => {
+    if (event.target.classList.contains("fav-button")) {
+        const gameDiv = event.target.closest(".rec-item");
+        const igdbId = gameDiv.dataset.igdbId;
+        
+        fav(gameDiv, igdbId, null);
+    }
+});
+
+recDiv.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    if(! event.target.matches(".rate-form")) {
+        return;
+    }
+    
+    const gameDiv = event.target.closest(".rec-item");
+    const igdbId = gameDiv.dataset.igdbId;
+    const gameName = gameDiv.dataset.gameName;
+    const rating = event.target.elements.rating.value;
+    
+    add(gameDiv, igdbId, gameName, rating, null);
+});
 
 newRecButton.addEventListener("click", async () => {
     await rec();
 
-    window.location.href = window.location.pathname + "/recommended?page=1";
+    //refresh page
+    window.location.href = window.location.pathname;
 });
