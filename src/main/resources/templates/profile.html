@@ -59,7 +59,6 @@
             
             <div class="added-games">
                 <p class="info-msg">Add any games that you played to your profile. Features of each added game will be considered (based on your rating of that game) when generating recommendations. </p>
-                <p class="no-games-msg" th:if="${addedGames.empty}">You have not added any games. To get started with recommendations, please use the searchbar above to add some.</p>
 
                 <div class="added-item" th:each="addedGame : ${addedGames}" th:data-igdb-id="${addedGame.game.igdbId}" th:data-game-name="${addedGame.game.name}">
                     <div class="profile-card">
@@ -112,7 +111,10 @@
         <h1>Recommended Games</h1>
         
         <div class="rec-button-container" id="rec-button-container">
-            <p class="no-games-msg" th:if="${addedGames.empty}">Add games using the searchbar to start generating recommendations.</p>
+            <p class="info-msg">
+                Add games using the searchbar to start generating recommendations. You can also access any existing recommendations here. <br><br>
+                Please note that current recommendations may be lost when generating new recommendations, so be sure to favorite any that interest you.
+            </p>
             <button th:if="${! addedGames.empty}" class="rec-button">Get New Recommendations</button>
             <a th:if="${hasRecs}" href="profile/recommended?page=1" class="button">All Recommended Games</a>
         </div>
