@@ -25,18 +25,51 @@
                 </form>
             </div>
         </div>
+
+        <div class="search-container">
+            <form class = "search-form" action="/search" method="GET">
+                <input type="number" name="page" value="1" class="page-input">
+
+                <div class="filter-container">
+                    <input type="checkbox" name="filter-obscure" id="filter-obscure" checked>
+                    <label for="filter-obscure" title="Exclude games added by &lt;100 players">Filter obscure results</label>
+                </div>
+                
+                <div class="searchbar-container">
+                    <input type = "text" name = "query" class = "searchbar" id="searchbar" placeholder = "Add and rate games you've played to your profile">
+                    <button id="search-button" class="search-button" type="submit">
+                        <img src = "/assets/Search Icon.png" class = "search-icon">
+                    </button>
+                </div>
+            </form>
+            
+            <div class="search-results">
+                <div class="results-list"></div>
+                <div class="page-nav"></div>
+            </div>
+        </div>
     </header>
 
     <main>
-        <h1>My Games</h1>
+        <div class="added-games-container" id="added-games-container">
+            <h1>My Games</h1>
 
-        <div class="added-games-expanded">
-            <div th:each="userGame : ${userGames}" class="profile-card">
-                <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${userGame.game.imageId} + '.jpg'">
-                <h2 class="game-name" th:text="${userGame.game.name}"></h2>
-                <p class="game-rating" th:text="|Rating: ${userGame.rating} / 10|"></p>
+            <div class="added-games-expanded">
+                <div class="added-item" th:each="addedGame : ${addedGames}" th:data-igdb-id="${addedGame.game.igdbId}" th:data-game-name="${addedGame.game.name}">
+                    <div class="profile-card">
+                        <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${addedGame.game.imageId} + '.jpg'">
+                        <div class="game-info-container">
+                            <h2 class="game-name" th:text="${addedGame.game.name}"></h2>
+                            <p class="game-rating" th:text="|Rating: ${addedGame.rating} / 10|"></p>
+                        </div>
+                        <div class="game-action-container-profile">
+                            <button type="button" class="removal-button">Remove game from profile</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        
 
         <div class="page-nav-expanded" th:if="${totalPages > 1}">
             <p class="page-indicator">Page: </p>
@@ -75,4 +108,7 @@
         <p class="igdb-disclaimer">All game data and cover images provided by <a href="https://www.igdb.com" target="_blank">igdb.com</a></p>
     </footer>
 </body>
+
+<script type="module" src="/js/pages/added.js"></script>
+
 </html>

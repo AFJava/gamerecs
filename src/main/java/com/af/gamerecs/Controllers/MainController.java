@@ -104,13 +104,13 @@ public class MainController {
                         Authentication authentication,
                         @PathVariable Long id,
                         @RequestParam int page) {
-        Page<UserGame> userGamesPage = userGameService.getPaginatedAddedGames(id, PageRequest.of(page - 1, pageSize));
+        Page<UserGame> addedGamesPage = userGameService.getPaginatedAddedGames(id, PageRequest.of(page - 1, pageSize));
 
         //GetContent() returns List<UserGame>
-        model.addAttribute("userGames", userGamesPage.getContent());
+        model.addAttribute("addedGames", addedGamesPage.getContent());
 
         //Page nav logic
-        int totalPages = userGamesPage.getTotalPages();
+        int totalPages = addedGamesPage.getTotalPages();
 
         int startPage = Math.max(1, page - 2);
         int endPage = Math.min(totalPages, page + 2);
