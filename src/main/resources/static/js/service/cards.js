@@ -1,26 +1,28 @@
-export function setUpProfile(addedGamesContainer, recButtonContainer) {
+export function setUpProfile(recButtonContainer) {
     let recButton = recButtonContainer.querySelector(".rec-button");
 
-    //If true, this is the first added game, so also remove all default messages
-    if(recButton === null) {
-        let noGamesMsg = addedGamesContainer.querySelector(".no-games-msg");
-        noGamesMsg.remove();
-
-        noGamesMsg = recButtonContainer.querySelector(".no-games-msg");
-        noGamesMsg.remove();
-
-        recButton = document.createElement("button");
-        recButton.classList.add("rec-button");
-        recButton.innerText = "Get New Recommendations";
-
-        recButtonContainer.appendChild(recButton);
+    if(recButton !== null) {
+        return;
     }
+
+    recButton = document.createElement("button");
+    recButton.classList.add("rec-button");
+    recButton.innerText = "Get New Recommendations";
+
+    recButtonContainer.appendChild(recButton);
 }
 
-/* 
- * gameDiv - the .search-item div for the game containing all relevant fields
- * rating - if null, this is a favorited game
- */
+export function resetProfile(addedGamesContainer, addedGamesDiv, favoritedGamesContainer, favoritedGamesDiv, recButtonContainer) {
+    //Container always has header, games list div (2), div always has info message (1) if there are no games added/favorited at all
+    if((addedGamesContainer.childElementCount + addedGamesDiv.childElementCount != 3) &&
+        (favoritedGamesContainer.childElementCount + favoritedGamesDiv.childElementCount)) {
+        return;
+    }
+
+    let recButton = recButtonContainer.querySelector(".rec-button");
+    recButton.remove();
+}
+
 export function renderAdded(gameDiv, rating) {
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;

@@ -1,6 +1,6 @@
 import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds, resetGameActionsOther } from "../service/search.js";
 import { rate, add, sendAddRequest, appendAddedConfirmationMessage } from "../service/add.js";
-import { setUpProfile, renderAdded, renderFavorited } from "../service/cards.js";
+import { setUpProfile, renderAdded, renderFavorited, resetProfile } from "../service/cards.js";
 import { fav } from "../service/fav.js";
 import { confirmRemove, remove } from "../service/remove.js";
 import { rec } from "../service/rec.js"
@@ -8,8 +8,11 @@ import { rec } from "../service/rec.js"
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
-const favoritedGamesDiv = document.getElementById("favorited-games-container").querySelector(".favorited-games");
-const addedGamesDiv = document.getElementById("added-games-container").querySelector(".added-games");
+
+const addedGamesContainer = document.getElementById("added-games-container");
+const addedGamesDiv = addedGamesContainer.querySelector(".added-games");
+const favoritedGamesContainer = document.getElementById("favorited-games-container");
+const favoritedGamesDiv = favoritedGamesContainer.querySelector(".favorited-games");
 const recButtonContainer = document.getElementById("rec-button-container");
 
 filterObscureButton.addEventListener("change", filterDebounce);
@@ -64,10 +67,7 @@ resultsDiv.addEventListener("submit", (event) => {
     
     add(gameDiv, igdbId, gameName, rating, game);
 
-    const addedGamesContainer = document.getElementById("added-games-container");
-    const recButtonContainer = document.getElementById("rec-button-container");
-
-    setUpProfile(addedGamesContainer, recButtonContainer);
+    setUpProfile(recButtonContainer);
     renderAdded(gameDiv, rating);
 
     //If a favorited game was just added from the searchbar, check if it is displayed on the profile; if so, append message there as well
@@ -91,10 +91,7 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
     //No need to do extra rendering, just remove gameDiv and send request
     sendAddRequest(igdbId, rating, game);
 
-    const addedGamesContainer = document.getElementById("added-games-container");
-    const recButtonContainer = document.getElementById("rec-button-container");
-
-    setUpProfile(addedGamesContainer, recButtonContainer);
+    setUpProfile(recButtonContainer);
     renderAdded(gameDiv, rating);
 
     //If a favorited game was just added from favorites list, check if it is displayed on the searchbar; if so, append message there as well
@@ -131,6 +128,7 @@ addedGamesDiv.addEventListener("submit", (event) => {
     addedGamesIgdbIds.delete(Number(igdbId));
 
     resetGameActionsOther(resultsDiv, "search-item", igdbId);
+    resetProfile(addedGamesContainer, addedGamesDiv, favoritedGamesContainer, favoritedGamesDiv, recButtonContainer)
 });
 
 favoritedGamesDiv.addEventListener("submit", (event) => {
@@ -150,6 +148,7 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
     favoritedGamesIgdbIds.delete(Number(igdbId));
 
     resetGameActionsOther(resultsDiv, "search-item", igdbId);
+    resetProfile(addedGamesContainer, addedGamesDiv, favoritedGamesContainer, favoritedGamesDiv, recButtonContainer)
 });
 
 /* Maybe put cancel remove here
