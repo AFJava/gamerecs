@@ -1,6 +1,6 @@
 import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds, resetGameActionsOther } from "../service/search.js";
 import { rate, add, sendAddRequest, appendAddedConfirmationMessage } from "../service/add.js";
-import { setUpProfile, renderAdded, renderFavorited, resetProfile } from "../service/cards.js";
+import { setUpProfile, renderAdded, renderFavorited, resetProfile, renderAddedNav, renderFavoritedNav } from "../service/cards.js";
 import { fav } from "../service/fav.js";
 import { confirmRemove, remove } from "../service/remove.js";
 import { rec } from "../service/rec.js"
@@ -46,7 +46,14 @@ resultsDiv.addEventListener("click", (event) => {
         const game = resultsMap.get(Number(igdbId));
     
         fav(gameDiv, igdbId, game);
-        renderFavorited(gameDiv);
+
+        if(favoritedGamesDiv.childElementCount < 6) {
+            renderFavorited(favoritedGamesDiv, gameDiv);
+        }
+        else if (favoritedGamesContainer.querySelector(".expanded-nav-container") === null) {
+            renderFavoritedNav(favoritedGamesContainer)
+        }
+
         setUpProfile(recButtonContainer);
     }
 });
@@ -69,10 +76,16 @@ resultsDiv.addEventListener("submit", (event) => {
     add(gameDiv, igdbId, gameName, rating, game);
 
     setUpProfile(recButtonContainer);
-    renderAdded(gameDiv, rating);
+
+    if(addedGamesDiv.childElementCount < 6) {
+        renderAdded(addedGamesDiv, gameDiv, rating);
+    }
+    else if (addedGamesContainer.querySelector(".expanded-nav-container") === null) {
+        renderAddedNav(addedGamesContainer)
+    }
 
     //If a favorited game was just added from the searchbar, check if it is displayed on the profile; if so, append message there as well
-    appendAddedMessageOther(favoritedGamesDiv, "fav-item", igdbId)
+    appendAddedMessageOther(favoritedGamesDiv, "fav-item", igdbId);
 });
 
 favoritedGamesDiv.addEventListener("submit", (event) => {
@@ -93,7 +106,12 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
     sendAddRequest(igdbId, rating, game);
 
     setUpProfile(recButtonContainer);
-    renderAdded(gameDiv, rating);
+    if(addedGamesDiv.childElementCount < 6) {
+        renderAdded(addedGamesDiv, gameDiv, rating);
+    }
+    else if (addedGamesContainer.querySelector(".expanded-nav-container") === null) {
+        renderAddedNav(addedGamesContainer)
+    }
 
     //If a favorited game was just added from favorites list, check if it is displayed on the searchbar; if so, append message there as well
     appendAddedMessageOther(resultsDiv, "search-item", igdbId);
