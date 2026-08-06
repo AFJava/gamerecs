@@ -40,13 +40,13 @@ export function renderAdded(gameDiv, rating) {
     const imageId = gamePreview.dataset.imageId;
     const imageSrc = "https://images.igdb.com/igdb/image/upload/t_1080p/" + imageId + ".jpg";
 
-    let profileGameDivContainer = document.getElementById("added-games-container");
-    let profileGameDiv = profileGameDivContainer.querySelector(".added-games");
+    let addedGameDivContainer = document.getElementById("added-games-container");
+    let addedGameDiv = addedGameDivContainer.querySelector(".added-games");
     
-    let expandAdded = profileGameDivContainer.querySelector(".expanded-nav-container");
+    let expandAdded = addedGameDivContainer.querySelector(".expanded-nav-container");
     
     //Check whether to display added game; note that gameDiv includes one info message
-    if (profileGameDiv.childElementCount < 6) {
+    if (addedGameDiv.childElementCount < 6) {
         //Use JS to display newly added game without refresh (use Thymeleaf for games previously added)
         const addedItem = document.createElement("div");
         addedItem.classList.add("added-item");
@@ -64,7 +64,7 @@ export function renderAdded(gameDiv, rating) {
             </div>
         </div>`;
 
-        profileGameDiv.appendChild(addedItem);
+        addedGameDiv.appendChild(addedItem);
     } //Otherwise add the new button (if not already rendered)
     else if (expandAdded === null) {
         expandAdded = document.createElement("div");
@@ -72,7 +72,7 @@ export function renderAdded(gameDiv, rating) {
 
         expandAdded.innerHTML = '<a href="profile/added?page=1" class="button">All added games</a>';
 
-        profileGameDivContainer.appendChild(expandAdded);
+        addedGameDivContainer.appendChild(expandAdded);
     }
 }
 
@@ -86,13 +86,13 @@ export function renderFavorited(gameDiv) {
     const imageId = gamePreview.dataset.imageId;
     const imageSrc = "https://images.igdb.com/igdb/image/upload/t_1080p/" + imageId + ".jpg";
 
-    let profileGameDivContainer = document.getElementById("favorited-games-container");;
-    let profileGameDiv = profileGameDivContainer.querySelector(".favorited-games");
+    let favoritedGameDivContainer = document.getElementById("favorited-games-container");;
+    let favoritedGameDiv = favoritedGameDivContainer.querySelector(".favorited-games");
     
-    let expandAdded = profileGameDivContainer.querySelector(".expanded-nav-container");
+    let expandAdded = favoritedGameDivContainer.querySelector(".expanded-nav-container");
 
     //Check whether to display added game; note that gameDiv includes one info message
-    if (profileGameDiv.childElementCount < 6) {
+    if (favoritedGameDiv.childElementCount < 6) {
         //Use JS to display newly added game without refresh (use Thymeleaf for games previously added)
         const favItem = document.createElement("div");
         favItem.classList.add("fav-item");
@@ -110,7 +110,7 @@ export function renderFavorited(gameDiv) {
             </div>
         </div>`
 
-        profileGameDiv.appendChild(favItem);
+        favoritedGameDiv.appendChild(favItem);
     } //Otherwise add the new button (if not already rendered)
     else if (expandAdded === null) {
         expandAdded = document.createElement("div");
@@ -118,6 +118,17 @@ export function renderFavorited(gameDiv) {
 
         expandAdded.innerHTML = `<a href="profile/favorites?page=1" class="button">All favorited games</a>`
 
-        profileGameDivContainer.appendChild(expandAdded);
+        favoritedGameDivContainer.appendChild(expandAdded);
     }
+}
+
+export function renderPageNav(pageNavDiv, href, page) {
+    const pageNavItem = document.createElement("a");
+    pageNavItem.classList.add("page-nav-item");
+    pageNavItem.classList.add("button");
+
+    pageNavItem.href = `${href}?page=${page}`;
+    pageNavItem.innerText = page;
+
+    pageNavDiv.appendChild(pageNavItem);
 }

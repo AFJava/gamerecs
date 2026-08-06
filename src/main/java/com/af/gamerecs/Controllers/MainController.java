@@ -115,6 +115,7 @@ public class MainController {
         int startPage = Math.max(1, page - 2);
         int endPage = Math.min(totalPages, page + 2);
 
+        model.addAttribute("totalElements", addedGamesPage.getTotalElements());
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("startPage", startPage);
         model.addAttribute("page", page);

@@ -2,12 +2,16 @@ import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedG
 import { rate, add } from "../service/add.js";
 import { fav } from "../service/fav.js";
 import { confirmRemove, remove } from "../service/remove.js";
+import { renderAdded, renderPageNav } from "../service/cards.js";
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
 const addedGamesDiv = document.getElementById("added-games-container").querySelector(".added-games-expanded");
+const pageNavDiv = document.getElementById("page-nav-expanded");
+const currentPages = pageNavDiv.childElementCount - 1;
 
+const pageSize = 10;
 
 filterObscureButton.addEventListener("change", filterDebounce);
 
@@ -50,6 +54,23 @@ resultsDiv.addEventListener("submit", (event) => {
     const game = resultsMap.get(Number(igdbId));
     
     add(gameDiv, igdbId, gameName, rating, game);
+
+    console.log(window.location.search);
+
+    if(addedGamesDiv.childElementCount < 10) {
+        renderAdded(gameDiv, rating);
+    }
+    else {
+        const totalElements = pageNavDiv.dataset.totalElements;
+
+        //If adding this element goes past the current page limit, render nav for the new page
+        if((totalElements + 1) % pageSize === 0) {
+            currentPages++;
+            renderPageNav(pageNavDiv, window.location.search, currentPages);
+        }
+    }
+
+    pageNavDiv.dataset.totalElements = Number(pageNavDiv.dataset.totalElements) + 1;
 });
 
 addedGamesDiv.addEventListener("click", (event) => {
