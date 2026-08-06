@@ -9,6 +9,13 @@ export function setUpProfile(recButtonContainer) {
     recButton.classList.add("rec-button");
     recButton.innerText = "Get New Recommendations";
 
+    const currentRecsButton = recButtonContainer.querySelector(".button");
+
+    if(currentRecsButton !== null) {
+        recButtonContainer.insertBefore(recButton, currentRecsButton);
+        return;
+    }
+
     recButtonContainer.appendChild(recButton);
 }
 
