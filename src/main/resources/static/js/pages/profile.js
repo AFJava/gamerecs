@@ -47,6 +47,7 @@ resultsDiv.addEventListener("click", (event) => {
     
         fav(gameDiv, igdbId, game);
         renderFavorited(gameDiv);
+        setUpProfile(recButtonContainer);
     }
 });
 

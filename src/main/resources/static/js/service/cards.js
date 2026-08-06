@@ -14,8 +14,8 @@ export function setUpProfile(recButtonContainer) {
 
 export function resetProfile(addedGamesContainer, addedGamesDiv, favoritedGamesContainer, favoritedGamesDiv, recButtonContainer) {
     //Container always has header, games list div (2), div always has info message (1) if there are no games added/favorited at all
-    if((addedGamesContainer.childElementCount + addedGamesDiv.childElementCount != 3) &&
-        (favoritedGamesContainer.childElementCount + favoritedGamesDiv.childElementCount)) {
+    if((addedGamesContainer.childElementCount + addedGamesDiv.childElementCount != 3) ||
+        (favoritedGamesContainer.childElementCount + favoritedGamesDiv.childElementCount != 3)) {
         return;
     }
 
