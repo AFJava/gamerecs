@@ -101,7 +101,7 @@ export function renderFavorited(favoritedGamesDiv, gameDiv) {
 export function renderFavoritedNav(favoritedGamesContainer) {
     let expandAdded = document.createElement("div");
     expandAdded.classList.add("expanded-nav-container");
-    expandAdded.innerHTML = `<a href="profile/favorites?page=1" class="button">All favorited games</a>`
+    expandAdded.innerHTML = `<a href="profile/favorited?page=1" class="button">All favorited games</a>`
 
     favoritedGamesContainer.appendChild(expandAdded);
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <link rel = "stylesheet" href = "/css/style.css">
+    <title>My GameRecs Profile</title>
+</head>
+
+<body>
+    <header class="profile-header">
+        <div class = "navbar">
+            <div class = "logo">
+                <img src = "/assets/Logo.png">
+            </div>
+
+            <div class = "links">
+                <a href="/" class="nav-item">Home</a>
+                <a th:href="@{/users/{id}/profile(id=${id})}" class="nav-item">Profile</a>
+                <form th:action = "@{/logout}" method = "post">
+                    <button type = "submit" class = "nav-item">Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <form class = "search-form" action="/search" method="GET">
+                <input type="number" name="page" value="1" class="page-input">
+
+                <div class="filter-container">
+                    <input type="checkbox" name="filter-obscure" id="filter-obscure" checked>
+                    <label for="filter-obscure" title="Exclude games added by &lt;100 players">Filter obscure results</label>
+                </div>
+                
+                <div class="searchbar-container">
+                    <input type = "text" name = "query" class = "searchbar" id="searchbar" placeholder = "Add and rate games you've played to your profile">
+                    <button id="search-button" class="search-button" type="submit">
+                        <img src = "/assets/Search Icon.png" class = "search-icon">
+                    </button>
+                </div>
+            </form>
+            
+            <div class="search-results">
+                <div class="results-list"></div>
+                <div class="page-nav"></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="favorited-games-container" id="favorited-games-container">
+            <h1>My Games</h1>
+
+            <div class="favorited-games-expanded">
+                <div class="fav-item" th:each="favoritedGame : ${favoritedGames}" th:data-igdb-id="${favoritedGame.game.igdbId}" th:data-game-name="${favoritedGame.game.name}">
+                    <div class="profile-card">
+                        <img class="game-preview" th:data-image-id="${favoritedGame.game.imageId}" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${favoritedGame.game.imageId} + '.jpg'">
+                        <div class="game-info-container">
+                            <h2 class="game-name" th:text="${favoritedGame.game.name}"></h2>
+                        </div>
+                        <div class="game-action-container-profile">
+                            <button type="button" class="rate-button">Rate and add to profile</button>
+                            <button type="button" class="removal-button">Remove game from profile</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="page-nav-expanded" id="page-nav-expanded" th:data-total-elements="${totalElements}">
+            <p class="page-indicator">Page: </p>
+            
+            <a class="page-nav-item button" th:if="${showFirstPage}"
+                th:href="@{/users/{id}/profile/favorited(id=${id}, page=1)}">
+                    1
+            </a>
+
+            <span th:if="${showLeftEllipsis}">...</span>
+
+            <th:block th:each="p : ${#numbers.sequence(startPage, endPage)}">
+                <span th:if="${p == page}"
+                    class="page-nav-current"
+                    th:text="${p}">
+                </span>
+                
+                <a th:if="${p != page}"
+                    class="page-nav-item button"
+                    th:href="@{/users/{id}/profile/favorited(id=${id}, page=${p})}"
+                    th:text="${p}"
+                    th:classappend="${p == page} ? ' active'">
+                </a>
+            </th:block>
+
+            <span th:if="${showRightEllipsis}">...</span>
+
+            <a class="page-nav-item button" th:if="${showLastPage}"
+                th:href="@{/users/{id}/profile/favorited(id=${id}, page=${totalPages})}"
+                th:text="${totalPages}">
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p class="igdb-disclaimer">All game data and cover images provided by <a href="https://www.igdb.com" target="_blank">igdb.com</a></p>
+    </footer>
+</body>
+
+<script type="module" src="/js/pages/favorited.js"></script>
+
+</html>

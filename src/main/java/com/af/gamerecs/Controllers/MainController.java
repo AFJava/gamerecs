@@ -86,7 +86,7 @@ public class MainController {
 
         Page<UserGame> favs = userGameService.getPaginatedFavoritedGames(userId, PageRequest.of(0, 5));
         if(favs.hasNext()) {
-            model.addAttribute("expandFavorites", true);
+            model.addAttribute("expandFavorited", true);
         }
 
         model.addAttribute("favoritedGames", favs.getContent());
@@ -97,6 +97,35 @@ public class MainController {
         }
 
         return "profile";
+    }
+
+    @GetMapping("/users/{id}/profile/favorited")
+    public String favorited(Model model, 
+                        Authentication authentication,
+                        @PathVariable Long id,
+                        @RequestParam int page) {
+        Page<UserGame> favoritedGamesPage = userGameService.getPaginatedFavoritedGames(id, PageRequest.of(page - 1, pageSize));
+
+        //GetContent() returns List<UserGame>
+        model.addAttribute("favoritedGames", favoritedGamesPage.getContent());
+
+        //Page nav logic
+        int totalPages = favoritedGamesPage.getTotalPages();
+
+        int startPage = Math.max(1, page - 2);
+        int endPage = Math.min(totalPages, page + 2);
+
+        model.addAttribute("totalElements", favoritedGamesPage.getTotalElements());
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("page", page);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("showFirstPage", startPage > 1);
+        model.addAttribute("showLastPage", endPage < totalPages);
+        model.addAttribute("showLeftEllipsis", startPage > 2);
+        model.addAttribute("showRightEllipsis", endPage < totalPages - 1);
+
+        return "favorited";
     }
 
     @GetMapping("/users/{id}/profile/added")

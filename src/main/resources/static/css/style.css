@@ -414,7 +414,7 @@ p#signuperr:empty {
 }
 
 /* Default for all game lists*/
-.added-games, .favorited-games, .rec-button-container, .added-games-expanded, .search-results-expanded, .rec-games {
+.added-games, .favorited-games, .rec-button-container, .added-games-expanded, .favorited-games-expanded, .search-results-expanded, .rec-games {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -464,7 +464,7 @@ p#signuperr:empty {
 }
 
 /* Expanded pages */
-.added-games-expanded, .search-results-expanded, .rec-games {
+.added-games-expanded, .favorited-games-expanded, .search-results-expanded, .rec-games {
     max-width: 12in;
 }
 
@@ -472,7 +472,6 @@ p#signuperr:empty {
 /* Also used on recommendation page */
 .rec-button-container {
     justify-content: center;
-    margin-bottom: 1.5rem;
     gap: 0.5rem;
 }
 
