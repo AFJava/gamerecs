@@ -9,7 +9,7 @@ const resultsDiv = document.querySelector(".search-results");
 const filterObscureButton = document.getElementById("filter-obscure");
 const addedGamesDiv = document.getElementById("added-games-container").querySelector(".added-games-expanded");
 const pageNavDiv = document.getElementById("page-nav-expanded");
-const currentPages = pageNavDiv.childElementCount - 1;
+let currentPages = pageNavDiv.childElementCount - 1;
 
 const pageSize = 10;
 
@@ -55,18 +55,14 @@ resultsDiv.addEventListener("submit", (event) => {
     
     add(gameDiv, igdbId, gameName, rating, game);
 
-    console.log(window.location.search);
-
     if(addedGamesDiv.childElementCount < 10) {
-        renderAdded(gameDiv, rating);
+        renderAdded(addedGamesDiv, gameDiv, rating);
     }
     else {
-        const totalElements = pageNavDiv.dataset.totalElements;
-
         //If adding this element goes past the current page limit, render nav for the new page
-        if((totalElements + 1) % pageSize === 0) {
+        if(pageNavDiv.dataset.totalElements % pageSize === 0) {
             currentPages++;
-            renderPageNav(pageNavDiv, window.location.search, currentPages);
+            renderPageNav(pageNavDiv, window.location.pathname, currentPages);
         }
     }
 
@@ -96,4 +92,6 @@ addedGamesDiv.addEventListener("submit", (event) => {
     addedGamesIgdbIds.delete(Number(igdbId));
 
     resetGameActionsOther(resultsDiv, "search-item", igdbId);
+
+    pageNavDiv.dataset.totalElements = Number(pageNavDiv.dataset.totalElements) - 1;
 });
