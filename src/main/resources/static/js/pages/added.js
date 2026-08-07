@@ -2,7 +2,7 @@ import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedG
 import { rate, add } from "../service/add.js";
 import { fav } from "../service/fav.js";
 import { confirmRemove, remove } from "../service/remove.js";
-import { renderAdded, renderPageNav } from "../service/cards.js";
+import { renderAdded, renderPageNav, removePageNav } from "../service/cards.js";
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -55,15 +55,14 @@ resultsDiv.addEventListener("submit", (event) => {
     
     add(gameDiv, igdbId, gameName, rating, game);
 
+    console.log("Added game; total elements is " + pageNavDiv.dataset.totalElements);
     if(addedGamesDiv.childElementCount < 10) {
         renderAdded(addedGamesDiv, gameDiv, rating);
     }
-    else {
-        //If adding this element goes past the current page limit, render nav for the new page
-        if(pageNavDiv.dataset.totalElements % pageSize === 0) {
-            currentPages++;
-            renderPageNav(pageNavDiv, window.location.pathname, currentPages);
-        }
+    if(Number(pageNavDiv.dataset.totalElements) % pageSize === 0) {
+        console.log(pageNavDiv.dataset.totalElements);
+        currentPages++;
+        renderPageNav(pageNavDiv, window.location.pathname, currentPages);
     }
 
     pageNavDiv.dataset.totalElements = Number(pageNavDiv.dataset.totalElements) + 1;
@@ -92,6 +91,14 @@ addedGamesDiv.addEventListener("submit", (event) => {
     addedGamesIgdbIds.delete(Number(igdbId));
 
     resetGameActionsOther(resultsDiv, "search-item", igdbId);
+
+    console.log("Removed");
+
+    if((Number(pageNavDiv.dataset.totalElements) - 1) % 10 === 0) {
+        console.log("Removed page nav");
+        currentPages--;
+        removePageNav(pageNavDiv);
+    }
 
     pageNavDiv.dataset.totalElements = Number(pageNavDiv.dataset.totalElements) - 1;
 });

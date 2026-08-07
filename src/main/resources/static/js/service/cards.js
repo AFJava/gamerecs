@@ -116,3 +116,7 @@ export function renderPageNav(pageNavDiv, href, page) {
 
     pageNavDiv.appendChild(pageNavItem);
 }
+
+export function removePageNav(pageNavDiv) {
+    pageNavDiv.lastElementChild.remove();
+}
