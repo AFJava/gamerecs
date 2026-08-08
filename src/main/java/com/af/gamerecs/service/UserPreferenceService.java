@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.entities.Game;
 import com.af.gamerecs.entities.User;
+import com.af.gamerecs.entities.UserGame;
 import com.af.gamerecs.entities.UserPreference;
 import com.af.gamerecs.repositories.UserPreferenceRepository;
 
@@ -65,6 +66,9 @@ public class UserPreferenceService {
         }
         
         userPreferenceRepository.saveAll(updatedPreferences);
+    }
+    public void updatePreferenceFromGame(UserGame userGame) {
+        updatePreferenceFromGame(userGame.getUser(), userGame.getGame(), userGame.getRating());
     }
 
     //Gets all user preferences, sorted most to least preferred

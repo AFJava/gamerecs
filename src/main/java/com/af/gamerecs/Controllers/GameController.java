@@ -170,7 +170,10 @@ public class GameController {
 
         Long userId = user.getId();
 
-        userGameService.removeUserGame(userId, igdbId);
+        UserGame userGame = userGameService.removeUserGame(userId, igdbId);
+        userGame.setRating(-1 * userGame.getRating());
+        
+        userPreferenceService.updatePreferenceFromGame(userGame);
 
         return "";
     }

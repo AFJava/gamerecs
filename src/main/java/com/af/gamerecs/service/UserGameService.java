@@ -41,8 +41,8 @@ public class UserGameService {
     }
 
     @Transactional
-    public void removeUserGame(Long userId, Long igdbId) {
-        userGameRepository.deleteByUserIdAndGame_IgdbId(userId, igdbId);
+    public UserGame removeUserGame(Long userId, Long igdbId) {
+        return userGameRepository.deleteByUserIdAndGame_IgdbId(userId, igdbId);
     }
 
     public UserGame getUserGame(Long userId, Long igdbId) {
