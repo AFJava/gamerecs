@@ -52,9 +52,10 @@
 
     <main>
         <div class="favorited-games-container" id="favorited-games-container">
-            <h1>My Games</h1>
+            <h1>Favorited Games</h1>
 
             <div class="favorited-games-expanded">
+                <p class="info-msg">If any games have been removed, refresh to load remaining games.</p>
                 <div class="fav-item" th:each="favoritedGame : ${favoritedGames}" th:data-igdb-id="${favoritedGame.game.igdbId}" th:data-game-name="${favoritedGame.game.name}">
                     <div class="profile-card">
                         <img class="game-preview" th:data-image-id="${favoritedGame.game.imageId}" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${favoritedGame.game.imageId} + '.jpg'">

@@ -55,6 +55,7 @@
             <h1>My Games</h1>
 
             <div class="added-games-expanded">
+                <p class="info-msg">If any games have been removed, refresh to load remaining games.</p>
                 <div class="added-item" th:each="addedGame : ${addedGames}" th:data-igdb-id="${addedGame.game.igdbId}" th:data-game-name="${addedGame.game.name}">
                     <div class="profile-card">
                         <img class="game-preview" th:src="'https://images.igdb.com/igdb/image/upload/t_1080p/' + ${addedGame.game.imageId} + '.jpg'">

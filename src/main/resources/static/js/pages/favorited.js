@@ -37,7 +37,7 @@ resultsDiv.addEventListener("click", (event) => {
         fav(gameDiv, igdbId, game);
 
         //console.log("Favorited game; total elements is " + pageNavDiv.dataset.totalElements);
-        if(favoritedGamesDiv.childElementCount < 10) {
+        if(favoritedGamesDiv.childElementCount < pageSize + 1) {
             renderFavorited(favoritedGamesDiv, gameDiv);
         }
         if(Number(pageNavDiv.dataset.totalElements) % pageSize === 0) {
@@ -94,7 +94,7 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
 
     console.log("Removed");
 
-    if((Number(pageNavDiv.dataset.totalElements) - 1) % 10 === 0) {
+    if((Number(pageNavDiv.dataset.totalElements) - 1) % pageSize === 0) {
         console.log("Removed page nav");
         currentPages--;
         removePageNav(pageNavDiv);

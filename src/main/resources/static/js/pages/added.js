@@ -56,7 +56,7 @@ resultsDiv.addEventListener("submit", (event) => {
     add(gameDiv, igdbId, gameName, rating, game);
 
     console.log("Added game; total elements is " + pageNavDiv.dataset.totalElements);
-    if(addedGamesDiv.childElementCount < 10) {
+    if(addedGamesDiv.childElementCount < pageSize + 1) {
         renderAdded(addedGamesDiv, gameDiv, rating);
     }
     if(Number(pageNavDiv.dataset.totalElements) % pageSize === 0) {
@@ -94,7 +94,7 @@ addedGamesDiv.addEventListener("submit", (event) => {
 
     console.log("Removed");
 
-    if((Number(pageNavDiv.dataset.totalElements) - 1) % 10 === 0) {
+    if((Number(pageNavDiv.dataset.totalElements) - 1) % pageSize === 0) {
         console.log("Removed page nav");
         currentPages--;
         removePageNav(pageNavDiv);
