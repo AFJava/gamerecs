@@ -118,5 +118,7 @@ export function renderPageNav(pageNavDiv, href, page) {
 }
 
 export function removePageNav(pageNavDiv) {
-    pageNavDiv.lastElementChild.remove();
+    if(pageNavDiv.lastElementChild.tagName !== 'SPAN') {
+        pageNavDiv.lastElementChild.remove();
+    }
 }
