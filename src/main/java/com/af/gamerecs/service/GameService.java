@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +12,12 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.af.gamerecs.dto.AgeRatingDto;
 import com.af.gamerecs.dto.CompanyDto;
 import com.af.gamerecs.dto.FeatureDto;
 import com.af.gamerecs.dto.IgdbGameDto;
+import com.af.gamerecs.entities.AgeRating;
+import com.af.gamerecs.entities.AgeRatingOrganization;
 import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.entities.FeatureType;
 import com.af.gamerecs.entities.Game;
@@ -52,10 +56,13 @@ public class GameService {
             imageId = game.cover().image_id();
         }
 
+        System.out.println(parseAgeRatings(game).getOrganization() + ": " + parseAgeRatings(game).getRating());
+
         return new Game(game.id(),
                         game.name(),
                         imageId,
                         releaseDate,
+                        parseAgeRatings(game),
                         parseFeatures(franchiseNames(game),
                             game.involved_companies(),
                             game.platforms(),
@@ -76,6 +83,7 @@ public class GameService {
         return gameRepository.save(game);
     }
 
+    //This method is only used in RecommendationService.parseRecommendations, where only new games are passed as arguments; no check needed
     public List<Game> saveAllGames(List<Game> games) {
         return gameRepository.saveAll(games);
     }
@@ -96,6 +104,31 @@ public class GameService {
         }
 
         return result;
+    }
+
+    private AgeRating parseAgeRatings(IgdbGameDto game) {
+        if(game.age_ratings() == null) {
+            return null;
+        }
+
+        //Map from org ID to rating
+        HashMap<String, String> orgMap = new HashMap<>();
+        for(AgeRatingDto ratingDto : game.age_ratings()) {
+            orgMap.put(ratingDto.ageRatingCategory().ageRatingOrganization().name(),
+                        ratingDto.ageRatingCategory().rating());
+        }
+
+        //System.out.println("Parsing age rating...");
+    
+        //If ESRB rating exists, use it; if only PEGI exists, use that instead; if neither exist, keep null
+        //ESRB -> 1, PEGI -> 2
+        if(orgMap.containsKey("ESRB")) {
+            return new AgeRating(AgeRatingOrganization.ESRB, orgMap.get("ESRB"));
+        } else if(orgMap.containsKey("PEGI")) {
+            return new AgeRating(AgeRatingOrganization.PEGI, orgMap.get("PEGI"));
+        }
+
+        return null;
     }
     
     private <T> List<T> safeList(List<T> list) {

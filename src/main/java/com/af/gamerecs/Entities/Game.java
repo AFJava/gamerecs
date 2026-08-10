@@ -5,6 +5,7 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,9 @@ public class Game {
     private String imageId;
     
     private LocalDate releaseDate;
+
+    @Embedded
+    private AgeRating ageRating;
 
     @ElementCollection
     private Set<Feature> features;
@@ -56,6 +60,7 @@ public class Game {
                 String name,
                 String imageId,
                 LocalDate releaseDate,
+                AgeRating ageRating,
                 Set<Feature> features,
                 Double igdbRating,
                 Integer igdbRatingCount) {
@@ -63,6 +68,7 @@ public class Game {
         this.name = name;
         this.imageId = imageId;
         this.releaseDate = releaseDate;
+        this.ageRating = ageRating;
         this.features = features;
         this.igdbRating = igdbRating;
         this.igdbRatingCount = igdbRatingCount;
@@ -82,6 +88,10 @@ public class Game {
     
     public LocalDate getReleased() {
         return releaseDate;
+    }
+
+    public AgeRating getAgeRating() {
+        return ageRating;
     }
     
     public Set<Feature> getFeatures() {
