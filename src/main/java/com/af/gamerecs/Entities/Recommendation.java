@@ -43,8 +43,8 @@ public class Recommendation {
     }
 
     public Recommendation(User user, Game game) {
-        pressure = 0.0;
         impression = false;
+        pressure = 0.0;
         this.user = user;
         this.game = game;
     }
@@ -84,6 +84,10 @@ public class Recommendation {
 
         //Once recommendation is seen, calculate decay
         pressure = pressure * Math.pow(0.5, elapsed.toMinutes() / 1440) + 50;
+    }
+
+    public void setLastSeen(LocalDateTime now) {
+        this.lastSeen = now;
     }
 
     public void setScore(Double score) {
