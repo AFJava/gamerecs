@@ -168,6 +168,7 @@ public class RecommendationService {
 
         for(Recommendation rec : currentBatch) {
             rec.setScore(null);
+            rec.setImpression(false);
         }
     }
 }
