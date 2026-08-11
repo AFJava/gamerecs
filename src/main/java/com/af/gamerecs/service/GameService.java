@@ -56,8 +56,6 @@ public class GameService {
             imageId = game.cover().image_id();
         }
 
-        System.out.println(parseAgeRatings(game).getOrganization() + ": " + parseAgeRatings(game).getRating());
-
         return new Game(game.id(),
                         game.name(),
                         imageId,
