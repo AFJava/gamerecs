@@ -20,6 +20,9 @@ public class ApiClientConfig {
     WebClient igdbWebClient() {
         return WebClient.builder()
             .baseUrl("https://api.igdb.com/v4")
+            .codecs(configurer ->
+                configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024)
+            )
             .build();
     }
 }

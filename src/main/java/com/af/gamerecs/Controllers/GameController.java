@@ -45,8 +45,8 @@ public class GameController {
     public final GameSearchService gameSearchService;
     public final CompanyReferenceService companyReferenceService;
     public final RecommendationService recommendationService;
-    public int numFeaturesMatched = 5; //Number of features to be used in initial IGDB request for recommended games
-    public int numFeaturesMatchedScore = 100; //Number of features to be used when scoring, sorting recommended games
+    public int numFeaturesMatched = 10; //Number of features to be used in initial IGDB request for recommended games
+    public int numFeaturesMatchedScore = 30; //Number of features to be used when scoring, sorting recommended games
     public int favGameRating = 5; //Rating given to all favorited games by default
 
     public GameController(UserGameService userGameService,
@@ -130,7 +130,7 @@ public class GameController {
             )
         );
 
-        List<Recommendation> recs = recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatched));
+        List<Recommendation> recs = recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatchedScore));
         
         /*
         for(Recommendation rec : recs) {
