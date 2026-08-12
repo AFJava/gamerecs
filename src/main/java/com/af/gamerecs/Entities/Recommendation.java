@@ -1,6 +1,7 @@
 package com.af.gamerecs.entities;
 
 import java.time.LocalDateTime;
+
 import java.time.Duration;
 
 import jakarta.persistence.Entity;
@@ -38,11 +39,13 @@ public class Recommendation {
     private boolean impression;
 
     public Recommendation() {
+        lastSeen = LocalDateTime.now();
         impression = false;
         pressure = 0.0;
     }
 
     public Recommendation(User user, Game game) {
+        lastSeen = LocalDateTime.now();
         impression = false;
         pressure = 0.0;
         this.user = user;
@@ -84,6 +87,9 @@ public class Recommendation {
 
         //Once recommendation is seen, calculate decay
         pressure = pressure * Math.pow(0.5, elapsed.toMinutes() / 1440) + 50;
+
+        setLastSeen(now);
+        setImpression(true);
     }
 
     public void setLastSeen(LocalDateTime now) {
