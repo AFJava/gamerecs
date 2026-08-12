@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.af.gamerecs.dto.IgdbGameDto;
+import com.af.gamerecs.dto.ImpressionData;
 import com.af.gamerecs.dto.SaveGameRequest;
 import com.af.gamerecs.dto.SearchResponse;
 import com.af.gamerecs.dto.FavGameRequest;
@@ -175,6 +176,24 @@ public class GameController {
         
         userPreferenceService.updatePreferenceFromGame(userGame);
 
+        return "";
+    }
+
+    //Client only sends ids of games in the current recommendation batch that have NOT made an impression yet
+    @PostMapping("/rec/impression")
+    public String impression(Authentication authentication, @RequestBody ImpressionData impressionData) {
+        Object principal = authentication.getPrincipal();
+        User user = currentUserService.userFromPrincipal(principal);
+
+        Long userId = user.getId();
+        
+        List<Long> impressionGameIds = impressionData.impressionGameIds();
+        List<Recommendation> impressionGames = recommendationService.getExistingRecommendations(userId, impressionGameIds);
+        
+        for(Recommendation rec : impressionGames) {
+            rec.updatePressure();
+        }
+        
         return "";
     }
 }
