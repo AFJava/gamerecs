@@ -5,17 +5,27 @@ import { rec } from "../service/rec.js"
 const recButtonContainer = document.getElementById("rec-button-container");
 const newRecButton = recButtonContainer.querySelector(".rec-button");
 const recDiv = document.getElementById("rec-games");
+const timers = new Map();
 const impressionGameIds = [];
 
 const observer = new IntersectionObserver(
     (entries) => {
         entries.forEach(entry => {
+            const igdbId = entry.target.dataset.igdbId;
+            
             if(entry.isIntersecting) {
-                const igdbId = entry.target.dataset.igdbId;
-                impressionGameIds.push(igdbId);
+                const timer = setTimeout(() => {
+                    impressionGameIds.push(igdbId);
 
-                console.log("Game with igdbId " + igdbId + " added to list");
-                observer.unobserve(entry.target);
+                    // Impression recorded, so we're done watching it
+                    observer.unobserve(entry.target);
+                    timers.delete(igdbId);
+                    
+                    console.log("Game with igdbId " + igdbId + " added to list");
+                }, 500);
+            } else {
+                clearTimeout(timers.get(igdbId));
+                timers.delete(igdbId)
             }
         })
     },
