@@ -74,7 +74,7 @@ public class RecommendationService {
             rec.setScore(scoreRecommendation(rec, preferences));
         }
 
-        recs.sort(Comparator.comparing(rec -> rec.getScore()));
+        recs.sort(Comparator.comparing((Recommendation rec) -> rec.getScore()).reversed());
         
         return recommendationRepository.saveAll(recs);
     }

@@ -31,7 +31,6 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
         from Recommendation rec
         where rec.user.id = :userId
         and rec.score is not null
-        order by rec.score
             """)
     public List<Recommendation> findAllActiveRecommendations(Long userId);
 
@@ -40,7 +39,6 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
         from Recommendation rec
         where rec.user.id = :userId
         and rec.score is not null
-        order by rec.score
             """)
     public Page<Recommendation> findAllActiveRecommendations(Long userId, Pageable pageable);
 

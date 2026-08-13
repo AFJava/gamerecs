@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Sort;
+
 
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.entities.User;
@@ -221,7 +223,7 @@ public class MainController {
                             Authentication authentication,
                             @PathVariable Long id,
                             @RequestParam int page) {
-        Page<Recommendation> recs = recommendationService.getPaginatedActiveRecommendations(id, PageRequest.of(page - 1, pageSize));
+        Page<Recommendation> recs = recommendationService.getPaginatedActiveRecommendations(id, PageRequest.of(page - 1, pageSize, Sort.by("score").descending()));
         model.addAttribute("recs", recs.getContent());
 
         HashSet<Long> addedGamesIgdbIds = new HashSet<>(recommendationService.getAddedIgdbIds(id));
