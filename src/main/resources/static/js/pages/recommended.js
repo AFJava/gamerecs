@@ -42,7 +42,9 @@ document.addEventListener("visibilitychange", () => {
 });
 
 recDiv.querySelectorAll(".game-display").forEach((display) => {
-    observer.observe(display);
+    if(! JSON.parse(display.dataset.gameImpression)) {
+        observer.observe(display);
+    }
 });
 
 recDiv.addEventListener("click", (event) => {
