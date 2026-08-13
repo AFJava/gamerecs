@@ -13,9 +13,11 @@ export async function sendImpressionData(impressionGameIds) {
                 [csrfHeader]: csrfToken
             },
 
-            body: {
-                impressionGameIds: JSON.stringify(impressionGameIds)
-            }
+            body: JSON.stringify({
+                impressionGameIds: impressionGameIds
+            }),
+
+            keepalive: true
         }
     );
 }
