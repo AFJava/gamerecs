@@ -193,7 +193,7 @@ public class GameController {
         //System.out.println("Impression data received");
 
         for(Recommendation rec : impressionGames) {
-            rec.updatePressure();
+            rec.logImpression();
         }
 
         recommendationService.saveAllRecommendations(impressionGames);

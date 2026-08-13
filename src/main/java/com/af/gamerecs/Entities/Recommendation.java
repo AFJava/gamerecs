@@ -80,15 +80,22 @@ public class Recommendation {
         return impression;
     }
 
+    //Calculate decay to get current pressure
     public void updatePressure() {
         LocalDateTime now = LocalDateTime.now();
-
         Duration elapsed = Duration.between(lastSeen, now);
 
-        //Once recommendation is seen, calculate decay
-        pressure = pressure * Math.pow(0.5, elapsed.toMinutes() / 1440) + 50;
-
         setLastSeen(now);
+
+        pressure = pressure * Math.pow(0.5, elapsed.toMinutes() / 3 * 1440);
+    }
+
+    //Update pressure due to decay, then add pressure
+    public void logImpression() {
+        updatePressure();
+
+        pressure += 50;
+
         setImpression(true);
     }
 

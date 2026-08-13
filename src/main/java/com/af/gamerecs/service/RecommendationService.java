@@ -162,6 +162,7 @@ public class RecommendationService {
             }
         }
 
+        rec.updatePressure();
         score -= rec.getPressure();
 
         return score;
