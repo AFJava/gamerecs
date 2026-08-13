@@ -1,5 +1,6 @@
 import { rate, add } from "../service/add.js";
 import { fav } from "../service/fav.js";
+import { sendImpressionData } from "../service/impression.js";
 import { rec } from "../service/rec.js"
 
 const recButtonContainer = document.getElementById("rec-button-container");
@@ -33,6 +34,12 @@ const observer = new IntersectionObserver(
         threshold: 0.5
     }
 );
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+        sendImpressionData(impressionGameIds);
+    }
+});
 
 recDiv.querySelectorAll(".game-display").forEach((display) => {
     observer.observe(display);

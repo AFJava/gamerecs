@@ -60,6 +60,10 @@ public class RecommendationService {
         return recommendationRepository.save(rec);
     }
 
+    public List<Recommendation> saveAllRecommendations(List<Recommendation> recs) {
+        return recommendationRepository.saveAll(recs);
+    }
+
     public List<Recommendation> sortRecommendations(User user, List<IgdbGameDto> gameDtos, List<UserPreference> preferences) {
         clearCurrentBatch(user.getId());
         

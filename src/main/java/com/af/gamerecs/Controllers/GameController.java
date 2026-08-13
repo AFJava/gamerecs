@@ -190,10 +190,16 @@ public class GameController {
         List<Long> impressionGameIds = impressionData.impressionGameIds();
         List<Recommendation> impressionGames = recommendationService.getExistingRecommendations(userId, impressionGameIds);
         
+        //System.out.println("Impression data received");
+
         for(Recommendation rec : impressionGames) {
             rec.updatePressure();
         }
+
+        recommendationService.saveAllRecommendations(impressionGames);
         
+        //System.out.println("Impression data saved");
+
         return "";
     }
 }
