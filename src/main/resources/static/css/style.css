@@ -6,20 +6,20 @@ html, body {
 }
 
 header { 
-    background-color: #4c4c47;
+    background-color: #182230;
     height: 60vh;
 }
 
 .profile-header {
-    background-color: #4c4c47;
     height: 30vh;
+    border-bottom: 2px solid #29384D;
 }
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #565f76;
+    background-color: #1F1F1F;
 }
 
 main {
@@ -30,9 +30,8 @@ p, a, h1, h2, button, span, .nav-item {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-/* h2 color is PLACEHOLDER */
-p, a, h2 {
-    color: #b8b8b8;
+p, a, h2, span {
+    color: #A3B3C7;
 }
 
 h1 {
@@ -44,25 +43,27 @@ h1 {
     text-align: center;
 }
 
-.page-indicator {
-    color: black;
-}
-
 /* Form fields */
 input[type="text"], input[type="password"] {
     height: 2rem;
+
     border-radius: 0.5rem;
-    background-color: #565f76;
+    border-color: #3B526E;
+    
+    background-color: #223144;
+
+    color: #A3B3C7;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .login-button, .rate-button, .fav-button, .submit-rating, .rec-button, .page-nav-item-search, .removal-button, .removal-button-confirm, .removal-button-cancel {
     height: 2rem;
     border-radius: 1rem;
-    background-color: #565f76;
-
+    background-color: #223144;
+    border-color: #3B526E;
+    
     font-size: 14px;
-    color: black;
+    color: #A3B3C7;
 
     padding-block: 1px;
     padding-inline: 10px;
@@ -91,9 +92,9 @@ input[type="text"], input[type="password"] {
     border-radius: 1rem;
     border-width: 2px;
     border-style: outset;
-    border-color: black;
-
-    background-color: #565f76;
+    border-color: #3B526E;
+    
+    background-color: #223144;
 
     padding-block: 1px;
     padding-inline: 10px;
@@ -101,7 +102,7 @@ input[type="text"], input[type="password"] {
     text-align: center;
     text-decoration: none;
     font-size: 14px;
-    color: black;
+    color: #A3B3C7;
     
     cursor: default;
 }
@@ -117,7 +118,8 @@ input[type="text"], input[type="password"] {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #2d2d2a;
+    background-color: #101B2D;
+    border-bottom: 2px solid #29384D;
     height: 5vh;
 }
 
@@ -160,7 +162,8 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: gray; /* placeholder color */
+    background-color: #101B2D;
+    border-top: 2px solid #29384D;
     margin-top: 2rem;
 }
 
@@ -183,7 +186,7 @@ footer {
 
 .login-interface {
     justify-content: center;
-    background-color: #717c98;
+    background-color: #31445E;
     height: auto;
     border-radius: 1rem;
     margin: -40vh auto;
@@ -201,7 +204,7 @@ footer {
     flex: 1;
     content: '';
     height: 2px;
-    background-color: #b8b8b8;
+    background-color: #A3B3C7;
     margin: 0 10px;
 }
 
@@ -284,7 +287,8 @@ p#signuperr:empty {
     display: flex;
     grid-row: span 1;
     grid-column: span 2;
-    background-color: #2d2d2a;
+    background-color: #1f1f1f;
+    border: 2px solid #3B526E;
     height: 3rem;
     border-radius: 1.5rem;
 }
@@ -317,7 +321,8 @@ p#signuperr:empty {
     overflow-y: auto;
     margin: 0 auto;
     border-radius: 10px;
-    background-color: #717c98;
+    background-color: #31445E;
+    border: 2px solid #3B526E;
 }
 
 .results-list {
@@ -340,14 +345,14 @@ p#signuperr:empty {
     grid-template-rows: 1in auto;
     width: 100%;
     border-radius: 5px;
-    background-color: #717c98;
+    background-color: #293B51;
 }
 
 .rec-item, .search-item-expanded {
     display: grid;
     grid-template-rows: 1.5in auto;
     width: 100%;
-    background-color: #717c98;
+    background-color: #293B51;
 }
 
 .game-display {
@@ -404,7 +409,7 @@ p#signuperr:empty {
     place-items: center;
     width: 100%;
     border-radius: 5px;
-    background-color: gray; /* placeholder color */
+    background-color: #293B51; 
 }
 
 .added-games-container, .favorited-games-container {
@@ -422,9 +427,8 @@ p#signuperr:empty {
     max-width: 10in;
     overflow-y: auto;
     margin: 0 auto;
-    padding: 5px;
     border-radius: 10px;
-    background-color: #717c98;
+    background-color: #31445E;
 }
 
 .fav-item, .added-item {
