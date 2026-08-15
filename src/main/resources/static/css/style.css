@@ -7,12 +7,12 @@ html, body {
 
 header { 
     background-color: #182230;
-    height: 60vh;
-}
-
-.profile-header {
     height: 30vh;
     border-bottom: 2px solid #29384D;
+}
+
+.long-header {
+    height: 60vh;
 }
 
 body {
@@ -190,7 +190,8 @@ footer {
     height: auto;
     border-radius: 1rem;
     margin: -40vh auto;
-    max-width: 5in;
+    max-width: 6in;
+    min-width: 3in;
     width: 40%;
 }
 
