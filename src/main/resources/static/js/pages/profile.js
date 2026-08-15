@@ -1,4 +1,4 @@
-import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, appendAddedMessageOther, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds, resetGameActionsOther } from "../service/search.js";
+import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds, resetGameActionsOther, removeOther } from "../service/search.js";
 import { rate, add, sendAddRequest, appendAddedConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited, resetProfile, renderAddedNav, renderFavoritedNav } from "../service/cards.js";
 import { fav } from "../service/fav.js";
@@ -85,7 +85,7 @@ resultsDiv.addEventListener("submit", (event) => {
     }
 
     //If a favorited game was just added from the searchbar, check if it is displayed on the profile; if so, append message there as well
-    appendAddedMessageOther(favoritedGamesDiv, "fav-item", igdbId);
+    removeOther(favoritedGamesDiv, "fav-item", igdbId);
 });
 
 favoritedGamesDiv.addEventListener("submit", (event) => {
