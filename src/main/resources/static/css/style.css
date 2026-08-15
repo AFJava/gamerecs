@@ -5,7 +5,7 @@ html, body {
     border-radius: 0;
 }
 
-header { 
+header {
     background-color: #182230;
     height: 30vh;
     border-bottom: 2px solid #29384D;
@@ -30,7 +30,7 @@ p, a, h1, h2, button, span, .nav-item {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-p, a, h2, span {
+p, a, h2, span, label {
     color: #A3B3C7;
 }
 
@@ -474,10 +474,19 @@ p#signuperr:empty {
 }
 
 /* Profile recommendation actions */
-/* Also used on recommendation page */
 .rec-button-container {
     justify-content: center;
     gap: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+/* Same button on recommendations page */
+.new-rec-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 3rem;
 }
 
 /* Page nav */
