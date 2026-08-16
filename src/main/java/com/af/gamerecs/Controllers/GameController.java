@@ -132,7 +132,13 @@ public class GameController {
             userPreferenceService.getFeaturesFromPreferences(topPreferences)
         );
 
-        int count = igdbService.countMatchingGames(params);
+        Integer count = user.getRequestCount();
+        if(count == null) {
+            count = igdbService.countMatchingGames(params);
+
+            user.setRequestCount(count);
+            currentUserService.saveUser(user);
+        }
 
         List<IgdbGameDto> topMatches = igdbService.searchMatchingGames(params, count);
         List<Recommendation> recs = recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatchedScore));
