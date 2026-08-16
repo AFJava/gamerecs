@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usergames")
+@Table(name = "user_games")
 /* Database entry for usergames table. Directly stores information needed for display card, all else comes from RAWG */
 public class UserGame {
     @Id
