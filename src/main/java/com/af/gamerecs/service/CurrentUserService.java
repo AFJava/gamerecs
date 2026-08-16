@@ -14,6 +14,10 @@ public class CurrentUserService {
         this.userRepository = userRepository;
     }
 
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
     public User userFromPrincipal(Object principal) {
         User user;
 
