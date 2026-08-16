@@ -123,7 +123,12 @@ public class GameController {
         User user = currentUserService.userFromPrincipal(principal);
 
         List<UserPreference> preferences = userPreferenceService.getSortedPreferences(user);
-        List<UserPreference> topPreferences = preferences.subList(0, numFeaturesMatched);
+        List<UserPreference> topPreferences = preferences.subList(
+            0, 
+            Math.min(numFeaturesMatched, 
+                preferences.size()
+            )
+        );
 
         //If any top preference is a company, find involved_compnay ids and store as CompanyReference
         companyReferenceService.saveAllCompanyReferences(topPreferences);
