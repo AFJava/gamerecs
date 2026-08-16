@@ -112,7 +112,7 @@ public class GameController {
         return "";
     }
 
-    @GetMapping("/rec")
+    @PostMapping("/rec")
     public String rec(Authentication authentication) {
         //Check user preferences for top scoring features; query IGDB for best matches, use other features to thin out
         Object principal = authentication.getPrincipal();
