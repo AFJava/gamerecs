@@ -54,8 +54,8 @@ export async function remove(gameDiv, igdbId) {
 }
 
 async function sendRemoveRequest(igdbId) {
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    const csrfHeader = document.getElementById("csrf-header").content;
+    const csrfToken = document.getElementById("csrf-token").content;
 
     const response = await fetch(
         `/games/remove/${igdbId}`, 
