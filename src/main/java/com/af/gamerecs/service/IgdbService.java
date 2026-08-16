@@ -236,6 +236,23 @@ public class IgdbService {
         return Arrays.asList(games);
     }
 
+    public int countMatchingGames(String params) {
+        String body = """
+            where %s
+        """.formatted(params);
+
+        CountResponse response = igdbWebClient.post()
+            .uri("/games/count")
+            .header("Client-ID", twitchProperties.client_id())
+            .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
+            .bodyValue(body)
+            .retrieve()
+            .bodyToMono(CountResponse.class)
+            .block();
+
+        return response.count();
+    }
+
     public List<CompanyDto> getInvolvedCompanyInstances(Long companyId) {
         String body = """
             fields id, developer, publisher, supporting, porting;
