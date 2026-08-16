@@ -128,12 +128,13 @@ public class GameController {
         //If any top preference is a company, find involved_compnay ids and store as CompanyReference
         companyReferenceService.saveAllCompanyReferences(topPreferences);
 
-        List<IgdbGameDto> topMatches = igdbService.searchMatchingGames(
-            igdbQueryBuilder.parseParams(
-                userPreferenceService.getFeaturesFromPreferences(topPreferences)
-            )
+        String params = igdbQueryBuilder.parseParams(
+            userPreferenceService.getFeaturesFromPreferences(topPreferences)
         );
 
+        int count = igdbService.countMatchingGames(params);
+
+        List<IgdbGameDto> topMatches = igdbService.searchMatchingGames(params, count);
         List<Recommendation> recs = recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatchedScore));
         
         /*

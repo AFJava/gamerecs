@@ -192,8 +192,11 @@ public class IgdbService {
     }
 
     //Search for recommendations
-    //Assume topFeatures is not null and of set size
-    public List<IgdbGameDto> searchMatchingGames(String params) {
+    //Assume count is not null
+    public List<IgdbGameDto> searchMatchingGames(String params, int count) {
+        //Randomize offset
+        int offset = (int) Math.random() * (count - 499);
+
         String body = """
             fields id,
                 name,
@@ -216,9 +219,10 @@ public class IgdbService {
                 keywords.name,
                 rating,
                 rating_count;
-            limit 100;
+            limit 500;
+            offset %d;
             where %s;
-        """.formatted(params);
+        """.formatted(offset, params);
         //System.out.println("Before POST");
 
         IgdbGameDto[] games = igdbWebClient.post()
