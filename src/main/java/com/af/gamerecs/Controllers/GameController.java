@@ -100,6 +100,9 @@ public class GameController {
         
         User user = currentUserService.userFromPrincipal(principal);
 
+        user.setRequestCount(null);
+        currentUserService.saveUser(user);
+
         Long igdbId = saveGameRequest.igdbId();
         Integer rating = saveGameRequest.rating();
         IgdbGameDto gameDto = saveGameRequest.game();
@@ -149,7 +152,8 @@ public class GameController {
         Object principal = authentication.getPrincipal();
         User user = currentUserService.userFromPrincipal(principal);
 
-        //System.out.println(gameIdContainer.id());
+        user.setRequestCount(null);
+        currentUserService.saveUser(user);
 
         Long igdbId = favGameRequest.igdbId();
         IgdbGameDto gameDto = favGameRequest.game();
@@ -170,6 +174,9 @@ public class GameController {
         User user = currentUserService.userFromPrincipal(principal);
 
         Long userId = user.getId();
+
+        user.setRequestCount(null);
+        currentUserService.saveUser(user);
 
         UserGame userGame = userGameService.removeUserGame(userId, igdbId);
         userGame.setRating(-1 * userGame.getRating());
