@@ -31,6 +31,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private int requestCount;
+
     //Default empty constructor for Spring
     public User() {
 
@@ -69,6 +71,14 @@ public class User implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+    
+    public int getRequestCount() {
+        return requestCount;
+    }
+    
+    public void setRequestCount(int newRequestCount) {
+        requestCount = newRequestCount;
     }
 
     public Long getId() {
