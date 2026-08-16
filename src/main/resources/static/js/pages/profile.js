@@ -1,4 +1,4 @@
-import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds, resetGameActionsOther, removeOther } from "../service/search.js";
+import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedGamesIgdbIds, getFavoritedGamesIgdbIds, resetGameActionsOther, appendAddedMessageOther, removeOther } from "../service/search.js";
 import { rate, add, sendAddRequest, appendAddedConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited, resetProfile, renderAddedNav, renderFavoritedNav } from "../service/cards.js";
 import { fav } from "../service/fav.js";

@@ -243,7 +243,10 @@ export function appendFavoritedMessageOther(otherDiv, otherItemName, igdbId) {
 export function removeOther(container, otherItemName, igdbId) {
     const gameDiv = container.querySelector(`.${otherItemName}[data-igdb-id="${igdbId}"]`);
 
-    gameDiv.remove();
+    if(gameDiv !== null) {
+        gameDiv.remove();
+    }
+    
 }
 
 //Currently only used when removing games to reset actions for games also in the searchbar
