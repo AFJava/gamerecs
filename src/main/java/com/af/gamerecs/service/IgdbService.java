@@ -195,7 +195,8 @@ public class IgdbService {
     //Assume count is not null
     public List<IgdbGameDto> searchMatchingGames(String params, int count) {
         //Randomize offset
-        int offset = (int) Math.random() * (count - 499);
+        int offset = (int) (Math.random() * (count - 499));
+        //System.out.println(offset);
 
         String body = """
             fields id,
@@ -242,7 +243,7 @@ public class IgdbService {
 
     public int countMatchingGames(String params) {
         String body = """
-            where %s
+            where %s;
         """.formatted(params);
 
         CountResponse response = igdbWebClient.post()
