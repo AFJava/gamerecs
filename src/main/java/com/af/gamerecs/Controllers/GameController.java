@@ -2,13 +2,17 @@ package com.af.gamerecs.controllers;
 
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +28,7 @@ import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserGame;
 import com.af.gamerecs.entities.UserPreference;
+import com.af.gamerecs.exception.IgdbRateLimitException;
 import com.af.gamerecs.service.CompanyReferenceService;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameSearchService;
@@ -68,6 +73,13 @@ public class GameController {
         this.gameSearchService = gameSearchService;
         this.companyReferenceService = companyReferenceService;
         this.recommendationService = recommendationService;
+    }
+    
+    @ExceptionHandler
+    public ResponseEntity<String> handleIgdbRateLimit(IgdbRateLimitException e) {
+        return ResponseEntity
+            .status(HttpStatus.TOO_MANY_REQUESTS)
+            .body("IGDB rate limit exceeded");
     }
 
     /* Endpoint to dynamically results for searchbar */
