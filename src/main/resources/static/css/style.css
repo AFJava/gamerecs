@@ -310,10 +310,6 @@ p#signuperr:empty {
 }
 
 /* Search/recommendation results */
-.search-results {
-    display: none;
-}
-
 .search-results.active {
     position: relative;
     z-index: 1000;
@@ -324,6 +320,10 @@ p#signuperr:empty {
     border-radius: 10px;
     background-color: #31445E;
     border: 2px solid #3B526E;
+}
+
+.search-results ,.search-results:not(:has(.results-list > *)){
+    display: none;
 }
 
 .results-list {
