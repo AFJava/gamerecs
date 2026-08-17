@@ -195,9 +195,10 @@ public class IgdbService {
     //Assume count is not null
     public List<IgdbGameDto> searchMatchingGames(String params, int count) {
         //Randomize offset
-        int offset = (int) (Math.random() * (count - 499));
+        int offset = (int) (Math.random() * (count - 299));
         //System.out.println(offset);
 
+        //Can fetch maximum of 500 games, but sometimes goes over the 2MB buffer; 300 to be safe
         String body = """
             fields id,
                 name,
@@ -220,7 +221,7 @@ public class IgdbService {
                 keywords.name,
                 rating,
                 rating_count;
-            limit 500;
+            limit 300;
             offset %d;
             where %s;
         """.formatted(offset, params);
