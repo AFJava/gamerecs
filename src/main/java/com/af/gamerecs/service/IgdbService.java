@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import reactor.core.publisher.Mono;
+
 import com.af.gamerecs.config.TwitchProperties;
 import com.af.gamerecs.dto.CountResponse;
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.dto.CompanyDto;
+import com.af.gamerecs.exception.IgdbRateLimitException;
 
 @Service
 public class IgdbService {
@@ -80,6 +83,10 @@ public class IgdbService {
             .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
             .bodyValue(body)
             .retrieve()
+            .onStatus(
+                status -> status.value() == 429,
+                response -> Mono.error(new IgdbRateLimitException())
+            )
             .bodyToMono(IgdbGameDto[].class)
             .block();
 
@@ -145,6 +152,10 @@ public class IgdbService {
             .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
             .bodyValue(body)
             .retrieve()
+            .onStatus(
+                status -> status.value() == 429,
+                response -> Mono.error(new IgdbRateLimitException())
+            )
             .bodyToMono(IgdbGameDto[].class)
             .block();
 
@@ -177,18 +188,22 @@ public class IgdbService {
 
         body += where;
 
-        CountResponse response = igdbWebClient.post()
+        CountResponse countResponse = igdbWebClient.post()
             .uri("/games/count")
             .header("Client-ID", twitchProperties.client_id())
             .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
             .bodyValue(body)
             .retrieve()
+            .onStatus(
+                status -> status.value() == 429,
+                response -> Mono.error(new IgdbRateLimitException())
+            )
             .bodyToMono(CountResponse.class)
             .block();
         
-        System.out.println(response.count());
+        System.out.println(countResponse.count());
         
-        return response.count();
+        return countResponse.count();
     }
 
     //Search for recommendations
@@ -233,6 +248,10 @@ public class IgdbService {
             .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
             .bodyValue(body)
             .retrieve()
+            .onStatus(
+                status -> status.value() == 429,
+                response -> Mono.error(new IgdbRateLimitException())
+            )
             .bodyToMono(IgdbGameDto[].class)
             .block();
 
@@ -247,16 +266,20 @@ public class IgdbService {
             where %s;
         """.formatted(params);
 
-        CountResponse response = igdbWebClient.post()
+        CountResponse countResponse = igdbWebClient.post()
             .uri("/games/count")
             .header("Client-ID", twitchProperties.client_id())
             .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
             .bodyValue(body)
             .retrieve()
+            .onStatus(
+                status -> status.value() == 429,
+                response -> Mono.error(new IgdbRateLimitException())
+            )
             .bodyToMono(CountResponse.class)
             .block();
 
-        return response.count();
+        return countResponse.count();
     }
 
     public List<CompanyDto> getInvolvedCompanyInstances(Long companyId) {
@@ -265,15 +288,19 @@ public class IgdbService {
             where company = %d;
         """.formatted(companyId);
 
-        CompanyDto[] response = igdbWebClient.post()
+        CompanyDto[] countResponse = igdbWebClient.post()
             .uri("/involved_companies")
             .header("Client-ID", twitchProperties.client_id())
             .header("Authorization", "Bearer " + twitchAuthService.getAccessToken())
             .bodyValue(body)
             .retrieve()
+            .onStatus(
+                status -> status.value() == 429,
+                response -> Mono.error(new IgdbRateLimitException())
+            )
             .bodyToMono(CompanyDto[].class)
             .block();
 
-        return Arrays.asList(response);
+        return Arrays.asList(countResponse);
     }
 }
