@@ -82,5 +82,5 @@ newRecButton.addEventListener("click", async () => {
     await rec();
 
     //refresh page
-    window.location.href = window.location.href;
+    window.location.href = window.location.pathname + "?page=1";
 });
