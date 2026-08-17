@@ -20,20 +20,23 @@ public class IgdbQueryBuilder {
     public String parseParams(List<Feature> features) {
         HashMap<FeatureType, List<Long>> featureIdMap = new HashMap<>();
 
-        for(Feature feature : features) {
+        for(int i = 0; i < Math.min(features.size(), 10); i++) {
+            Feature feature = features.get(i);
             FeatureType type = feature.getFeatureType();
-            
-            if(! featureIdMap.containsKey(type)) {
-                featureIdMap.put(type, new ArrayList<Long>());
-            }
 
-            if(! type.isCompany()) {
-                featureIdMap.get(type).add(feature.getIgdbFeatureId());
-            }
-            else {
-                featureIdMap.get(type).addAll(
-                    companyReferenceService.getAllInvolvedCompanyIds(feature.getIgdbFeatureId(), type)
-                );
+            if(! type.isExcludedFromMatching()) {
+                if(! featureIdMap.containsKey(type)) {
+                    featureIdMap.put(type, new ArrayList<Long>());
+                }
+
+                if(! type.isCompany()) {
+                    featureIdMap.get(type).add(feature.getIgdbFeatureId());
+                }
+                else {
+                    featureIdMap.get(type).addAll(
+                        companyReferenceService.getAllInvolvedCompanyIds(feature.getIgdbFeatureId(), type)
+                    );
+                }
             }
         }
 
@@ -51,7 +54,13 @@ public class IgdbQueryBuilder {
             }
 
             param.append(")");
-            params.append(param + " | ");
+
+            if(type.shouldUseOrMatching()) {
+                params.append(param + " | ");
+            }
+            else {
+                params.append(param + " & ");
+            }
         }
 
         params.setLength(params.length() - 3);

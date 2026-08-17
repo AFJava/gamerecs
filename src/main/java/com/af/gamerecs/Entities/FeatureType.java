@@ -23,6 +23,19 @@ public enum FeatureType {
         return fieldName;
     }
 
+    public boolean shouldUseOrMatching() {
+        return switch (this) {
+            case FRANCHISE, PUBLISHER, DEVELOPER, SUPPORTING, PORTING -> true;
+            default -> false;
+        };
+    }
+
+    public boolean isExcludedFromMatching() {
+        return this == PLATFORM
+                || this == GAME_MODE
+                || this == PLAYER_PERSPECTIVE;
+    }
+
     public boolean isCompany() {
         return this == FeatureType.PUBLISHER
             || this == FeatureType.DEVELOPER
