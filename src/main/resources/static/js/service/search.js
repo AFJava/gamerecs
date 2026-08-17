@@ -91,10 +91,44 @@ export async function search(page) {
 
         console.log("URI built");
 
+        let response;
+
         //Response receives a List<IgdbGameDto> object which converts to JSON containing a list of search content along with search metadata
-        const response = await fetch(
-            searchURI,
-        );
+        try {
+            response = await fetch(
+                searchURI,
+            );
+            
+            if(response.status === 429) {
+                const errMsg = document.createElement("p");
+                errMsg.classList.add("no-games-msg");
+                errMsg.innerText = "Search is temporarily rate limited. Please try again later.";
+                errMsg.title = "Game data is provided by IGDB, which limits this application to 4 requests per second. Please try again in a moment.";
+
+                resultsList.appendChild(errMsg);
+
+                return;
+            }
+            else if (!response.ok) {
+                const errMsg = document.createElement("p");
+                errMsg.classList.add("no-games-msg");
+                errMsg.innerText = "Something went wrong while searching. Please try again.";
+                errMsg.title = "Unknown error occurred.";
+
+                resultsList.appendChild(errMsg);
+
+                return;
+            }
+        }
+        catch(error) {
+            const errMsg = document.createElement("p");
+            errMsg.classList.add("no-games-msg");
+            errMsg.innerText = "Unable to connect to server. Please try again.";
+
+            resultsList.appendChild(errMsg);
+
+            return;
+        }
 
         const responseData = await response.json();
 
