@@ -51,7 +51,7 @@ public class GameController {
     public final RecommendationService recommendationService;
     public int numFeaturesMatched = 10; //Number of features to be used in initial IGDB request for recommended games
     public int numFeaturesMatchedScore = 30; //Number of features to be used when scoring, sorting recommended games
-    public int favGameRating = 5; //Rating given to all favorited games by default
+    public double favGameRating = 7.5; //Rating given to all favorited games by default
 
     public GameController(UserGameService userGameService,
                         CurrentUserService currentUserService,
@@ -114,7 +114,7 @@ public class GameController {
         currentUserService.saveUser(user);
 
         Long igdbId = saveGameRequest.igdbId();
-        Integer rating = saveGameRequest.rating();
+        Double rating = saveGameRequest.rating();
         IgdbGameDto gameDto = saveGameRequest.game();
 
         Game game = gameService.getGame(igdbId).orElseGet(() -> gameService.saveGame(gameService.gameFromDto(gameDto)));

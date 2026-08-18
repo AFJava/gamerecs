@@ -86,7 +86,7 @@
                 <p class="info-msg">
                     Favorited games are intended to be games that you have not yet played.
                     This may include games that you plan to play soon, recommendations that you liked, etc. <br><br>
-                    Favorited games will also be considered for recommendations, but will be treated as an added game with an average (5/10) rating.
+                    Favorited games will also be considered for recommendations, but will be treated as an added game with an above average (7.5/10) rating.
                 </p>
 
                 <div th:each="favoritedGame : ${favoritedGames}" class="fav-item" th:data-igdb-id="${favoritedGame.game.igdbId}" th:data-game-name="${favoritedGame.game.name}">

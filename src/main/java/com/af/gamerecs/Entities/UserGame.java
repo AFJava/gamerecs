@@ -24,7 +24,7 @@ public class UserGame {
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    private int rating;
+    private double rating;
 
     private boolean favorited;
 
@@ -32,7 +32,7 @@ public class UserGame {
         favorited = false;
     }
 
-    public UserGame(User user, Game game, int rating) {
+    public UserGame(User user, Game game, double rating) {
         favorited = false;
         this.user = user;
         this.game = game;
@@ -51,7 +51,7 @@ public class UserGame {
         return game;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -59,7 +59,7 @@ public class UserGame {
         return favorited;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

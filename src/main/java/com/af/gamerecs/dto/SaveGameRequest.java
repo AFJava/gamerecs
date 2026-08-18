@@ -1,7 +1,7 @@
 package com.af.gamerecs.dto;
 
 public record SaveGameRequest(Long igdbId,
-                              Integer rating,
+                              Double rating,
                               IgdbGameDto game) {
 
 }
