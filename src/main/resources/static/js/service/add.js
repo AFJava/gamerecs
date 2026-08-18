@@ -21,7 +21,7 @@ export function rate(gameDiv) {
 
     rateInterface.innerHTML = `<p>Rate ${gameName} and add it to your profile:</p>
         <form method="post" class="rate-form">
-            <span><input type="number" name="rating" min="0" max="10" step="0.1"> / 10</span>
+            <span><input type="number" name="rating" min="0" max="10" step="0.1" class="rating-input"> / 10</span>
             <button type = "submit" class="submit-rating">Submit rating and add to profile</button>
         </form>`;
     

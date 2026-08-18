@@ -44,7 +44,7 @@ h1 {
 }
 
 /* Form fields */
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="number"] {
     height: 2rem;
 
     border-radius: 0.5rem;
@@ -54,6 +54,12 @@ input[type="text"], input[type="password"] {
 
     color: #A3B3C7;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+}
+
+input[type="number"] {
+    height: 1.5rem;
+    color-scheme: dark;
 }
 
 .login-button, .rate-button, .fav-button, .submit-rating, .rec-button, .page-nav-item-search, .removal-button, .removal-button-confirm, .removal-button-cancel {
@@ -318,7 +324,7 @@ p#signuperr:empty {
     overflow-y: auto;
     margin: 0 auto;
     border-radius: 10px;
-    background-color: #31445E;
+    background-color: #293B51;
     border: 2px solid #3B526E;
 }
 
@@ -386,7 +392,7 @@ p#signuperr:empty {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: white;
+    background-color: #31445E;
     width: 100%;
 }
 
