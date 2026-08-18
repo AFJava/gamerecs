@@ -82,7 +82,7 @@ export async function sendAddRequest(igdbId, rating, game) {
 
 //Replace rate button, interface with confirmation messages
 export function appendAddedConfirmationMessage(gameDiv) {
-    const actionDiv = gameDiv.querySelector(`.game-action-container, .game-action-container-profile`);
+    const actionDiv = gameDiv.querySelector(`.game-action-container`);
     
     //When added, also remove any option to favorite
     actionDiv.replaceChildren();
