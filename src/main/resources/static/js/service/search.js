@@ -102,7 +102,7 @@ export async function search(page) {
             if(response.status === 429) {
                 const errMsg = document.createElement("p");
                 errMsg.classList.add("no-games-msg");
-                errMsg.innerText = "Search is temporarily rate limited. Please try again later.";
+                errMsg.innerText = "Search is temporarily rate limited. Please try again momentarily.";
                 errMsg.title = "Game data is provided by IGDB, which limits this application to 4 requests per second. Please try again in a moment.";
 
                 resultsList.appendChild(errMsg);

@@ -3,7 +3,7 @@ import { rate, add, sendAddRequest, appendAddedConfirmationMessage } from "../se
 import { setUpProfile, renderAdded, renderFavorited, resetProfile, renderAddedNav, renderFavoritedNav } from "../service/cards.js";
 import { fav } from "../service/fav.js";
 import { confirmRemove, remove } from "../service/remove.js";
-import { rec } from "../service/rec.js"
+import { rec, displayError } from "../service/rec.js"
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");
@@ -195,7 +195,38 @@ recButtonContainer.addEventListener("click", async (event) => {
         return;
     }
 
-    await rec();
+    try{
+        const response = await rec();
+        
+        if(response.status === 429) {
+                displayError(
+                    recButtonContainer, 
+                    "Recommendations are temporarily rate limited. Please try again momentarily.",
+                    "Game data is provided by IGDB, which limits this application to 4 requests per second. Please try again in a moment."
+                );
+
+                return;
+            }
+
+            if(! response.ok) {
+                displayError(
+                    recButtonContainer, 
+                    "Something went wrong while searching. Please try again.",
+                    "Unknown error occurred."
+                );
+
+                return;
+            }
+        }
+    catch (error) {
+        displayError(
+            recButtonContainer, 
+            "Something went wrong while searching. Please try again.",
+            "Unknown error occurred."
+        );
+
+        return;
+    }
 
     window.location.href = window.location.pathname + "/recommended?page=1";
 });

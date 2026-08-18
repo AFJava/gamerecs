@@ -1,7 +1,7 @@
 import { rate, add } from "../service/add.js";
 import { fav } from "../service/fav.js";
 import { sendImpressionData } from "../service/impression.js";
-import { rec } from "../service/rec.js"
+import { rec, displayError } from "../service/rec.js"
 
 const recButtonContainer = document.getElementById("rec-button-container");
 const newRecButton = recButtonContainer.querySelector(".rec-button");
@@ -83,7 +83,38 @@ recDiv.addEventListener("submit", (event) => {
 });
 
 newRecButton.addEventListener("click", async () => {
-    await rec();
+    try{
+        const response = await rec();
+        
+        if(response.status === 429) {
+                displayError(
+                    recButtonContainer, 
+                    "Recommendations are temporarily rate limited. Please try again momentarily.",
+                    "Game data is provided by IGDB, which limits this application to 4 requests per second. Please try again in a moment."
+                );
+
+                return;
+            }
+
+            if(! response.ok) {
+                displayError(
+                    recButtonContainer, 
+                    "Something went wrong while searching. Please try again.",
+                    "Unknown error occurred."
+                );
+
+                return;
+            }
+        }
+    catch (error) {
+        displayError(
+            recButtonContainer, 
+            "Something went wrong while searching. Please try again.",
+            "Unknown error occurred."
+        );
+
+        return;
+    }
 
     //refresh page
     window.location.href = window.location.pathname + "?page=1";
