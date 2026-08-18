@@ -1,7 +1,8 @@
 import { rate, add } from "../service/add.js";
 import { fav } from "../service/fav.js";
+import { rec } from "../service/rec.js";
 import { sendImpressionData } from "../service/impression.js";
-import { rec, displayError } from "../service/rec.js"
+import { displayError } from "../util/errors.js";
 
 const recButtonContainer = document.getElementById("rec-button-container");
 const newRecButton = recButtonContainer.querySelector(".rec-button");

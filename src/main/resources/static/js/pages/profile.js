@@ -2,8 +2,9 @@ import { searchDisplay, searchDebounce, filterDebounce, getResultsMap, getAddedG
 import { rate, add, sendAddRequest, appendAddedConfirmationMessage } from "../service/add.js";
 import { setUpProfile, renderAdded, renderFavorited, resetProfile, renderAddedNav, renderFavoritedNav } from "../service/cards.js";
 import { fav } from "../service/fav.js";
+import { rec } from "../service/rec.js";
 import { confirmRemove, remove } from "../service/remove.js";
-import { rec, displayError } from "../service/rec.js"
+import { displayError } from "../util/errors.js";
 
 const searchbar = document.querySelector(".searchbar");
 const resultsDiv = document.querySelector(".search-results");

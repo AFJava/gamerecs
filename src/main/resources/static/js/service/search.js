@@ -1,3 +1,4 @@
+import { displayError } from "../util/errors.js";
 import { appendAddedConfirmationMessage } from "./add.js";
 import { appendFavoritedConfirmationMessage } from "./fav.js";
 
@@ -100,32 +101,29 @@ export async function search(page) {
             );
             
             if(response.status === 429) {
-                const errMsg = document.createElement("p");
-                errMsg.classList.add("no-games-msg");
-                errMsg.innerText = "Search is temporarily rate limited. Please try again momentarily.";
-                errMsg.title = "Game data is provided by IGDB, which limits this application to 4 requests per second. Please try again in a moment.";
-
-                resultsList.appendChild(errMsg);
+                displayError(
+                    resultsList,
+                    "Search is temporarily rate limited. Please try again momentarily.",
+                    "Game data is provided by IGDB, which limits this application to 4 requests per second. Please try again in a moment."
+                );
 
                 return;
             }
             else if (!response.ok) {
-                const errMsg = document.createElement("p");
-                errMsg.classList.add("no-games-msg");
-                errMsg.innerText = "Something went wrong while searching. Please try again.";
-                errMsg.title = "Unknown error occurred.";
-
-                resultsList.appendChild(errMsg);
+                displayError(
+                    resultsList,
+                    "Something went wrong while searching. Please try again.",
+                    "Unknown error occurred."
+                );
 
                 return;
             }
         }
         catch(error) {
-            const errMsg = document.createElement("p");
-            errMsg.classList.add("no-games-msg");
-            errMsg.innerText = "Unable to connect to server. Please try again.";
-
-            resultsList.appendChild(errMsg);
+            displayError(
+                resultsList,
+                "Unable to connect to server. Please try again."
+            );
 
             return;
         }
