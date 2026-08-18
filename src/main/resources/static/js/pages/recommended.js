@@ -48,19 +48,23 @@ recDiv.querySelectorAll(".game-display").forEach((display) => {
 });
 
 recDiv.addEventListener("click", (event) => {
-    if (event.target.classList.contains("rate-button")) {
-        const gameDiv = event.target.closest(".rec-item");
-        rate(gameDiv);
+    if (! event.target.classList.contains("rate-button")) {
+        return;
     }
+    
+    const gameDiv = event.target.closest(".rec-item");
+    rate(gameDiv);
 });
 
 recDiv.addEventListener("click", (event) => {
-    if (event.target.classList.contains("fav-button")) {
-        const gameDiv = event.target.closest(".rec-item");
-        const igdbId = gameDiv.dataset.igdbId;
-        
-        fav(gameDiv, igdbId, null);
+    if (! event.target.classList.contains("fav-button")) {
+        return;
     }
+    
+    const gameDiv = event.target.closest(".rec-item");
+    const igdbId = gameDiv.dataset.igdbId;
+        
+    fav(gameDiv, igdbId, null);
 });
 
 recDiv.addEventListener("submit", (event) => {

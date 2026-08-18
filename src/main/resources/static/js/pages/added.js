@@ -20,46 +20,50 @@ searchbar.addEventListener("input", searchDebounce);
 document.addEventListener("click", searchDisplay);
 
 resultsDiv.addEventListener("click", (event) => {
-    if (event.target.classList.contains("rate-button")) {
-        const gameDiv = event.target.closest(".search-item");
-        rate(gameDiv);
+    if (!event.target.classList.contains("rate-button")) {
+        return;
     }
+
+    const gameDiv = event.target.closest(".search-item");
+    rate(gameDiv);
 });
 
 resultsDiv.addEventListener("click", (event) => {
-    if (event.target.classList.contains("fav-button")) {
-        const gameDiv = event.target.closest(".search-item");
-        const igdbId = gameDiv.dataset.igdbId;
-
-        const resultsMap = getResultsMap();
-        const game = resultsMap.get(Number(igdbId));
-
-        fav(gameDiv, igdbId, game);
+    if (!event.target.classList.contains("fav-button")) {
+        return;
     }
+
+    const gameDiv = event.target.closest(".search-item");
+    const igdbId = gameDiv.dataset.igdbId;
+
+    const resultsMap = getResultsMap();
+    const game = resultsMap.get(Number(igdbId));
+
+    fav(gameDiv, igdbId, game);
 });
 
 resultsDiv.addEventListener("submit", (event) => {
     event.preventDefault();
-    
-    if(! event.target.matches(".rate-form")) {
+
+    if (!event.target.matches(".rate-form")) {
         return;
     }
-        
+
     const gameDiv = event.target.closest(".search-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
     const rating = event.target.elements.rating.value;
-    
+
     const resultsMap = getResultsMap();
     const game = resultsMap.get(Number(igdbId));
-    
+
     add(gameDiv, igdbId, gameName, rating, game);
 
     console.log("Added game; total elements is " + pageNavDiv.dataset.totalElements);
-    if(addedGamesDiv.childElementCount < pageSize + 1) {
+    if (addedGamesDiv.childElementCount < pageSize + 1) {
         renderAdded(addedGamesDiv, gameDiv, rating);
     }
-    if(Number(pageNavDiv.dataset.totalElements) % pageSize === 0) {
+    if (Number(pageNavDiv.dataset.totalElements) % pageSize === 0) {
         console.log(pageNavDiv.dataset.totalElements);
         currentPages++;
         renderPageNav(pageNavDiv, window.location.pathname, currentPages);
@@ -69,18 +73,20 @@ resultsDiv.addEventListener("submit", (event) => {
 });
 
 addedGamesDiv.addEventListener("click", (event) => {
-    if(event.target.classList.contains("removal-button")) {
-        confirmRemove(event.target.closest(".added-item"), "profile");
+    if (!event.target.classList.contains("removal-button")) {
+        return;
     }
+
+    confirmRemove(event.target.closest(".added-item"), "profile");
 });
 
 addedGamesDiv.addEventListener("submit", (event) => {
     event.preventDefault();
-    
-    if(! event.target.matches(".removal-form")) {
+
+    if (!event.target.matches(".removal-form")) {
         return;
     }
-    
+
     const gameDiv = event.target.closest(".added-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
@@ -94,7 +100,7 @@ addedGamesDiv.addEventListener("submit", (event) => {
 
     console.log("Removed");
 
-    if((Number(pageNavDiv.dataset.totalElements) - 1) % pageSize === 0) {
+    if ((Number(pageNavDiv.dataset.totalElements) - 1) % pageSize === 0) {
         console.log("Removed page nav");
         currentPages--;
         removePageNav(pageNavDiv);

@@ -22,62 +22,68 @@ searchbar.addEventListener("input", searchDebounce);
 document.addEventListener("click", searchDisplay);
 
 resultsDiv.addEventListener("click", (event) => {
-    if (event.target.classList.contains("rate-button")) {
-        const gameDiv = event.target.closest(".search-item");
-        rate(gameDiv);
+    if (!event.target.classList.contains("rate-button")) {
+        return;
     }
+
+    const gameDiv = event.target.closest(".search-item");
+    rate(gameDiv);
 });
 
 favoritedGamesDiv.addEventListener("click", (event) => {
     console.log(favoritedGamesDiv);
 
-    if (event.target.classList.contains("rate-button")) {
-        const gameDiv = event.target.closest(".fav-item");
-        rate(gameDiv);
+    if (!event.target.classList.contains("rate-button")) {
+        return;
     }
+
+    const gameDiv = event.target.closest(".fav-item");
+    rate(gameDiv);
 });
 
 resultsDiv.addEventListener("click", (event) => {
-    if (event.target.classList.contains("fav-button")) {
-        const gameDiv = event.target.closest(".search-item");
-        const igdbId = gameDiv.dataset.igdbId;
-        
-        const resultsMap = getResultsMap();
-        const game = resultsMap.get(Number(igdbId));
-    
-        fav(gameDiv, igdbId, game);
-
-        if(favoritedGamesDiv.childElementCount < 6) {
-            renderFavorited(favoritedGamesDiv, gameDiv);
-        }
-        else if (favoritedGamesContainer.querySelector(".expanded-nav-container") === null) {
-            renderFavoritedNav(favoritedGamesContainer)
-        }
-
-        setUpProfile(recButtonContainer);
+    if (!event.target.classList.contains("fav-button")) {
+        return;
     }
+
+    const gameDiv = event.target.closest(".search-item");
+    const igdbId = gameDiv.dataset.igdbId;
+
+    const resultsMap = getResultsMap();
+    const game = resultsMap.get(Number(igdbId));
+
+    fav(gameDiv, igdbId, game);
+
+    if (favoritedGamesDiv.childElementCount < 6) {
+        renderFavorited(favoritedGamesDiv, gameDiv);
+    }
+    else if (favoritedGamesContainer.querySelector(".expanded-nav-container") === null) {
+        renderFavoritedNav(favoritedGamesContainer)
+    }
+
+    setUpProfile(recButtonContainer);
 });
 
 resultsDiv.addEventListener("submit", (event) => {
     event.preventDefault();
-    
-    if(! event.target.matches(".rate-form")) {
+
+    if (!event.target.matches(".rate-form")) {
         return;
     }
-        
+
     const gameDiv = event.target.closest(".search-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
     const rating = event.target.elements.rating.value;
-    
+
     const resultsMap = getResultsMap();
     const game = resultsMap.get(Number(igdbId));
-    
+
     add(gameDiv, igdbId, gameName, rating, game);
 
     setUpProfile(recButtonContainer);
 
-    if(addedGamesDiv.childElementCount < 6) {
+    if (addedGamesDiv.childElementCount < 6) {
         renderAdded(addedGamesDiv, gameDiv, rating);
     }
     else if (addedGamesContainer.querySelector(".expanded-nav-container") === null) {
@@ -90,23 +96,23 @@ resultsDiv.addEventListener("submit", (event) => {
 
 favoritedGamesDiv.addEventListener("submit", (event) => {
     event.preventDefault();
-    
-    if(! event.target.matches(".rate-form")) {
+
+    if (!event.target.matches(".rate-form")) {
         return;
     }
 
     const gameDiv = event.target.closest(".fav-item");
     const igdbId = gameDiv.dataset.igdbId;
     const rating = event.target.elements.rating.value;
-    
+
     const resultsMap = getResultsMap();
     const game = resultsMap.get(Number(igdbId));
-    
+
     //No need to do extra rendering, just remove gameDiv and send request
     sendAddRequest(igdbId, rating, game);
 
     setUpProfile(recButtonContainer);
-    if(addedGamesDiv.childElementCount < 6) {
+    if (addedGamesDiv.childElementCount < 6) {
         renderAdded(addedGamesDiv, gameDiv, rating);
     }
     else if (addedGamesContainer.querySelector(".expanded-nav-container") === null) {
@@ -119,24 +125,28 @@ favoritedGamesDiv.addEventListener("submit", (event) => {
 });
 
 addedGamesDiv.addEventListener("click", (event) => {
-    if(event.target.classList.contains("removal-button")) {
-        confirmRemove(event.target.closest(".added-item"), "profile");
+    if (!event.target.classList.contains("removal-button")) {
+        return;
     }
+
+    confirmRemove(event.target.closest(".added-item"), "profile");
 });
 
 favoritedGamesDiv.addEventListener("click", (event) => {
-    if(event.target.classList.contains("removal-button")) {
-        confirmRemove(event.target.closest(".fav-item"), "favorites");
+    if (!event.target.classList.contains("removal-button")) {
+        return;
     }
+
+    confirmRemove(event.target.closest(".fav-item"), "favorites");
 });
 
 addedGamesDiv.addEventListener("submit", (event) => {
     event.preventDefault();
-    
-    if(! event.target.matches(".removal-form")) {
+
+    if (!event.target.matches(".removal-form")) {
         return;
     }
-    
+
     const gameDiv = event.target.closest(".added-item");
     const igdbId = gameDiv.dataset.igdbId;
     const gameName = gameDiv.dataset.gameName;
@@ -152,8 +162,8 @@ addedGamesDiv.addEventListener("submit", (event) => {
 
 favoritedGamesDiv.addEventListener("submit", (event) => {
     event.preventDefault();
-    
-    if(! event.target.matches(".removal-form")) {
+
+    if (!event.target.matches(".removal-form")) {
         return;
     }
 
@@ -181,9 +191,11 @@ favoritedGamesDiv.addEventListener("click", (event) => {
 */
 
 recButtonContainer.addEventListener("click", async (event) => {
-    if(event.target.classList.contains("rec-button")) {
-        await rec();
-
-        window.location.href = window.location.pathname + "/recommended?page=1";
+    if (!event.target.classList.contains("rec-button")) {
+        return;
     }
+
+    await rec();
+
+    window.location.href = window.location.pathname + "/recommended?page=1";
 });
