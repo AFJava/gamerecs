@@ -2,8 +2,6 @@ package com.af.gamerecs.controllers;
 
 import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -158,7 +156,7 @@ public class GameController {
         }
 
         List<IgdbGameDto> topMatches = igdbService.searchMatchingGames(params, count);
-        List<Recommendation> recs = recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatchedScore));
+        recommendationService.sortRecommendations(user, topMatches, preferences.subList(0, numFeaturesMatchedScore));
         
         /*
         for(Recommendation rec : recs) {

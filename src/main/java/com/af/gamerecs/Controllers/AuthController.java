@@ -39,7 +39,7 @@ public class AuthController {
     public String signup(@RequestParam String email, @RequestParam String password, @RequestParam String retype, HttpServletRequest httpRequest, Model model) {
         //First, try loading user from db; verify whether user already exists
         try {
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
             //If no exception, user already exists; notify user
             model.addAttribute("signuperr", "User already exists");
