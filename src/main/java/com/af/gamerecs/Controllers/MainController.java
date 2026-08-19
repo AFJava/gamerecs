@@ -12,12 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Sort;
-
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.af.gamerecs.dto.IgdbGameDto;
 import com.af.gamerecs.entities.User;
 import com.af.gamerecs.entities.UserGame;
+import com.af.gamerecs.exception.IgdbRateLimitException;
 import com.af.gamerecs.entities.Recommendation;
 import com.af.gamerecs.service.CurrentUserService;
 import com.af.gamerecs.service.GameSearchService;
@@ -46,6 +48,21 @@ public class MainController {
         this.igdbService = igdbService;
         this.gameSearchService = gameSearchService;
         this.recommendationService = recommendationService;
+    }
+
+    @ExceptionHandler(IgdbRateLimitException.class)
+    public String responseHandler(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute(
+            "errorMessage",
+            "Too many requests. Please try again later."
+        );
+
+        redirectAttributes.addFlashAttribute(
+            "query",
+            request.getParameter("query")
+        );
+
+        return "redirect:/search/fail";
     }
 
     @GetMapping("/")
@@ -159,6 +176,36 @@ public class MainController {
         return "added";
     }
 
+    @GetMapping("/search/fail")
+    public String searchFail(Model model,
+                        Authentication authentication) {
+
+        boolean authenticated = false;
+
+        if(authentication != null) {
+            authenticated = true;
+
+            Object principal = authentication.getPrincipal();
+            User user = currentUserService.userFromPrincipal(principal);
+            Long userId = user.getId();
+
+            model.addAttribute("id", userId);
+        }
+
+        model.addAttribute("authenticated", authenticated);
+
+        model.addAttribute("totalPages", 1);
+        model.addAttribute("startPage", 1);
+        model.addAttribute("page", 1);
+        model.addAttribute("endPage", 1);
+        model.addAttribute("showFirstPage", false);
+        model.addAttribute("showLastPage", false);
+        model.addAttribute("showLeftEllipsis", false);
+        model.addAttribute("showRightEllipsis", false);
+
+        return "search";
+    }
+
     @GetMapping("/search")
     public String search(Model model,
                         Authentication authentication,
@@ -215,7 +262,9 @@ public class MainController {
 
         model.addAttribute("filterObscure", filterObscure);
         
-        return "search";
+        throw new IgdbRateLimitException();
+
+        //return "search";
     }
 
     @GetMapping("/users/{id}/profile/recommended")
