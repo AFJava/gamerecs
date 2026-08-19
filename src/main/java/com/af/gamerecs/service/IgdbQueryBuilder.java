@@ -66,14 +66,19 @@ public class IgdbQueryBuilder {
             }
         }
 
-        ors.setLength(ors.length() - 3);
-        params.setLength(params.length() - 3);
-
-        params.append(") | ");
+        if(params.length() >= 3) {
+            params.setLength(params.length() - 3);
+            params.append(")");
+        }
+        if(ors.length() >= 3) {
+            ors.setLength(ors.length() - 3);
+            params.append(" | ");
+        }
+        
         params.append(ors);
 
         //Format (ands) | (ors)
-        //System.out.println(params);
+        System.out.println(params);
 
         return params.toString();
     }
