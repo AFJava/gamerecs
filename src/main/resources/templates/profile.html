@@ -58,7 +58,7 @@
             <h1>My Games</h1>
             
             <div class="added-games">
-                <p class="info-msg">Add any games that you played to your profile. Features of each added game will be considered (based on your rating of that game) when generating recommendations. </p>
+                <p class="info-msg">Add games that you've played to your profile. Based on your ratings, features of each added game will be considered when generating recommendations. </p>
 
                 <div class="added-item" th:each="addedGame : ${addedGames}" th:data-igdb-id="${addedGame.game.igdbId}" th:data-game-name="${addedGame.game.name}">
                     <div class="profile-card">
@@ -84,7 +84,7 @@
 
             <div class="favorited-games">
                 <p class="info-msg">
-                    Favorited games are intended to be games that you have not yet played.
+                    Favorited games are games that you don't know enough about to rate.
                     This may include games that you plan to play soon, recommendations that you liked, etc. <br><br>
                     Favorited games will also be considered for recommendations, but will be treated as an added game with an above average (7.5/10) rating.
                 </p>
