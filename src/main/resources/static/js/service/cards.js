@@ -73,7 +73,6 @@ export function renderFavorited(favoritedGamesDiv, gameDiv) {
     const gameName = gameDiv.dataset.gameName;
 
     const gamePreview = gameDiv.querySelector(`.game-preview-search`);
-    console.log(gamePreview);
 
     const imageId = gamePreview.dataset.imageId;
     const imageSrc = "https://images.igdb.com/igdb/image/upload/t_1080p/" + imageId + ".jpg";

@@ -1,7 +1,7 @@
 import { getAddedGamesIgdbIds } from "./search.js";
 
 export function rate(gameDiv) {
-    console.log("Button clicked");
+    //console.log("Button clicked");
     
     //Check whether to build interface div
     const igdbId = gameDiv.dataset.igdbId;
@@ -33,8 +33,8 @@ export function rate(gameDiv) {
 function prepareRatingInterface(containerDiv, igdbId) {
     const current = containerDiv.querySelector(".rate");
 
-    console.log(containerDiv);
-    console.log(current);
+    //console.log(containerDiv);
+    //console.log(current);
 
     if (current !== null) {
         if(current.dataset.igdbId != String(igdbId)) {

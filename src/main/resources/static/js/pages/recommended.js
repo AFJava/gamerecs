@@ -23,7 +23,7 @@ const observer = new IntersectionObserver(
                     observer.unobserve(entry.target);
                     timers.delete(igdbId);
                     
-                    console.log("Game with igdbId " + igdbId + " added to list");
+                    //console.log("Game with igdbId " + igdbId + " added to list");
                 }, 500);
             } else {
                 clearTimeout(timers.get(igdbId));

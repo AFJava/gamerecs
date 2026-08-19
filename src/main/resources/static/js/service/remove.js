@@ -32,8 +32,8 @@ export function confirmRemove(gameDiv, location) {
 function prepareRemovalInterface(containerDiv, igdbId) {
     const current = containerDiv.querySelector(".removal-interface");
 
-    console.log(containerDiv);
-    console.log(current);
+    //console.log(containerDiv);
+    //console.log(current);
 
     if (current !== null) {
         if(current.dataset.igdbId != String(igdbId)) {

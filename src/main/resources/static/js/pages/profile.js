@@ -32,7 +32,7 @@ resultsDiv.addEventListener("click", (event) => {
 });
 
 favoritedGamesDiv.addEventListener("click", (event) => {
-    console.log(favoritedGamesDiv);
+    //console.log(favoritedGamesDiv);
 
     if (!event.target.classList.contains("rate-button")) {
         return;

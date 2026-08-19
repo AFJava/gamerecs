@@ -47,9 +47,9 @@ export function searchDisplay(event) {
     //If user clicked off search results, remove from display; if clicked on, re-enable display
     //Avoid changing active status when clicking on filter button (reruns search anyways) or empty top-left grid cell
     if( !(resultsDiv.contains(event.target) || searchbar.contains(event.target) || event.target.matches(".fav-button")) ) {
-        console.log(resultsDiv.contains(event.target));
-        console.log(searchbar.contains(event.target));
-        console.log(resultsDiv.isConnected);
+        //console.log(resultsDiv.contains(event.target));
+        //console.log(searchbar.contains(event.target));
+        //console.log(resultsDiv.isConnected);
         resultsDiv.classList.remove("active");
     } 
     else if(searchbar.contains(event.target)) {
@@ -58,7 +58,7 @@ export function searchDisplay(event) {
 }
 
 export async function search(page) {
-    console.log("search began");
+    //console.log("search began");
 
     resultsMap.clear();
 
@@ -90,7 +90,7 @@ export async function search(page) {
         //Build URI depending on filter status
         const searchURI = `/games/search?q=${encodeURIComponent(searchContent)}&filterObscure=${filterObscureChecked}`;
 
-        console.log("URI built");
+        //console.log("URI built");
 
         let response;
 
@@ -156,7 +156,7 @@ export async function search(page) {
         return;
     }
 
-    console.log(games); //DEBUG
+    //console.log(games); //DEBUG
 
     renderPage(games);
     renderPageNav(page, searchContent, filterObscureChecked);
