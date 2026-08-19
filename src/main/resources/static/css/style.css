@@ -200,7 +200,6 @@ footer {
 }
 
 .user-guide-item {
-    
     width: 100%;
 }
 
@@ -308,8 +307,12 @@ footer {
     margin-bottom: 1rem;
 }
 
-p#signuperr:empty {
+.auth-error:empty {
     display: none;
+}
+
+.auth-error {
+    text-align: center;
 }
 
 /* Searchbar */

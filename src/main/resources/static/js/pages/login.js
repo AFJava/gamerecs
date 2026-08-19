@@ -1,16 +1,16 @@
-//Ensure that DOM Content loads before adding event listeners; otherwise event listeners may not function properly
 //const signupForm = document.querySelector(".signup form");
 
 //signupForm.addEventListener("submit", signup);
 
-//Note these are HTML elements for real-time feedback
 const passwordInput = document.getElementById("password");
 const retypeInput = document.getElementById("retype");
-const signupErr = document.getElementById("signuperr");
+const loginDiv = document.getElementById("login");
+const signupDiv = document.getElementById("signup");
+const signupErr = signupDiv.querySelector(".auth-error");
 
 passwordInput.addEventListener("input", checkPasswords);
 retypeInput.addEventListener("input", checkPasswords);
-    
+
 function checkPasswords() {
     if(retypeInput.value === "") {
         signupErr.textContent = "";
@@ -25,7 +25,6 @@ function checkPasswords() {
 async function signup(e) {
     e.preventDefault(); //Default behavior refreshes which cancels all operations below
 
-    //Note that these are values as they will be sent to Spring
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const retype = document.getElementById("retype").value;
