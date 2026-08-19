@@ -12,9 +12,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "recommendations")
+@Table(name = "recommendations",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uk_user_game",
+            columnNames = {"user_id", "game_id"}
+        )
+    }
+)
 public class Recommendation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,10 +7,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "user_games")
-/* Database entry for usergames table. Directly stores information needed for display card, all else comes from RAWG */
+@Table(name = "user_games",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uk_user_game",
+            columnNames = {"user_id", "game_id"}
+        )
+    }
+)
+/* Database entry for usergames table. */
 public class UserGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
