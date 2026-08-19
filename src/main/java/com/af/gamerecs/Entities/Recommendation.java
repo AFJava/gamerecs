@@ -95,7 +95,8 @@ public class Recommendation {
 
         setLastSeen(now);
 
-        pressure = pressure * Math.pow(0.5, elapsed.toSeconds() / (3 * 86400));
+        //Halves in 1 day
+        pressure = pressure * Math.pow(0.5, elapsed.toSeconds() / 86400.0);
     }
 
     //Update pressure due to decay, then add pressure
