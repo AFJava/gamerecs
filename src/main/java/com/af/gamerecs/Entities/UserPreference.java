@@ -29,7 +29,8 @@ public class UserPreference {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "feature_id", nullable = false)
     private Feature feature;
 
     private double weight;

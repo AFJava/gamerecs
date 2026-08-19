@@ -10,6 +10,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,7 +34,12 @@ public class Game {
     @Embedded
     private AgeRating ageRating;
 
-    @ElementCollection
+    @ManyToMany
+    @JoinTable(
+        name = "game_feature",
+        joinColumns = @JoinColumn(name = "game_id"),
+        inverseJoinColumns = @JoinColumn(name = "feature_id")
+    )
     private Set<Feature> features;
 
     private Double igdbRating;
