@@ -103,7 +103,7 @@ public class Recommendation {
     public void logImpression() {
         updatePressure();
 
-        pressure += 50;
+        pressure += 100;
 
         setImpression(true);
     }
