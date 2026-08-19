@@ -44,7 +44,7 @@ h1 {
 }
 
 /* Form fields */
-input[type="text"], input[type="password"], input[type="number"] {
+input[type="text"], input[type="password"], input[type="number"], input[type="email"] {
     height: 2rem;
 
     border-radius: 0.5rem;
