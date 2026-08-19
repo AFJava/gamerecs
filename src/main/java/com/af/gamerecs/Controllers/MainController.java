@@ -69,16 +69,17 @@ public class MainController {
     public String home(Model model, Authentication authentication) {
         boolean authenticated = false;
 
+        Long userId = Long.valueOf(0);
+
         if(authentication != null) {
             authenticated = true;
 
             Object principal = authentication.getPrincipal();
             User user = currentUserService.userFromPrincipal(principal);
-            Long userId = user.getId();
-
-            model.addAttribute("id", userId);
+            userId = user.getId();
         }
-
+        
+        model.addAttribute("id", userId);
         model.addAttribute("authenticated", authenticated);
 
         return "index";

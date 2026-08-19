@@ -30,7 +30,7 @@
 
         <div class = "summary">
             <p>Get a list of game recommendations based on games you like.</p>
-            <p><a href = "/login">Log in</a> or <a href = "/login">Sign Up</a> to find out what game is next for you!</p>
+            <p><a th:href="@{/users/{id}/profile(id=${id})}">Log in</a> or <a th:href="@{/users/{id}/profile(id=${id})}">Sign Up</a> to find out what game is next for you!</p>
         </div>
 
         <h1>How it works</h1>
@@ -68,7 +68,7 @@
     </div>
 
     <div class="summary">
-        <p>Try it out <a href = "/login">now</a>!</p>
+        <p>Try it out <a th:href="@{/users/{id}/profile(id=${id})}">now</a>!</p>
     </div>
 
     <footer>
