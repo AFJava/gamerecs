@@ -263,9 +263,9 @@ public class MainController {
 
         model.addAttribute("filterObscure", filterObscure);
         
-        throw new IgdbRateLimitException();
+        //throw new IgdbRateLimitException();
 
-        //return "search";
+        return "search";
     }
 
     @GetMapping("/users/{id}/profile/recommended")
