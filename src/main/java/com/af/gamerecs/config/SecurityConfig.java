@@ -79,7 +79,7 @@ public class SecurityConfig {
                 .usernameParameter("emailLogin")
                 .passwordParameter("passwordLogin")
                 .loginProcessingUrl("/login")
-                .failureUrl("/login")
+                .failureUrl("/login?error")
                 .permitAll()
             )
             .oauth2Login(oauth -> oauth
