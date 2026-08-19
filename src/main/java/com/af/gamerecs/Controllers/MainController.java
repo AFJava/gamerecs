@@ -218,7 +218,7 @@ public class MainController {
         List<IgdbGameDto> games = igdbService.searchGames(query, pageSize, page, filterObscure);
         games = gameSearchService.sortGames(games, query);
 
-        System.out.println(games.size());
+        //System.out.println(games.size());
 
         model.addAttribute("games", games);
         

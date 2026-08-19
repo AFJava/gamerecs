@@ -51,7 +51,7 @@ public class AuthController {
             newUser.setUsername(email);
 
             if(!retype.equals(password)) {
-                System.out.println("Passwords did not match");
+                //System.out.println("Passwords did not match");
                 model.addAttribute("signuperr", "Passwords do not match");
                 return "login";
             }

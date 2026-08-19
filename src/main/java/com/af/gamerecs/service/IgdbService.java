@@ -159,7 +159,7 @@ public class IgdbService {
             .bodyToMono(IgdbGameDto[].class)
             .block();
 
-        System.out.println(games.length);
+        //System.out.println(games.length);
         //System.out.println(Arrays.asList(games));
         
         return Arrays.asList(games);
@@ -201,7 +201,7 @@ public class IgdbService {
             .bodyToMono(CountResponse.class)
             .block();
         
-        System.out.println(countResponse.count());
+        //System.out.println(countResponse.count());
         
         return countResponse.count();
     }
@@ -255,7 +255,7 @@ public class IgdbService {
             .bodyToMono(IgdbGameDto[].class)
             .block();
 
-        System.out.println("Search matching successful");
+        //System.out.println("Search matching successful");
         //System.out.println(Arrays.asList(games));
         
         return Arrays.asList(games);
@@ -278,6 +278,8 @@ public class IgdbService {
             )
             .bodyToMono(CountResponse.class)
             .block();
+
+        //System.out.println(countResponse.count());
 
         return countResponse.count();
     }
