@@ -40,31 +40,39 @@ public class IgdbQueryBuilder {
             }
         }
 
-        StringBuilder params = new StringBuilder("");
+        //params contains all &s at first
+        StringBuilder params = new StringBuilder("(");
+        StringBuilder ors = new StringBuilder("");
 
         for(FeatureType type : featureIdMap.keySet()) {
             StringBuilder param = new StringBuilder(type.toIgdbField() + " = (");
 
-            for(int i = 0; i < featureIdMap.get(type).size(); i++) {
-                if(i == 0) {
-                    param.append(featureIdMap.get(type).get(i));
+            for(int j = 0; j < featureIdMap.get(type).size(); j++) {
+                if(j == 0) {
+                    param.append(featureIdMap.get(type).get(j));
                 } else {
-                    param.append(", " + featureIdMap.get(type).get(i));
+                    param.append(", " + featureIdMap.get(type).get(j));
                 }
             }
 
             param.append(")");
 
+            //At this point param is "type = (#, ..., #)"
             if(type.shouldUseOrMatching()) {
-                params.append(param + " | ");
+                ors.append(param + " | ");
             }
             else {
                 params.append(param + " & ");
             }
         }
 
+        ors.setLength(ors.length() - 3);
         params.setLength(params.length() - 3);
 
+        params.append(") | ");
+        params.append(ors);
+
+        //Format (ands) | (ors)
         System.out.println(params);
 
         return params.toString();
