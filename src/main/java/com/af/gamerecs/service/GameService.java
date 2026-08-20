@@ -183,6 +183,10 @@ public class GameService {
     }
 
     public void addFeaturesToSet(Set<Feature> features, List<FeatureDto> dtos, FeatureType featureType) {
+        if(dtos == null) {
+            return;
+        }
+
         List<Feature> existingFeatures = featureService.getExistingFeatures(
             featureType,
             getIgdbFeatureIdsFromDtos(dtos)
@@ -206,6 +210,10 @@ public class GameService {
     }
 
     public void addCompaniesToSet(Set<Feature> features, List<CompanyDto> dtos) {
+        if(dtos == null) {
+            return;
+        }
+
         List<FeatureDto> developers = new ArrayList<>();
         List<FeatureDto> publishers = new ArrayList<>();
         List<FeatureDto> supporting = new ArrayList<>();
