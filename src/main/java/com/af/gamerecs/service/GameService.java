@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -21,14 +23,17 @@ import com.af.gamerecs.entities.AgeRatingOrganization;
 import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.entities.FeatureType;
 import com.af.gamerecs.entities.Game;
+import com.af.gamerecs.repositories.FeatureRepository;
 import com.af.gamerecs.repositories.GameRepository;
 
 @Service
 public class GameService {
     public final GameRepository gameRepository;
+    public final FeatureRepository featureRepository;
     
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, FeatureRepository featureRepository) {
         this.gameRepository = gameRepository;
+        this.featureRepository = featureRepository;
     }
     
     /*
@@ -147,37 +152,17 @@ public class GameService {
             List<FeatureDto> keywords) {
         Set<Feature> features = new HashSet<>();
         
-        for(FeatureDto franchise : safeList(franchises)) {
-            features.add(new Feature(FeatureType.FRANCHISE, franchise.id(), franchise.name()));
-        }
+        addFeaturesToSet(features, franchises, FeatureType.FRANCHISE);
+        addFeaturesToSet(features, platforms, FeatureType.PLATFORM);
+        addFeaturesToSet(features, genres, FeatureType.GENRE);
+        addFeaturesToSet(features, themes, FeatureType.THEME);
+        addFeaturesToSet(features, gameModes, FeatureType.GAME_MODE);
+        addFeaturesToSet(features, playerPerspectives, FeatureType.PLAYER_PERSPECTIVE);
+        addFeaturesToSet(features, keywords, FeatureType.KEYWORD);
 
-        for(CompanyDto company : safeList(companies)) {
-            features.add(new Feature(getCompanyRole(company), company.company().id(), company.company().name()));
-        }
+        addCompaniesToSet(features, companies);
 
-        for(FeatureDto platform : safeList(platforms)) {
-            features.add(new Feature(FeatureType.PLATFORM, platform.id(), platform.name()));
-        }
-
-        for(FeatureDto genre : safeList(genres)) {
-            features.add(new Feature(FeatureType.GENRE, genre.id(), genre.name()));
-        }
-
-        for(FeatureDto theme : safeList(themes)) {
-            features.add(new Feature(FeatureType.THEME, theme.id(), theme.name()));
-        }
-
-        for(FeatureDto gameMode : safeList(gameModes)) {
-            features.add(new Feature(FeatureType.GAME_MODE, gameMode.id(), gameMode.name()));
-        }
-
-        for(FeatureDto playerPerspective : safeList(playerPerspectives)) {
-            features.add(new Feature(FeatureType.PLAYER_PERSPECTIVE, playerPerspective.id(), playerPerspective.name()));
-        }
-
-        for(FeatureDto keyword : safeList(keywords)) {
-            features.add(new Feature(FeatureType.KEYWORD, keyword.id(), keyword.name()));
-        }
+        featureRepository.saveAll(features);
 
         return features;
     }
@@ -195,6 +180,62 @@ public class GameService {
         else {
             return FeatureType.SUPPORTING;
         }
+    }
+
+    public void addFeaturesToSet(Set<Feature> features, List<FeatureDto> dtos, FeatureType featureType) {
+        List<Feature> existingFeatures = featureRepository.findAllByIgdbFeatureIdAndFeatureTypeIn(
+            getIgdbFeatureIdsFromDtos(dtos),
+            featureType
+        );
+
+        Map<Long, Feature> existingFeaturesMap = existingFeatures.stream()
+            .collect(
+                Collectors.toMap(
+                    existingFeature -> existingFeature.getIgdbFeatureId(),
+                    existingFeature -> existingFeature
+                )
+            );
+        
+        for(FeatureDto feature : safeList(dtos)) {
+            if(existingFeaturesMap.containsKey(feature.id())) {
+                features.add(existingFeaturesMap.get(feature.id()));
+            } else {
+                features.add(new Feature(featureType, feature.id(), feature.name()));
+            }
+        }
+    }
+
+    public void addCompaniesToSet(Set<Feature> features, List<CompanyDto> dtos) {
+        List<FeatureDto> developers = new ArrayList<>();
+        List<FeatureDto> publishers = new ArrayList<>();
+        List<FeatureDto> supporting = new ArrayList<>();
+        List<FeatureDto> porting = new ArrayList<>();
+
+        for(CompanyDto dto : dtos) {
+            if(dto.developer()) {
+                developers.add(dto.company());
+            }
+            else if(dto.publisher()) {
+                publishers.add(dto.company());
+            }
+            else if(dto.supporting()) {
+                supporting.add(dto.company());
+            }
+            else {
+                porting.add(dto.company());
+            }
+        }
+
+        addFeaturesToSet(features, developers, FeatureType.DEVELOPER);
+        addFeaturesToSet(features, publishers, FeatureType.PUBLISHER);
+        addFeaturesToSet(features, supporting, FeatureType.SUPPORTING);
+        addFeaturesToSet(features, porting, FeatureType.PORTING);
+    }
+
+    public List<Long> getIgdbFeatureIdsFromDtos(List<FeatureDto> dtos) {
+        return dtos.stream()
+            .map(FeatureDto::id)
+            .toList();
     }
 
     public List<Long> getIgdbIdsFromDtos(List<IgdbGameDto> dtos) {
