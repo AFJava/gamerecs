@@ -9,8 +9,18 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(name = "features",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uk_features",
+            columnNames = {"feature_type", "feature_id"}
+        )
+    }
+)
 public class Feature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
