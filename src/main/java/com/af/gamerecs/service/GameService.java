@@ -46,6 +46,25 @@ public class GameService {
     }
     */
 
+    /* Game repo methods */
+    public Optional<Game> getGame(Long igdbId) {
+        return gameRepository.findByIgdbId(igdbId);
+    }
+
+    public Game saveGame(Game game) {
+        return gameRepository.save(game);
+    }
+
+    //This method is only used in RecommendationService.parseRecommendations, where only new games are passed as arguments; no check needed
+    public List<Game> saveAllGames(List<Game> games) {
+        return gameRepository.saveAll(games);
+    }
+
+    public List<Game> getGamesFromIgdbIds(List<Long> igdbIds) {
+        return gameRepository.findAllByIgdbIdIn(igdbIds);
+    }
+    
+    /* Make single game */
     public Game gameFromDto(IgdbGameDto game) {
         LocalDate releaseDate = null;
         
@@ -76,23 +95,6 @@ public class GameService {
                             game.keywords()),
                         game.rating(),
                         game.rating_count());
-    }
-
-    public Optional<Game> getGame(Long igdbId) {
-        return gameRepository.findByIgdbId(igdbId);
-    }
-
-    public Game saveGame(Game game) {
-        return gameRepository.save(game);
-    }
-
-    //This method is only used in RecommendationService.parseRecommendations, where only new games are passed as arguments; no check needed
-    public List<Game> saveAllGames(List<Game> games) {
-        return gameRepository.saveAll(games);
-    }
-
-    public List<Game> getGamesFromIgdbIds(List<Long> igdbIds) {
-        return gameRepository.findAllByIgdbIdIn(igdbIds);
     }
 
     private List<FeatureDto> franchiseNames(IgdbGameDto game) {
@@ -133,14 +135,6 @@ public class GameService {
 
         return null;
     }
-    
-    private <T> List<T> safeList(List<T> list) {
-        if(list == null) {
-            return new ArrayList<>();
-        }
-
-        return list;
-    }
 
     public Set<Feature> parseFeatures(List<FeatureDto> franchises,
             List<CompanyDto> companies,
@@ -167,21 +161,6 @@ public class GameService {
         return features;
     }
 
-    public FeatureType getCompanyRole(CompanyDto company) {
-        if(company.developer()) {
-            return FeatureType.DEVELOPER;
-        }
-        else if(company.publisher()) {
-            return FeatureType.PUBLISHER;
-        }
-        else if(company.porting()) {
-            return FeatureType.PORTING;
-        }
-        else {
-            return FeatureType.SUPPORTING;
-        }
-    }
-
     public void addFeaturesToSet(Set<Feature> features, List<FeatureDto> dtos, FeatureType featureType) {
         if(dtos == null) {
             return;
@@ -191,6 +170,11 @@ public class GameService {
             featureType,
             getIgdbFeatureIdsFromDtos(dtos)
         );
+
+        for(Feature feature : existingFeatures) {
+            System.out.print(feature);
+        }
+        System.out.println();
 
         Map<Long, Feature> existingFeaturesMap = existingFeatures.stream()
             .collect(
@@ -239,7 +223,13 @@ public class GameService {
         addFeaturesToSet(features, supporting, FeatureType.SUPPORTING);
         addFeaturesToSet(features, porting, FeatureType.PORTING);
     }
+    
+    /* Make games in bulk */
+    public void gamesFromDtos(FeatureType type, List<FeatureDto> dtos) {
+        
+    }
 
+    /* Utility */
     public List<Long> getIgdbFeatureIdsFromDtos(List<FeatureDto> dtos) {
         return dtos.stream()
             .map(FeatureDto::id)
@@ -250,5 +240,28 @@ public class GameService {
         return dtos.stream()
             .map(IgdbGameDto::id)
             .toList();
+    }
+    
+    private <T> List<T> safeList(List<T> list) {
+        if(list == null) {
+            return new ArrayList<>();
+        }
+
+        return list;
+    }
+
+    public FeatureType getCompanyRole(CompanyDto company) {
+        if(company.developer()) {
+            return FeatureType.DEVELOPER;
+        }
+        else if(company.publisher()) {
+            return FeatureType.PUBLISHER;
+        }
+        else if(company.porting()) {
+            return FeatureType.PORTING;
+        }
+        else {
+            return FeatureType.SUPPORTING;
+        }
     }
 }
