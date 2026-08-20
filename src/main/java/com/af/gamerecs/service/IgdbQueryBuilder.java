@@ -78,7 +78,7 @@ public class IgdbQueryBuilder {
         params.append(ors);
 
         //Format (ands) | (ors)
-        System.out.println(params);
+        //System.out.println(params);
 
         return params.toString();
     }
