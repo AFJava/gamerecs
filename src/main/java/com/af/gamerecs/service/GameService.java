@@ -29,11 +29,11 @@ import com.af.gamerecs.repositories.GameRepository;
 @Service
 public class GameService {
     public final GameRepository gameRepository;
-    public final FeatureRepository featureRepository;
+    public final FeatureService featureService;
     
-    public GameService(GameRepository gameRepository, FeatureRepository featureRepository) {
+    public GameService(GameRepository gameRepository, FeatureService featureService) {
         this.gameRepository = gameRepository;
-        this.featureRepository = featureRepository;
+        this.featureService = featureService;
     }
     
     /*
@@ -162,7 +162,7 @@ public class GameService {
 
         addCompaniesToSet(features, companies);
 
-        featureRepository.saveAll(features);
+        featureService.saveAllFeatures(features);
 
         return features;
     }
@@ -183,9 +183,9 @@ public class GameService {
     }
 
     public void addFeaturesToSet(Set<Feature> features, List<FeatureDto> dtos, FeatureType featureType) {
-        List<Feature> existingFeatures = featureRepository.findAllByIgdbFeatureIdAndFeatureTypeIn(
-            getIgdbFeatureIdsFromDtos(dtos),
-            featureType
+        List<Feature> existingFeatures = featureService.getExistingFeatures(
+            featureType,
+            getIgdbFeatureIdsFromDtos(dtos)
         );
 
         Map<Long, Feature> existingFeaturesMap = existingFeatures.stream()

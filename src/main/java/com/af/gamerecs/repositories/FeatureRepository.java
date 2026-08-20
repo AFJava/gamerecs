@@ -8,5 +8,5 @@ import com.af.gamerecs.entities.Feature;
 import com.af.gamerecs.entities.FeatureType;
 
 public interface FeatureRepository extends JpaRepository<Feature, Integer> {
-    public List<Feature> findAllByIgdbFeatureIdAndFeatureTypeIn(List<Long> igdbIds, FeatureType featureType);
+    public List<Feature> findAllByFeatureTypeAndIgdbFeatureIdIn(FeatureType featureType, List<Long> igdbIds);
 }
