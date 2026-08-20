@@ -22,7 +22,7 @@ import jakarta.persistence.UniqueConstraint;
 )
 public class CompanyReference {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
 
     @Column(unique = true)

@@ -23,7 +23,7 @@ import jakarta.persistence.UniqueConstraint;
 )
 public class Feature {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public Long id;
 
     @Enumerated(EnumType.STRING)
