@@ -228,11 +228,18 @@ public class GameService {
     }
     
     /* Make games in bulk */
-    public void gamesFromDtos(List<IgdbGameDto> games) {
+    public List<Game> gamesFromDtos(List<IgdbGameDto> dtos) {
         //First handle features
         EnumMap<FeatureType, Map<Long, Feature>> allFeatures = new EnumMap<>(FeatureType.class);
         
-        parseFeaturesBulk(allFeatures, games);
+        parseFeaturesBulk(allFeatures, dtos);
+
+        List<Game> games = new ArrayList<>();
+        for(IgdbGameDto dto : dtos) {
+            gameFromDto(allFeatures, dto);
+        }
+
+        return saveAllGames(games);
     }
 
     /* Save all new features and populate the allFeaturesMap */
@@ -296,6 +303,8 @@ public class GameService {
             games.stream()
                 .map(IgdbGameDto::involved_companies)
                 .toList());
+
+        featureService.saveAllFeatures(newFeatures);
     }
 
     public void parseCompaniesBulk(EnumMap<FeatureType, Map<Long, Feature>> allFeatures,
@@ -425,6 +434,113 @@ public class GameService {
         }
 
         allFeatures.put(type, featureMap);
+    }
+
+    /* Overloaded for bulk processing */ 
+    public Game gameFromDto(EnumMap<FeatureType, Map<Long, Feature>> allFeatures, IgdbGameDto game) {
+        LocalDate releaseDate = null;
+        
+        if (game.first_release_date() != null) {
+            releaseDate = Instant.ofEpochSecond(game.first_release_date())
+                .atZone(ZoneOffset.UTC)
+                .toLocalDate();
+        }
+
+        String imageId = null;
+
+        if(game.cover() != null) {
+            imageId = game.cover().image_id();
+        }
+
+        return new Game(game.id(),
+                        game.name(),
+                        imageId,
+                        releaseDate,
+                        parseAgeRatings(game),
+                        parseFeatures(allFeatures,
+                            franchiseNames(game),
+                            game.involved_companies(),
+                            game.platforms(),
+                            game.genres(),
+                            game.themes(),
+                            game.game_modes(),
+                            game.player_perspectives(),
+                            game.keywords()),
+                        game.rating(),
+                        game.rating_count());
+    }
+
+    public Set<Feature> parseFeatures(EnumMap<FeatureType, Map<Long, Feature>> allFeatures,
+            List<FeatureDto> franchises,
+            List<CompanyDto> companies,
+            List<FeatureDto> platforms,
+            List<FeatureDto> genres,
+            List<FeatureDto> themes,
+            List<FeatureDto> gameModes,
+            List<FeatureDto> playerPerspectives,
+            List<FeatureDto> keywords) {
+        Set<Feature> features = new HashSet<>();
+        
+        addFeaturesToSet(allFeatures, features, franchises, FeatureType.FRANCHISE);
+        addFeaturesToSet(allFeatures, features, platforms, FeatureType.PLATFORM);
+        addFeaturesToSet(allFeatures, features, genres, FeatureType.GENRE);
+        addFeaturesToSet(allFeatures, features, themes, FeatureType.THEME);
+        addFeaturesToSet(allFeatures, features, gameModes, FeatureType.GAME_MODE);
+        addFeaturesToSet(allFeatures, features, playerPerspectives, FeatureType.PLAYER_PERSPECTIVE);
+        addFeaturesToSet(allFeatures, features, keywords, FeatureType.KEYWORD);
+
+        addCompaniesToSet(features, companies);
+
+        return features;
+    }
+
+    public void addFeaturesToSet(EnumMap<FeatureType, Map<Long, Feature>> allFeatures,
+        Set<Feature> features,
+        List<FeatureDto> dtos,
+        FeatureType type) {
+        
+        if(dtos == null) {
+            return;
+        }
+
+        Map<Long, Feature> featureMap = allFeatures.get(type);
+        
+        for(FeatureDto feature : safeList(dtos)) {
+            features.add(featureMap.get(feature.id()));
+        }
+    }
+
+    public void addCompaniesToSet(EnumMap<FeatureType, Map<Long, Feature>> allFeatures, 
+                                Set<Feature> features,
+                                List<CompanyDto> dtos) {
+        if(dtos == null) {
+            return;
+        }
+
+        List<FeatureDto> developers = new ArrayList<>();
+        List<FeatureDto> publishers = new ArrayList<>();
+        List<FeatureDto> supporting = new ArrayList<>();
+        List<FeatureDto> porting = new ArrayList<>();
+
+        for(CompanyDto dto : dtos) {
+            if(dto.developer()) {
+                developers.add(dto.company());
+            }
+            else if(dto.publisher()) {
+                publishers.add(dto.company());
+            }
+            else if(dto.supporting()) {
+                supporting.add(dto.company());
+            }
+            else {
+                porting.add(dto.company());
+            }
+        }
+
+        addFeaturesToSet(features, developers, FeatureType.DEVELOPER);
+        addFeaturesToSet(features, publishers, FeatureType.PUBLISHER);
+        addFeaturesToSet(features, supporting, FeatureType.SUPPORTING);
+        addFeaturesToSet(features, porting, FeatureType.PORTING);
     }
 
     /* Utility */
