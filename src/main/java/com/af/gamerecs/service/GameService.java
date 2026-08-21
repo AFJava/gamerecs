@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -225,8 +226,110 @@ public class GameService {
     }
     
     /* Make games in bulk */
-    public void gamesFromDtos(FeatureType type, List<FeatureDto> dtos) {
+    public void gamesFromDtos(List<IgdbGameDto> games) {
+        //First handle features
+        EnumMap<FeatureType, Map<Long, Feature>> allFeatures = new EnumMap<>(FeatureType.class);
         
+    }
+
+    /* Save all new features and populate the allFeaturesMap */
+    public void parseFeaturesBulk(EnumMap<FeatureType, Map<Long, Feature>> allFeatures, List<IgdbGameDto> games) {
+        Set<Feature> newFeatures = new HashSet<>();
+
+        List<List<FeatureDto>> gameFranchises = new ArrayList<>();
+        for(IgdbGameDto game : games) {
+            gameFranchises.add(franchiseNames(game));
+        }
+
+        parseAllFeaturesByType(allFeatures,
+            newFeatures,
+            gameFranchises,
+            FeatureType.FRANCHISE);
+
+        parseAllFeaturesByType(allFeatures,
+            newFeatures,
+            games.stream()
+                .map(IgdbGameDto::platforms)
+                .toList(),
+            FeatureType.PLATFORM);
+        
+            parseAllFeaturesByType(allFeatures,
+            newFeatures,
+            games.stream()
+                .map(IgdbGameDto::genres)
+                .toList(),
+            FeatureType.GENRE);
+
+            parseAllFeaturesByType(allFeatures,
+            newFeatures,
+            games.stream()
+                .map(IgdbGameDto::themes)
+                .toList(),
+            FeatureType.THEME);
+
+            parseAllFeaturesByType(allFeatures,
+            newFeatures,
+            games.stream()
+                .map(IgdbGameDto::game_modes)
+                .toList(),
+            FeatureType.GAME_MODE);
+
+            parseAllFeaturesByType(allFeatures,
+            newFeatures,
+            games.stream()
+                .map(IgdbGameDto::player_perspectives)
+                .toList(),
+            FeatureType.PLAYER_PERSPECTIVE);
+
+            parseAllFeaturesByType(allFeatures,
+            newFeatures,
+            games.stream()
+                .map(IgdbGameDto::keywords)
+                .toList(),
+            FeatureType.KEYWORD);
+    }
+
+    public void parseCompaniesBulk(EnumMap<FeatureType, Map<Long, Feature>> allFeatures,
+                                    Set<Feature> newFeatures,
+                                    List<List<CompanyDto>> gameCompanies) {
+        
+    }
+
+    /* Find all new features of current type and populate the allFeatures map for that type */
+    public void parseAllFeaturesByType(EnumMap<FeatureType, Map<Long, Feature>> allFeatures,
+                                    Set<Feature> newFeatures,
+                                    List<List<FeatureDto>> gameFeatures,
+                                    FeatureType type) {
+        //Get all existing features of the current type
+        List<Feature> existingFeatures = featureService.getExistingFeatures(
+            type,
+            getAllUniqueIgdbFeatureIdsFromDtos(
+                gameFeatures
+            )
+        );
+
+        Map<Long, Feature> featureMap = existingFeatures.stream()
+            .collect(
+                Collectors.toMap(
+                    existingFeature -> existingFeature.getIgdbFeatureId(),
+                    existingFeature -> existingFeature
+                )
+            );
+
+        //Find and create a single instance of each unique feature; add it to the newFeatures set and featureMap
+        for(List<FeatureDto> featureList : safeList(gameFeatures)) {
+            for(FeatureDto feature : featureList) {
+                if(! featureMap.containsKey(feature.id())) {
+                    Feature newFeature = new Feature(type, feature.id(), feature.name());
+
+                    newFeatures.add(newFeature);
+                    featureMap.put(feature.id(), newFeature);
+                }
+            }
+        }
+
+        //Populate the allFeatures map
+        allFeatures.put(type, featureMap);
     }
 
     /* Utility */
@@ -240,6 +343,19 @@ public class GameService {
         return dtos.stream()
             .map(IgdbGameDto::id)
             .toList();
+    }
+
+    /* Pass a list containing each games' list of features of a certain type */
+    public Set<Long> getAllUniqueIgdbFeatureIdsFromDtos(List<List<FeatureDto>> gameFeatures) {
+        Set<Long> idSet = new HashSet<>();
+
+        for(List<FeatureDto> dtoList : gameFeatures) {
+            for(FeatureDto dto : dtoList) {
+                idSet.add(dto.id());
+            }
+        }
+
+        return idSet;
     }
     
     private <T> List<T> safeList(List<T> list) {

@@ -1,5 +1,6 @@
 package com.af.gamerecs.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class FeatureService {
         return featureRepository.saveAll(features);
     }
 
-    public List<Feature> getExistingFeatures(FeatureType featureType, List<Long> igdbIds) {
+    public List<Feature> getExistingFeatures(FeatureType featureType, Collection<Long> igdbIds) {
         return featureRepository.findAllByFeatureTypeAndIgdbFeatureIdIn(featureType, igdbIds);
     }
 }
