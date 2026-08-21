@@ -101,17 +101,20 @@ public class RecommendationService {
         
         HashSet<Long> addedIgdbIds = new HashSet<>(userGameService.getAddedIgdbIds(user.getId(), igdbIds));
 
-        List<Game> newGames = new ArrayList<>();
+        List<IgdbGameDto> newGameDtos = new ArrayList<>();
         
         for(IgdbGameDto dto : gameDtos) {
             //If already added, remove from recommendation pool
             if(! addedIgdbIds.contains(dto.id())) {
                 //If rec exists, the associated game must also exist already
                 if(! existingRecsMap.containsKey(dto.id())) {
-                    Game game;
-
                     if(existingGamesMap.containsKey(dto.id())) {
-                        game = existingGamesMap.get(dto.id());
+                        Game game = existingGamesMap.get(dto.id());
+                        
+                        recs.add(new Recommendation(
+                            user,
+                            game
+                        ));
 
                         /* 
                         if(game != null) {
@@ -123,8 +126,8 @@ public class RecommendationService {
                         */
                     }
                     else {
-                        game = gameService.gameFromDto(dto);
-                        newGames.add(game);
+                        //To be processed in bulk later
+                        newGameDtos.add(dto);
 
                         /* 
                         if(game != null) {
@@ -136,16 +139,21 @@ public class RecommendationService {
                         */
                     }
 
-                    recs.add(new Recommendation(
-                        user,
-                        game
-                    ));
+                    
                 }
             }
         }
 
-        //Save any new games
-        gameService.saveAllGames(newGames);
+        //Parse AND save any new games
+        List<Game> newGames = gameService.gamesFromDtos(newGameDtos);
+
+        //Now make recommendations with new games
+        for(Game game : newGames) {
+            recs.add(new Recommendation(
+                user,
+                game
+            ));
+        }
 
         return recs;
     }
